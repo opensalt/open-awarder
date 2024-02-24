@@ -26,6 +26,9 @@
             "migrations/.gitignore"
         ]
     },
+    "ecotone/symfony-bundle": {
+        "version": "1.213.0"
+    },
     "phpunit/phpunit": {
         "version": "9.6",
         "recipe": {
