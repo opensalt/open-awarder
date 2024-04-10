@@ -1,5 +1,15 @@
 {
     "controllers": {
+        "@kreyu/data-table-bundle": {
+            "personalization": {
+                "enabled": true,
+                "fetch": "eager"
+            },
+            "batch": {
+                "enabled": true,
+                "fetch": "eager"
+            }
+        },
         "@symfony/ux-turbo": {
             "turbo-core": {
                 "enabled": true,

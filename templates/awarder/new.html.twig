@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Awarder{% endblock %}
+
+{% block body %}
+    <h1>Create new Awarder</h1>
+
+    {{ include('awarder/_form.html.twig') }}
+
+    <a href="{{ path('app_awarder_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,4 @@
+kreyu_data_table:
+  defaults:
+    themes:
+      - '@KreyuDataTable/themes/bootstrap_5.html.twig'

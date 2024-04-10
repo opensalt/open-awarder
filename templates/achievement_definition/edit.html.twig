@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit AchievementDefinition{% endblock %}
+
+{% block body %}
+    <h1>Edit AchievementDefinition</h1>
+
+    {{ include('achievement_definition/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-secondary" href="{{ path('app_achievement_definition_index') }}">Back to list</a>
+
+    {{ include('achievement_definition/_delete_form.html.twig') }}
+{% endblock %}

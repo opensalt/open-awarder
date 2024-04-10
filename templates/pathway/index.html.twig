@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Pathways{% endblock %}
+
+{% block body %}
+    <h1>Pathways</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pathway in pathways %}
+            <tr>
+                <td>{{ pathway.name }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_pathway_show', {'id': pathway.id}) }}">Show</a>
+                    <a class="btn btn-secondary" href="{{ path('app_pathway_edit', {'id': pathway.id}) }}">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary" href="{{ path('app_pathway_new') }}">Add</a>
+{% endblock %}

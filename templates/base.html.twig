@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Open Awarding Service{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>oas</text></svg>">
         {% block stylesheets %}
         {% endblock %}
 
@@ -12,6 +13,41 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <main class="container container-fluid min-vh-100 d-flex flex-column">
+            <div class="row">
+                <div class="col col-md-2 min-vh-100 bg-body-tertiary">
+                    <a href="{{ path('app_home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">OAS</a>
+                    <hr />
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link link-dark" aria-current="page">Home</a></li>
+                        <li class="nav-item"><a href="{{ path('app_awarder_index')}}" class="nav-link link-dark">Awarders</a></li>
+                        <li class="nav-item"><a href="{{ path('app_achievement_definition_index')}}" class="nav-link link-dark">Achievements</a></li>
+                        <li class="nav-item"><a href="{{ path('app_pathway_index')}}" class="nav-link link-dark">Pathways</a></li>
+                        <li class="nav-item"><a href="{{ path('app_award_template_index') }}" class="nav-link link-dark">Award Templates</a></li>
+                        <li class="nav-item"><a href="{{ path('app_email_template_index') }}" class="nav-link link-dark">Email Templates</a></li>
+                        <li class="nav-item"><a href="{{ path('app_participant_index')}}" class="nav-link link-dark">Participants</a></li>
+                        <li class="nav-item"><a href="{{ path('app_award_index')}}" class="nav-link link-dark">Awards</a></li>
+                    </ul>
+                    <div class="text-center">
+                        <a href="{{ path('app_award_new') }}" class="btn btn-primary mb-3 mt-5">Award</a>
+                    </div>
+                    {#
+                    <hr />
+                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none">User Info</a>
+                    #}
+                </div>
+                <div class="col flex-grow-1 bg-body">
+                    <div class="row flex-grow-1">
+                        <div class="col">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {% block body %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </body>
 </html>

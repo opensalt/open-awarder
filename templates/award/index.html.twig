@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Awards{% endblock %}
+
+{% block body %}
+    <h1>Awards</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Achievement</th>
+                <th>Template</th>
+                <th>State</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for award in awards %}
+            <tr class="state-{{ award.state.name|lower }}">
+                <td>{{ award.subject.email }}</td>
+                <td>{{ award.achievement.name }}</td>
+                <td>{{ award.awardTemplate.name }}</td>
+                <td><span class="badge text-bg-secondary">{{ award.state.name }}</span></td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_award_show', {'id': award.id}) }}">Show</a>
+                    {% if award.state.name == 'Pending' %}
+                        <a class="btn btn-secondary" href="{{ path('app_award_edit', {'id': award.id}) }}">Edit</a>
+                        {{ include('award/_publish_form.html.twig') }}
+                    {% elseif award.state.name != 'Revoked' %}
+                        {{ include('award/_revoke_form.html.twig') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary" href="{{ path('app_award_new') }}">Award</a>
+{% endblock %}

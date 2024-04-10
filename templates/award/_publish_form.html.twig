@@ -1,0 +1,4 @@
+<form class="d-inline" method="post" action="{{ path('app_award_publish', {'id': award.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('publish' ~ award.id) }}">
+    <button class="btn btn-secondary">Publish</button>
+</form>

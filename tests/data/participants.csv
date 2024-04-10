@@ -1,0 +1,6 @@
+firstName,lastName,email,pathway,acceptedTerms,phone,aboutMe
+First1,Test1,ftest1@example.com,Teacher,yes,,
+First2,Test2,ftest2@example.com,Teacher,yes,123-456-7890,"Some about text
+could be multi-line"
+First3,Test3,ftest3@example.com,Teacher,no,,
+Bad2,Test2,ftest2@example.com,Teacher,yes,,"Should be rejected as error"

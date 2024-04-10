@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Pathway{% endblock %}
+
+{% block body %}
+    <h1>Edit Pathway</h1>
+
+    {{ include('pathway/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-secondary" href="{{ path('app_pathway_index') }}">Back to list</a>
+
+    {{ include('pathway/_delete_form.html.twig') }}
+{% endblock %}

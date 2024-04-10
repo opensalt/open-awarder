@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Awarder{% endblock %}
+
+{% block body %}
+    <h1>Awarder</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ awarder.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ awarder.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ awarder.description }}</td>
+            </tr>
+            <tr>
+                <th>IssuerId</th>
+                <td>{{ awarder.issuerId }}</td>
+            </tr>
+            <tr>
+                <th>Contact</th>
+                <td>{{ awarder.contact }}</td>
+            </tr>
+            <tr>
+                <th>Protocol</th>
+                <td>{{ awarder.protocol }}</td>
+            </tr>
+            <tr>
+                <th>OcpInfo</th>
+                <td>{{ awarder.ocpInfo ? awarder.ocpInfo|json_encode : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary" href="{{ path('app_awarder_index') }}">Back to list</a>
+
+    <a class="btn btn-primary" href="{{ path('app_awarder_edit', {'id': awarder.id}) }}">Edit</a>
+
+    {{ include('awarder/_delete_form.html.twig') }}
+{% endblock %}

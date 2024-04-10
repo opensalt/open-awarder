@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Pathway{% endblock %}
+
+{% block body %}
+    <h1>Add Pathway</h1>
+
+    {{ include('pathway/_form.html.twig') }}
+
+    <a class="btn btn-secondary" href="{{ path('app_pathway_index') }}">Back to list</a>
+{% endblock %}

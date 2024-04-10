@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New AchievementDefinition{% endblock %}
+
+{% block body %}
+    <h1>Create new AchievementDefinition</h1>
+
+    {{ include('achievement_definition/_form.html.twig') }}
+
+    <a href="{{ path('app_achievement_definition_index') }}">back to list</a>
+{% endblock %}

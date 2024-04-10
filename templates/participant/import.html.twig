@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Import Participants</h1>
+
+    {{ form_start(uploadForm) }}
+    {{ form_errors(uploadForm) }}
+    {{ form_widget(uploadForm) }}
+    <button type="submit" class="btn btn-primary float-end">{{ button_label|default('Save') }}</button>
+    {{ form_end(uploadForm) }}
+{% endblock %}
+
+{% block title %}
+    Participant Import
+{% endblock %}
+

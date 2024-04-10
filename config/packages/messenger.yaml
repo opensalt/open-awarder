@@ -12,6 +12,8 @@ framework:
                 retry_strategy:
                     max_retries: 3
                     multiplier: 2
+
+                serializer: messenger.transport.symfony_serializer
             failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
@@ -19,6 +21,11 @@ framework:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
+            App\Message\PublishAward: async
+            App\Message\OfferAward: async
+            App\Message\SendOfferedEmail: async
+            App\Message\RevokeAward: async
+            App\Message\SendPathwayStatusEmail: async
 
             # Route your messages to the transports
             # 'App\Message\YourMessage': async

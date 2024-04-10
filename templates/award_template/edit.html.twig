@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit AwardTemplate{% endblock %}
+
+{% block body %}
+    <h1>Edit AwardTemplate</h1>
+
+    {{ include('award_template/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a class="btn btn-secondary" href="{{ path('app_award_template_index') }}">Back to list</a>
+
+    {{ include('award_template/_delete_form.html.twig') }}
+{% endblock %}
