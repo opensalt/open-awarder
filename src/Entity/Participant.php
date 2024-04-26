@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enums\ParticipantState;
@@ -32,8 +34,8 @@ class Participant
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $subscribedPathway = null;
+    #[ORM\ManyToOne(targetEntity: Pathway::class)]
+    private ?Pathway $subscribedPathway = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $acceptedTerms = null;
@@ -124,12 +126,12 @@ class Participant
         return $this;
     }
 
-    public function getSubscribedPathway(): ?string
+    public function getSubscribedPathway(): ?Pathway
     {
         return $this->subscribedPathway;
     }
 
-    public function setSubscribedPathway(string $subscribedPathway): static
+    public function setSubscribedPathway(?Pathway $subscribedPathway): static
     {
         $this->subscribedPathway = $subscribedPathway;
 

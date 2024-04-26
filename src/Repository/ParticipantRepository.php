@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Participant;
+use App\Enums\AwardState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,28 +24,22 @@ class ParticipantRepository extends ServiceEntityRepository
         parent::__construct($registry, Participant::class);
     }
 
-    //    /**
-    //     * @return Participant[] Returns an array of Participant objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function getAchievementsForParticipant(Participant $participant): array
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->from(Participant::class, 's')
+            ->join('s.awards', 'a')
+            ->join('a.achievement', 'ad')
+            ->select('ad.identifier')
+            ->andWhere('s.id = :subject')
+            ->setParameter('subject', $participant->getId())
+            ->andWhere('a.state <> :pending')
+            ->setParameter('pending', AwardState::Pending)
+            ->andWhere('a.state <> :revoked')
+            ->setParameter('revoked', AwardState::Revoked)
+            ->getQuery()
+            ->getSingleColumnResult()
+            ;
+    }
 
-    //    public function findOneBySomeField($value): ?Participant
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

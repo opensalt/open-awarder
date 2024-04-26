@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Participant;
@@ -24,7 +26,7 @@ class ParticipantController extends AbstractController
     public function index(ParticipantRepository $participantRepository): Response
     {
         return $this->render('participant/index.html.twig', [
-            'participants' => $participantRepository->findAll(),
+            'participants' => $participantRepository->findBy([], ['id' => 'ASC']),
         ]);
     }
 

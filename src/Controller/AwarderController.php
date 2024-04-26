@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Awarder;
@@ -20,7 +22,7 @@ class AwarderController extends AbstractController
     public function index(AwarderRepository $awarderRepository): Response
     {
         return $this->render('awarder/index.html.twig', [
-            'awarders' => $awarderRepository->findAll(),
+            'awarders' => $awarderRepository->findBy([], ['id' => 'ASC']),
         ]);
     }
 

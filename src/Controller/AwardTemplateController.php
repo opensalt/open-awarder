@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\AwardTemplate;
@@ -18,7 +20,7 @@ class AwardTemplateController extends AbstractController
     public function index(AwardTemplateRepository $awardTemplateRepository): Response
     {
         return $this->render('award_template/index.html.twig', [
-            'award_templates' => $awardTemplateRepository->findAll(),
+            'award_templates' => $awardTemplateRepository->findBy([], ['id' => 'ASC']),
         ]);
     }
 

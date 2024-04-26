@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enums\AwarderState;
@@ -44,7 +46,7 @@ class Awarder
     #[ORM\Column]
     private AwarderState $state = AwarderState::Active;
 
-    #[ORM\ManyToMany(targetEntity: AchievementDefinition::class, inversedBy: 'awarders')]
+    #[ORM\ManyToMany(targetEntity: AchievementDefinition::class, mappedBy: 'awarders')]
     private Collection $achievements;
 
     #[ORM\OneToMany(targetEntity: AwardTemplate::class, mappedBy: 'awarder')]

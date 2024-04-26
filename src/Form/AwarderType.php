@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Awarder;
 use App\Enums\AwarderState;
+use App\Form\Type\JsonType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +25,11 @@ class AwarderType extends AbstractType
             ->add('protocol', null, [
                 'required' => false,
             ])
-            ->add('ocpInfo')
+            ->add('ocpInfo', JsonType::class, [
+                'attr' => [
+                    'rows' => 10,
+                ],
+            ])
             ->add('state', EnumType::class, [
                 'class' => AwarderState::class,
             ])

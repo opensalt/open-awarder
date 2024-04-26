@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\EmailTemplate;
@@ -18,7 +20,7 @@ class EmailTemplateController extends AbstractController
     public function index(EmailTemplateRepository $emailTemplateRepository): Response
     {
         return $this->render('email_template/index.html.twig', [
-            'email_templates' => $emailTemplateRepository->findAll(),
+            'email_templates' => $emailTemplateRepository->findBy([], ['id' => 'ASC']),
         ]);
     }
 

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Awarder;
 use App\Entity\AwardTemplate;
+use App\Form\Type\JsonType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,7 +19,7 @@ class AwardTemplateType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('template', TextareaType::class, [
+            ->add('template', JsonType::class, [
                 'attr' => [
                     'rows' => 10,
                 ],

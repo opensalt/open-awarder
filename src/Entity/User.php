@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,7 +19,7 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
@@ -36,6 +41,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $totpSecret = null;
+
+    #[ORM\Column(name: 'totp_enabled', nullable: true)]
+    protected ?bool $isTotpEnabled = false;
 
     public function getId(): ?Uuid
     {
@@ -114,5 +125,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function setTotpSecret(?string $totpSecret): static
+    {
+        $this->totpSecret = $totpSecret;
+
+        return $this;
+    }
+
+    public function setIsTotpEnabled(bool $isTotpEnabled): void
+    {
+        $this->isTotpEnabled = $isTotpEnabled;
+    }
+
+    public function isTotpAuthenticationEnabled(): bool
+    {
+        return null !== $this->totpSecret && true === $this->isTotpEnabled;
+    }
+
+    public function getTotpAuthenticationUsername(): string
+    {
+        return $this->getUserIdentifier();
+    }
+
+    public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
+    {
+        // Compatible with Google Authenticator
+        return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
     }
 }

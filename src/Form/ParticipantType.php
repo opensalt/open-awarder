@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Participant;
+use App\Entity\Pathway;
 use App\Enums\ParticipantState;
 use App\Repository\PathwayRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,8 +34,9 @@ class ParticipantType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('email', EmailType::class)
-            ->add('subscribedPathway', ChoiceType::class, [
-                'choices' => $choices,
+            ->add('subscribedPathway', EntityType::class, [
+                'class' => Pathway::class,
+                'choice_label' => 'name',
             ])
             ->add('acceptedTerms')
             ->add('phone')

@@ -20,6 +20,16 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    WGG\Flysystem\Doctrine\DoctrineDBALAdapter:
+        arguments:
+            - '@Doctrine\DBAL\Connection'
+            - 'flysystem_files'
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+            - '%env(DATABASE_URL)%'
+            - { db_table: 'app_session' }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

@@ -5,7 +5,47 @@
 {% block body %}
     <h1>Edit Award</h1>
 
-    {{ include('award/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.awarder) }}
+        {{ form_row(form.achievement) }}
+        {{ form_row(form.subject) }}
+        {{ form_row(form.awardJson) }}
+        {{ form_row(form.awardEmail) }}
+
+        {% if award.evidence is not empty %}
+        <div class="mb-3">Evidence Files</div>
+            <table class="ms-4 table table-borderless table-striped w-auto">
+                <thead>
+                    <tr>
+                        <th class="ps-3">Filename</th>
+                        <th class="ps-5 pe-3">Delete?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, evidence in award.evidence %}
+                        <tr>
+                            <td class="ps-3 align-middle">
+                                <label class="form-check-label" for="award_delete_files_{{ key }}">{{ evidence.originalName }}</label>
+                            </td>
+                            <td class="ps-5 pe-3 text-center">
+                                <input type="checkbox" id="award_delete_files_{{ key }}" name="award[deleteFiles][]" class="form-check-input border-danger" aria-label="Delete {{ evidence.originalName }} checkbox" value="{{ evidence.id }}">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        {% do form.deleteFiles.setRendered %}
+
+        {{ form_row(form.moreEvidence) }}
+
+
+        <button class="btn btn-primary float-end">{{ button_label|default('Update') }}</button>
+    {{ form_end(form) }}
+
+    {# include('award/_form.html.twig', {'button_label': 'Update'}) #}
 
     <a class="btn btn-secondary" href="{{ path('app_award_index') }}">Back to list</a>
 

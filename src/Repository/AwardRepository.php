@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Award;
+use App\Entity\Participant;
 use App\Enums\AwardState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -27,5 +30,26 @@ class AwardRepository extends ServiceEntityRepository
     {
         $this->find($awardId)?->setState($state);
         $this->getEntityManager()->flush();
+    }
+
+    public function save(Award $award, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($award);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function findAwardToPublish(Uuid $awardId): ?Award
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 'e')
+            ->join('a.evidence', 'e')
+            ->where('a.id = :awardId')
+            ->andWhere('a.state = :state')
+            ->setParameter('awardId', $awardId)
+            ->setParameter('state', AwardState::Publishing)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

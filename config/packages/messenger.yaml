@@ -15,17 +15,11 @@ framework:
 
                 serializer: messenger.transport.symfony_serializer
             failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
+            sync: 'sync://'
 
         routing:
-            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            #Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
-            App\Message\PublishAward: async
-            App\Message\OfferAward: async
-            App\Message\SendOfferedEmail: async
-            App\Message\RevokeAward: async
-            App\Message\SendPathwayStatusEmail: async
-
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+            App\Message\*: async
+            App\Message\UpdateAwardStatus: async

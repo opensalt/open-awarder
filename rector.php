@@ -18,6 +18,7 @@ return RectorConfig::configure()
     ->withPhpSets(php83: true)
     ->withRules([
         AddVoidReturnTypeWhereNoReturnRector::class,
+        \Rector\TypeDeclaration\Rector\StmtsAwareInterface\DeclareStrictTypesRector::class
     ])
     ->withPreparedSets(
         deadCode: true,

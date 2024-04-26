@@ -5,39 +5,49 @@
 {% block body %}
     <h1>Award</h1>
 
-    <table class="table">
+    <table class="table table-bordered" {{ turbo_stream_listen(award) }} style="table-layout: fixed; overflow-wrap: break-word;">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th class="col col-2">Id</th>
                 <td>{{ award.id }}</td>
             </tr>
             <tr>
                 <th>Subject</th>
-                <td>{{ award.subject.email }}</td>
-            </tr>
-            <tr>
-                <th>Template</th>
-                <td>{{ award.awardTemplate.name }}</td>
-            </tr>
-            <tr>
-                <th>Results</th>
-                <td>{{ award.results ? award.results|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Evidence</th>
-                <td>{{ award.evidence ? award.evidence|json_encode : '' }}</td>
+                <td>{{ award.subject.firstName }} {{ award.subject.lastName }} - {{ award.subject.email }}</td>
             </tr>
             <tr>
                 <th>State</th>
-                <td>{{ award.state.name }}</td>
+                <td id="{{ 'award_' ~ award.id ~ '_state' }}">{{ award.state.name }}</td>
             </tr>
+            <tr>
+                <th>Evidence Files</th>
+                <td>
+                    {% for e in award.evidence %}
+                        {{ e.originalName }}<br/>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Award JSON</th>
+                <td><pre>{{ award.awardJson|json_encode(constant('JSON_UNESCAPED_SLASHES')+constant('JSON_PRETTY_PRINT')) }}</pre></td>
+            </tr>
+            {% if award.requestId %}
+                <tr>
+                    <th>Request ID</th>
+                    <td>{{ award.requestId }}</td>
+                </tr>
+                <tr>
+                    <th>Last API Response</th>
+                    <td id="{{ 'award_' ~ award.id ~ '_response' }}"><pre>{{ award.lastResponse|json_encode(constant('JSON_UNESCAPED_SLASHES')+constant('JSON_PRETTY_PRINT')) }}</pre></td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 
     <a class="btn btn-primary" href="{{ path('app_award_index') }}">Back to list</a>
 
-    {% if award.state.name == 'Pending' %}
+    {% if award.canEdit %}
         <a class="btn btn-secondary" href="{{ path('app_award_edit', {'id': award.id}) }}">Edit</a>
-        {{ include('award/_delete_form.html.twig') }}
     {% endif %}
+    {{ include('award/_delete_form.html.twig') }}
 {% endblock %}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\AchievementDefinitionRepository;
@@ -28,7 +30,14 @@ class AchievementDefinition
     #[ORM\Column(type: Types::TEXT)]
     private ?string $uri = null;
 
-    #[ORM\ManyToMany(targetEntity: Awarder::class, mappedBy: 'achievements')]
+    #[ORM\Column(nullable: true)]
+    private ?string $identifier = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $definition = null;
+
+    #[ORM\ManyToMany(targetEntity: Awarder::class, inversedBy: 'achievements')]
+    #[ORM\JoinTable(name: 'achievements_awarders')]
     private Collection $awarders;
 
     public function __construct()
@@ -88,6 +97,35 @@ class AchievementDefinition
         if ($this->awarders->removeElement($awarder)) {
             $awarder->removeAchievement($this);
         }
+
+        return $this;
+    }
+
+    public function getDefinition(): ?array
+    {
+        return $this->definition;
+    }
+
+    public function setDefinition(?array $definition): AchievementDefinition
+    {
+        $this->definition = $definition;
+
+        return $this;
+    }
+
+    public function getDefinitionString(): string
+    {
+        return json_encode($this->definition, JSON_THROW_ON_ERROR|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(?string $identifier): AchievementDefinition
+    {
+        $this->identifier = $identifier;
 
         return $this;
     }

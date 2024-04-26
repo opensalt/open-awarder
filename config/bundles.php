@@ -16,4 +16,12 @@ return [
     Ecotone\SymfonyBundle\EcotoneSymfonyBundle::class => ['all' => true],
     Symfony\Bundle\MercureBundle\MercureBundle::class => ['all' => true],
     Kreyu\Bundle\DataTableBundle\KreyuDataTableBundle::class => ['all' => true],
+    Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
+    Symfony\UX\LiveComponent\LiveComponentBundle::class => ['all' => true],
+    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
+    Symfony\UX\Dropzone\DropzoneBundle::class => ['all' => true],
+    Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
+    League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
+    Symfony\UX\Icons\UXIconsBundle::class => ['all' => true],
+    Scheb\TwoFactorBundle\SchebTwoFactorBundle::class => ['all' => true],
 ];

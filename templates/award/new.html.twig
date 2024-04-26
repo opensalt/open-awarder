@@ -5,7 +5,8 @@
 {% block body %}
     <h1>Make award to a subject</h1>
 
-    {{ include('award/_form.html.twig') }}
+    {# include('award/_form.html.twig') #}
+    {{ component('Award', { form: form }) }}
 
     <a class="btn btn-secondary" href="{{ path('app_award_index') }}">Back to list</a>
 {% endblock %}

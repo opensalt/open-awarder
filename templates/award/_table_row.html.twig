@@ -1,0 +1,13 @@
+<tr id="{{ 'award_' ~ award.id ~ '_row' }}" class="state-{{ award.state.name|lower }}">
+    <td>{{ award.subject.email }}</td>
+    <td>{{ award.achievement.name }}</td>
+    <td><span class="badge text-bg-secondary" id="{{ 'award_' ~ award.id ~ '_state' }}">{{ award.state.name }}</span></td>
+    <td>
+        <a class="btn btn-primary" href="{{ path('app_award_show', {'id': award.id}) }}">Show</a>
+        {% if award.canEdit %}
+            <a class="btn btn-secondary" href="{{ path('app_award_edit', {'id': award.id}) }}">Edit</a>
+        {% endif %}
+        {{ include('award/_publish_form.html.twig') }}
+        {{ include('award/_revoke_form.html.twig') }}
+    </td>
+</tr>

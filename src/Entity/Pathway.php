@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\PathwayRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -25,6 +28,9 @@ class Pathway
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
     private ?AchievementDefinition $finalCredential = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $emailTemplate = null;
 
     public function getId(): ?Uuid
     {
@@ -51,6 +57,18 @@ class Pathway
     public function setFinalCredential(?AchievementDefinition $finalCredential): static
     {
         $this->finalCredential = $finalCredential;
+
+        return $this;
+    }
+
+    public function getEmailTemplate(): ?string
+    {
+        return $this->emailTemplate;
+    }
+
+    public function setEmailTemplate(?string $emailTemplate): Pathway
+    {
+        $this->emailTemplate = $emailTemplate;
 
         return $this;
     }

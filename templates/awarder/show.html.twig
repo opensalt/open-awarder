@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <th>OcpInfo</th>
-                <td>{{ awarder.ocpInfo ? awarder.ocpInfo|json_encode : '' }}</td>
+                <td><pre>{{ awarder.ocpInfo|json_encode(constant('JSON_UNESCAPED_SLASHES')+constant('JSON_PRETTY_PRINT')) }}</pre></td>
             </tr>
         </tbody>
     </table>

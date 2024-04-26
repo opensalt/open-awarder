@@ -1,0 +1,16 @@
+vich_uploader:
+    db_driver: orm
+    storage: flysystem
+
+    mappings:
+        evidence:
+            uri_prefix: /evidence
+            upload_destination: evidence.storage
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            #directory_namer: app.namer.award_directory_namer
+
+    #mappings:
+    #    products:
+    #        uri_prefix: /images/products
+    #        upload_destination: '%kernel.project_dir%/public/images/products'
+    #        namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

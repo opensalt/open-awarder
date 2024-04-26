@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Pathway;
@@ -18,7 +20,7 @@ class PathwayController extends AbstractController
     public function index(PathwayRepository $pathwayRepository): Response
     {
         return $this->render('pathway/index.html.twig', [
-            'pathways' => $pathwayRepository->findAll(),
+            'pathways' => $pathwayRepository->findBy([], ['id' => 'ASC']),
         ]);
     }
 

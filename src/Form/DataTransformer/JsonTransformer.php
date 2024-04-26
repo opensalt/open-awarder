@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
@@ -18,7 +20,7 @@ class JsonTransformer implements DataTransformerInterface
             return '';
         }
 
-        return json_encode($value);
+        return json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -31,8 +33,9 @@ class JsonTransformer implements DataTransformerInterface
             return [];
         }
 
-        $modelData = json_decode((string) $value, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        try {
+            $modelData = json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
+        } catch (\JsonException) {
             throw new TransformationFailedException('Invalid JSON');
         }
 

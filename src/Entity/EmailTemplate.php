@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\EmailTemplateRepository;
@@ -22,8 +24,17 @@ class EmailTemplate
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\Column(name: 'from_address', nullable: true)]
+    private ?string $from = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $subject = null;
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $template = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $fields = null;
 
     #[ORM\ManyToOne(inversedBy: 'emailTemplates')]
     private ?Awarder $awarder = null;
@@ -72,6 +83,42 @@ class EmailTemplate
     public function setAwarder(?Awarder $awarder): static
     {
         $this->awarder = $awarder;
+
+        return $this;
+    }
+
+    public function getFields(): ?array
+    {
+        return $this->fields;
+    }
+
+    public function setFields(?array $fields): static
+    {
+        $this->fields = $fields;
+
+        return $this;
+    }
+
+    public function getFrom(): ?string
+    {
+        return $this->from;
+    }
+
+    public function setFrom(?string $from): EmailTemplate
+    {
+        $this->from = $from;
+
+        return $this;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(?string $subject): EmailTemplate
+    {
+        $this->subject = $subject;
 
         return $this;
     }

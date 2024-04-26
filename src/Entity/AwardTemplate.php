@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\AwardTemplateRepository;
@@ -23,8 +25,11 @@ class AwardTemplate
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $template = null;
+    #[ORM\Column(type: Types::JSON)]
+    private ?array $template = null;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $fields = null;
 
     #[ORM\ManyToOne(inversedBy: 'awardTemplates')]
     private ?Awarder $awarder = null;
@@ -53,12 +58,12 @@ class AwardTemplate
         return $this;
     }
 
-    public function getTemplate(): ?string
+    public function getTemplate(): ?array
     {
         return $this->template;
     }
 
-    public function setTemplate(string $template): static
+    public function setTemplate(array $template): static
     {
         $this->template = $template;
 
@@ -73,6 +78,18 @@ class AwardTemplate
     public function setAwarder(?Awarder $awarder): static
     {
         $this->awarder = $awarder;
+
+        return $this;
+    }
+
+    public function getFields(): ?array
+    {
+        return $this->fields;
+    }
+
+    public function setFields(?array $fields): static
+    {
+        $this->fields = $fields;
 
         return $this;
     }

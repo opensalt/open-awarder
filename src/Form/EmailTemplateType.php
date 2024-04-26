@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Awarder;
@@ -17,6 +19,8 @@ class EmailTemplateType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('from')
+            ->add('subject')
             ->add('template', TextareaType::class, [
                 'attr' => ['rows' => 10],
             ])

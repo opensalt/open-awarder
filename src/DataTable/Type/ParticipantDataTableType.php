@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataTable\Type;
 
 use App\Entity\Participant;
@@ -51,13 +53,13 @@ class ParticipantDataTableType extends AbstractDataTableType
             ->addBatchAction('Delete', ButtonActionType::class, [
                 'href' => $this->urlGenerator->generate('app_participant_new'),
                     'confirmation' => [
-        'translation_domain' => 'KreyuDataTable',
-        'label_title' => 'Action confirmation',
-        'label_description' => 'Are you sure you want to execute this action?',
-        'label_confirm' => 'Confirm',
-        'label_cancel' => 'Cancel',
-        'type' => 'danger', // "danger", "warning" or "info"
-    ],
+                        'translation_domain' => 'KreyuDataTable',
+                        'label_title' => 'Action confirmation',
+                        'label_description' => 'Are you sure you want to execute this action?',
+                        'label_confirm' => 'Confirm',
+                        'label_cancel' => 'Cancel',
+                        'type' => 'danger', // "danger", "warning" or "info"
+                    ],
             ])
             ->setQuery(new DoctrineOrmProxyQuery((new QueryBuilder($this->entityManager))->select('p')->from(Participant::class, 'p')));
             ;

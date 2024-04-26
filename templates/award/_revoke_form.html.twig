@@ -1,4 +1,6 @@
+{% if award.canRevoke and app.user %}
 <form class="d-inline" method="post" action="{{ path('app_award_revoke', {'id': award.id}) }}" onsubmit="return confirm('Are you sure you want to revoke this item?');">
     <input type="hidden" name="_token" value="{{ csrf_token('revoke' ~ award.id) }}">
     <button class="btn btn-danger">Revoke</button>
 </form>
+{% endif %}

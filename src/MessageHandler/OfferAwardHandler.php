@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\MessageHandler;
 
 use App\Enums\AwardState;
@@ -22,8 +24,13 @@ readonly final class OfferAwardHandler
 
     public function __invoke(OfferAward $message): void
     {
+        $award = $this->awardRepository->find($message->awardId);
+        if ($award?->getState() !== AwardState::OcpProcessed) {
+            return;
+        }
+
         // Update workflow status
-        $this->awardRepository->updateWorkflowStatus($message->awardId, AwardState::Offered);
+        $this->awardRepository->updateWorkflowStatus($message->awardId, AwardState::Published);
 
         // Send email to recipient about offer
         $this->bus->dispatch(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\AchievementDefinition;
@@ -18,7 +20,7 @@ class AchievementDefinitionController extends AbstractController
     public function index(AchievementDefinitionRepository $achievementDefinitionRepository): Response
     {
         return $this->render('achievement_definition/index.html.twig', [
-            'achievement_definitions' => $achievementDefinitionRepository->findAll(),
+            'achievement_definitions' => $achievementDefinitionRepository->findBy([], ['id' => 'ASC']),
         ]);
     }
 
