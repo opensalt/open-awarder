@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Scheduler;
 
-use App\Message\CheckAwardsArePublished;
+use App\Message\Command\CheckAwardsArePublished;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Scheduler\Attribute\AsSchedule;
 use Symfony\Component\Scheduler\RecurringMessage;

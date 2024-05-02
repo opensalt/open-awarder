@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\MessageHandler;
+namespace App\MessageHandler\Command;
 
-use App\Message\SendPathwayStatusEmail;
+use App\Message\Command\SendPathwayStatusEmail;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

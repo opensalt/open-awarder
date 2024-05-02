@@ -42,12 +42,10 @@ class AwardRepository extends ServiceEntityRepository
     public function findAwardToPublish(Uuid $awardId): ?Award
     {
         return $this->createQueryBuilder('a')
-            ->select('a', 'e')
-            ->join('a.evidence', 'e')
+            ->select('a')
+            ->leftJoin('a.evidence', 'e')
             ->where('a.id = :awardId')
-            ->andWhere('a.state = :state')
-            ->setParameter('awardId', $awardId)
-            ->setParameter('state', AwardState::Publishing)
+            ->setParameter('awardId', $awardId->toRfc4122())
             ->getQuery()
             ->getOneOrNullResult();
     }

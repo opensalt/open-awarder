@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\MessageHandler;
+namespace App\MessageHandler\Command;
 
 use App\Entity\EmailTemplate;
 use App\Enums\AwardState;
-use App\Message\SendOfferedEmail;
+use App\Message\Command\SendOfferedEmail;
 use App\Repository\AwardRepository;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

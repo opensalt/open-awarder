@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\MessageHandler;
+namespace App\MessageHandler\Command;
 
 use App\Enums\AwardState;
 use App\Enums\OcpRequestStatus;
-use App\Message\CheckIfAwardPublished;
-use App\Message\OfferAward;
+use App\Message\Command\CheckIfAwardPublished;
+use App\Message\Event\AwardWasProcessedEvent;
 use App\Repository\AwardRepository;
 use App\Service\OcpPublisher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -47,11 +47,9 @@ readonly final class CheckIfAwardPublishedHandler
             if (($status['status'] ?? null) === OcpRequestStatus::Complete->value) {
                 $this->awardRepository->updateWorkflowStatus($award->getId(), AwardState::OcpProcessed);
 
-                // Send email to recipient about offer if OCP is complete
-                $this->bus->dispatch(
-                    (new Envelope(new OfferAward($award->getId())))
-                        ->with(new DispatchAfterCurrentBusStamp())
-                );
+                $this->bus->dispatch(new AwardWasProcessedEvent($award->getId()), [
+                    new DispatchAfterCurrentBusStamp(),
+                ]);
 
                 return;
             }

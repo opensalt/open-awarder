@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\MessageHandler;
+namespace App\MessageHandler\Command;
 
 use App\Enums\AwardState;
-use App\Message\RevokeAward;
-use App\Message\UpdateAwardStatus;
+use App\Message\Command\RevokeAward;
+use App\Message\Command\UpdateAwardStatus;
 use App\Repository\AwardRepository;
 use App\Service\OcpPublisher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -31,20 +31,13 @@ final readonly class RevokeAwardHandler
             return;
         }
 
-        if ($award->getState() === AwardState::Revoked) {
-            // Already revoked. Do nothing.
+        if (in_array($award->getState(), [AwardState::Revoked, AwardState::Failed], true)) {
+            // Already revoked or cannot be revoked. Do nothing.
             return;
         };
 
         if (null === $award->getRequestId()) {
             // No request id, so just mark it as revoked
-            $this->awardRepository->updateWorkflowStatus($message->awardId, AwardState::Revoked);
-
-            return;
-        }
-
-        if (in_array($award->getState(), [AwardState::Pending, AwardState::Publishing], true)) {
-            // Not yet published, so just mark it as revoked
             $this->awardRepository->updateWorkflowStatus($message->awardId, AwardState::Revoked);
 
             return;

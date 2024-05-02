@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\MessageHandler;
+namespace App\MessageHandler\Command;
 
 use App\Enums\AwardState;
-use App\Message\CheckIfAwardPublished;
-use App\Message\PublishAward;
+use App\Message\Command\CheckIfAwardPublished;
+use App\Message\Command\PublishAward;
 use App\Repository\AwardRepository;
 use App\Service\OcpPublisher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

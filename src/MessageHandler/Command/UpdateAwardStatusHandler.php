@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\MessageHandler;
+namespace App\MessageHandler\Command;
 
-use App\Message\UpdateAwardStatus;
+use App\Message\Command\UpdateAwardStatus;
 use App\Repository\AwardRepository;
 use App\Service\OcpPublisher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

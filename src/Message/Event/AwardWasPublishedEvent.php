@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Message;
+namespace App\Message\Event;
 
 use Symfony\Component\Uid\Uuid;
 
-readonly final class SendOfferedEmail
+readonly final class AwardWasPublishedEvent
 {
     public function __construct(public Uuid $awardId)
     {

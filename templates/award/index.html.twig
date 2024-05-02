@@ -5,7 +5,9 @@
 {% block body %}
     <h1>Awards</h1>
 
-    {{ data_table(tableAwards) }}
+    <div {{ turbo_stream_listen('App\\Entity\\Award') }}>
+        {{ data_table(tableAwards) }}
+    </div>
 
     {#
     <table class="table">

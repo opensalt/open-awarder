@@ -13,9 +13,9 @@ use App\Entity\Participant;
 use App\Enums\AwardState;
 use App\Form\AwardType;
 use App\Form\MakeAwardForm;
-use App\Message\CheckIfAwardPublished;
-use App\Message\PublishAward;
-use App\Message\RevokeAward;
+use App\Message\Command\CheckIfAwardPublished;
+use App\Message\Command\PublishAward;
+use App\Message\Command\RevokeAward;
 use App\Repository\AwardRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
@@ -25,6 +25,7 @@ use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Uid\Uuid;
 use Twig\Environment;
@@ -259,7 +260,9 @@ class AwardController extends AbstractController
             $award->setState(AwardState::Publishing);
             $entityManager->flush();
 
-            $bus->dispatch(new PublishAward($award->getId()));
+            $bus->dispatch(new PublishAward($award->getId()), [
+                DelayStamp::delayFor(\DateInterval::createFromDateString('5 seconds')),
+            ]);
         }
 
         return $this->redirectToRoute('app_award_index', [], Response::HTTP_SEE_OTHER);
