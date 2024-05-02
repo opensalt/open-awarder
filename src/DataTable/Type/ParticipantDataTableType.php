@@ -18,8 +18,10 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ParticipantDataTableType extends AbstractDataTableType
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly UrlGeneratorInterface $urlGenerator)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UrlGeneratorInterface $urlGenerator,
+    ) {
     }
 
     #[\Override]

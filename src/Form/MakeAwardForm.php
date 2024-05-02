@@ -15,7 +15,6 @@ use App\Form\Type\KeyValueType;
 use App\Service\TwigVariables;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,9 +38,12 @@ class MakeAwardForm extends AbstractType
         $builder
             ->add('awarder', EntityType::class, [
                 'class' => Awarder::class,
+                'query_builder' => static fn($er) => $er->createQueryBuilder('a')
+                    ->addOrderBy('a.name', 'ASC'),
                 'choice_label' => 'name',
                 'required' => false,
                 'translation_domain' => false,
+                'placeholder' => 'Select the awarder',
             ])
             ->addDependent('achievement', 'awarder', static function (DependentField $field, ?Awarder $awarder) : void {
                 if (!$awarder instanceof Awarder) {
@@ -53,10 +55,12 @@ class MakeAwardForm extends AbstractType
                     'query_builder' => static fn($er) => $er->createQueryBuilder('a')
                         ->join('a.awarders', 'aw')
                         ->where('aw.id = :awarder')
-                        ->setParameter('awarder', $awarder),
+                        ->setParameter('awarder', $awarder)
+                        ->addOrderBy('a.name', 'ASC'),
                     'choice_label' => 'name',
                     'required' => false,
                     'translation_domain' => false,
+                    'placeholder' => 'Select the achievement being awarded',
                 ]);
             })
             ->addDependent('subject', 'achievement', static function (DependentField $field, ?AchievementDefinition $achievement) : void {
@@ -76,6 +80,7 @@ class MakeAwardForm extends AbstractType
                         ->addOrderBy('p.email', 'ASC'),
                     'required' => false,
                     'translation_domain' => false,
+                    'placeholder' => 'Select the person the award is to',
                 ]);
             })
             ->addDependent('awardTemplate', ['awarder', 'subject'], static function (DependentField $field, ?Awarder $awarder, ?Participant $subject) : void {
@@ -86,11 +91,13 @@ class MakeAwardForm extends AbstractType
                 $field->add(EntityType::class, [
                     'class' => AwardTemplate::class,
                     'query_builder' => static fn($er) => $er->createQueryBuilder('a')
-                        ->where('a.awarder = :awarder')
+                        ->join('a.awarders', 'aw')
+                        ->where('aw.id = :awarder')
                         ->setParameter('awarder', $awarder),
                     'choice_label' => 'name',
                     'required' => false,
                     'translation_domain' => false,
+                    'placeholder' => 'Select the award template to use',
                 ]);
             })
             ->addDependent('emailTemplate', ['awarder', 'awardTemplate'], static function (DependentField $field, ?Awarder $awarder, ?AwardTemplate $awardTemplate) : void {
@@ -101,11 +108,13 @@ class MakeAwardForm extends AbstractType
                 $field->add(EntityType::class, [
                     'class' => EmailTemplate::class,
                     'query_builder' => static fn($er) => $er->createQueryBuilder('a')
-                        ->where('a.awarder = :awarder')
+                        ->join('a.awarders', 'aw')
+                        ->where('aw.id = :awarder')
                         ->setParameter('awarder', $awarder),
                     'choice_label' => 'name',
                     'required' => false,
                     'translation_domain' => false,
+                    'placeholder' => 'Select the email template to use (if an email should be sent)',
                 ]);
             })
             ->addDependent('vars', ['awardTemplate', 'emailTemplate', 'achievement'], function (
@@ -114,12 +123,12 @@ class MakeAwardForm extends AbstractType
                 ?EmailTemplate $emailTemplate,
                 ?AchievementDefinition $achievement,
             ) use ($builder): void {
-                if (!$awardTemplate instanceof AwardTemplate || !$emailTemplate instanceof EmailTemplate) {
+                if (!$awardTemplate instanceof AwardTemplate) {
                     return;
                 }
 
                 $awardVars = $this->twigVariables->getVariables(json_encode($awardTemplate->getTemplate(), JSON_THROW_ON_ERROR));
-                $emailVars = $this->twigVariables->getVariables($emailTemplate->getTemplate());
+                $emailVars = $this->twigVariables->getVariables($emailTemplate?->getTemplate());
                 $achievementVars = $this->twigVariables->getVariables($achievement->getDefinitionString());
                 $resultDescriptions = ($achievement->getDefinition() ?? [])['resultDescriptions'] ?? [];
                 foreach ($resultDescriptions as $resultDescription) {
@@ -136,8 +145,8 @@ class MakeAwardForm extends AbstractType
                     'translation_domain' => false,
                 ]);
             })
-            ->addDependent('evidence', 'emailTemplate', static function (DependentField $field, ?EmailTemplate $emailTemplate): void {
-                if (null === $emailTemplate) {
+            ->addDependent('evidence', ['awardTemplate', 'emailTemplate'], static function (DependentField $field, ?AwardTemplate $awardTemplate, ?EmailTemplate $emailTemplate): void {
+                if (!$awardTemplate instanceof AwardTemplate) {
                     return;
                 }
 
@@ -152,8 +161,8 @@ class MakeAwardForm extends AbstractType
         ;
 
         $builder
-            ->addDependent('submit', 'emailTemplate', static function (DependentField $field, ?EmailTemplate $emailTemplate) : void {
-                if (!$emailTemplate instanceof EmailTemplate) {
+            ->addDependent('submit', ['awardTemplate', 'emailTemplate'], static function (DependentField $field, ?AwardTemplate $awardTemplate, ?EmailTemplate $emailTemplate) : void {
+                if (!$awardTemplate instanceof AwardTemplate) {
                     return;
                 }
 

@@ -1,0 +1,64 @@
+{% extends '@KreyuDataTable/themes/bootstrap_5.html.twig' %}
+
+{% block action_form_token_value %}
+    {% set attr = { class: 'd-inline-block' }|merge(attr) %}
+
+    {% set button_attr = {
+        class: 'btn btn-primary' ~ (icon_attr and label is same as false ? ' btn-icon' : '')
+    }|merge(button_attr) %}
+
+    {% if confirmation %}
+        {% with {
+            button_tag: 'a',
+            button_attr: {
+                'type': 'button',
+                'data-bs-toggle': 'modal',
+                'data-bs-target': '#' ~ confirmation.identifier,
+            }|merge(button_attr)
+        } %}
+            {% set attr = { action, method: html_friendly_method }|merge(attr|default({})) %}
+
+            {% if batch %}
+                {% set attr = { 'data-kreyu--data-table-bundle--batch-target': 'identifierHolder' }|merge(attr) %}
+            {% endif %}
+
+            <form id="{{ form_id }}" {{- block('attributes') -}}>
+                {# Reset attributes to prevent bubbling #}
+                {% set attr = {} %}
+
+                <input type="hidden" name="_method" value="{{ method }}"/>
+                <input type="hidden" name="_token" value="{{ csrf_token(token_id) }}">
+
+                {% set button_tag = button_tag|default('button') %}
+
+                <{{ button_tag }} {% with { attr: { type: 'submit' }|merge(button_attr) } %}{{- block('attributes') -}}{% endwith %}>
+                {{- block('action_value', theme, _context) -}}
+                </{{ button_tag }}>
+            </form>
+        {% endwith %}
+
+        {% with { confirm_button_tag: 'button', confirm_button_attr: { type: 'submit', form: form_id } } %}
+            {{ block('action_confirmation_modal') }}
+        {% endwith %}
+    {% else %}
+        {% set attr = { action, method: html_friendly_method }|merge(attr|default({})) %}
+
+        {% if batch %}
+            {% set attr = { 'data-kreyu--data-table-bundle--batch-target': 'identifierHolder' }|merge(attr) %}
+        {% endif %}
+
+        <form id="{{ form_id }}" {{- block('attributes') -}}>
+            {# Reset attributes to prevent bubbling #}
+            {% set attr = {} %}
+
+            <input type="hidden" name="_method" value="{{ method }}"/>
+            <input type="hidden" name="_token" value="{{ csrf_token(token_id) }}">
+
+            {% set button_tag = button_tag|default('button') %}
+
+            <{{ button_tag }} {% with { attr: { type: 'submit' }|merge(button_attr) } %}{{- block('attributes') -}}{% endwith %}>
+            {{- block('action_value', theme, _context) -}}
+            </{{ button_tag }}>
+        </form>
+    {% endif %}
+{% endblock %}

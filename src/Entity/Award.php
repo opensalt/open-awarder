@@ -11,6 +11,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Uid\UuidV1;
+use Symfony\Component\Uid\UuidV7;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -21,11 +23,10 @@ class Award
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?Uuid $id = null;
+    private Uuid $id;
 
     #[ORM\ManyToOne(inversedBy: 'awards')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Awarder $awarder = null;
 
     #[ORM\ManyToOne(inversedBy: 'awards')]
@@ -47,7 +48,7 @@ class Award
     private ?AwardTemplate $awardTemplate = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?EmailTemplate $emailTemplate = null;
 
     #[ORM\Column(type: 'json', nullable: true)]
@@ -82,9 +83,7 @@ class Award
 
     public function __construct(?Uuid $id = null)
     {
-        if ($id instanceof Uuid) {
-            $this->id = $id;
-        }
+        $this->id = $id instanceof Uuid ? $id : Uuid::v7();
 
         $this->lastUpdated = new \DateTimeImmutable();
         $this->evidence = new ArrayCollection();
@@ -205,7 +204,7 @@ class Award
 
     public function canDelete(): bool
     {
-        return $this->state === AwardState::Pending;
+        return in_array($this->state, [AwardState::Pending, AwardState::Failed], true);
     }
 
     public function canEdit(): bool
@@ -220,7 +219,7 @@ class Award
 
     public function canRevoke(): bool
     {
-        return !in_array($this->state, [AwardState::Pending, AwardState::Revoking, AwardState::Revoked]);
+        return !in_array($this->state, [AwardState::Pending, AwardState::Revoking, AwardState::Revoked, AwardState::Failed], true);
     }
 
     public function getRequestId(): ?string
@@ -343,5 +342,14 @@ class Award
         }
 
         return $this;
+    }
+
+    public function getDateIssued(): ?\DateTimeInterface
+    {
+        if ($this->id instanceof UuidV7 || $this->id instanceof UuidV1) {
+            return $this->id->getDateTime();
+        }
+
+        return null;
     }
 }

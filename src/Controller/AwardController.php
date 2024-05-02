@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\DataTable\Type\AwardDataTableType;
 use App\Dto\MakeAward;
 use App\Entity\Award;
+use App\Entity\EmailTemplate;
 use App\Entity\EvidenceFile;
 use App\Entity\Participant;
 use App\Enums\AwardState;
@@ -14,9 +16,9 @@ use App\Form\MakeAwardForm;
 use App\Message\CheckIfAwardPublished;
 use App\Message\PublishAward;
 use App\Message\RevokeAward;
-use App\Message\UpdateAwardStatus;
 use App\Repository\AwardRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\SubmitButton;
@@ -31,11 +33,17 @@ use function Symfony\Component\String\u;
 #[Route('/award')]
 class AwardController extends AbstractController
 {
+    use DataTableFactoryAwareTrait;
+
     #[Route('/', name: 'app_award_index', methods: ['GET'])]
-    public function index(AwardRepository $awardRepository): Response
+    public function index(Request $request, AwardRepository $awardRepository): Response
     {
+        $dataTable = $this->createDataTable(AwardDataTableType::class);
+        $dataTable->handleRequest($request);
+
         return $this->render('award/index.html.twig', [
-            'awards' => $awardRepository->findBy([], ['id' => 'ASC']),
+            //'awards' => $awardRepository->findBy([], ['id' => 'ASC']),
+            'tableAwards' => $dataTable->createView(),
         ]);
     }
 
@@ -106,11 +114,14 @@ class AwardController extends AbstractController
                 $template = $twig->createTemplate(preg_replace('/("~|~")/', '', $renderedTemplate));
                 $awardTemplate = json_decode($template->render($templateVars), true);
 
-                $template = $twig->createTemplate($award->emailTemplate->getTemplate());
-                $emailTemplate = $template->render($templateVars);
-                // 2nd pass to replace variables that had variables in their content
-                $template = $twig->createTemplate($emailTemplate);
-                $emailTemplate = $template->render($templateVars);
+                $emailTemplate = null;
+                if ($award->emailTemplate instanceof EmailTemplate) {
+                    $template = $twig->createTemplate($award->emailTemplate->getTemplate());
+                    $emailTemplate = $template->render($templateVars);
+                    // 2nd pass to replace variables that had variables in their content
+                    $template = $twig->createTemplate($emailTemplate);
+                    $emailTemplate = $template->render($templateVars);
+                }
             } catch (\Throwable $e) {
                 $form->addError(new FormError(message: $e->getMessage(), cause: $e));
                 $templateErrored = true;
@@ -125,8 +136,8 @@ class AwardController extends AbstractController
                 $awarded->setEmailTemplate($award->emailTemplate);
                 $awarded->setAwardJson($awardTemplate);
                 $awarded->setAwardEmail($emailTemplate);
-                $awarded->setAwardEmailFrom($award->emailTemplate->getFrom());
-                $awarded->setAwardEmailSubject($award->emailTemplate->getSubject());
+                $awarded->setAwardEmailFrom($award->emailTemplate?->getFrom());
+                $awarded->setAwardEmailSubject($award->emailTemplate?->getSubject());
                 $awarded->setState(AwardState::Pending);
 
                 $awardEvidence = $form->get('evidence')->getData() ?? [];
@@ -178,6 +189,7 @@ class AwardController extends AbstractController
                 if (null === $evidenceFile) {
                     continue;
                 }
+
                 if ($evidenceFiles->contains($evidenceFile)) {
                     $award->removeEvidence($evidenceFile);
                     $entityManager->remove($evidenceFile);

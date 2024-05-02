@@ -11,7 +11,7 @@ final class Version20240419220113 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create table for flysystem to store files';
     }
 
     public function up(Schema $schema): void

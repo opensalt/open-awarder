@@ -12,7 +12,9 @@
         {{ form_row(form.achievement) }}
         {{ form_row(form.subject) }}
         {{ form_row(form.awardJson) }}
-        {{ form_row(form.awardEmail) }}
+        {% if form.awardEmail is defined %}
+            {{ form_row(form.awardEmail) }}
+        {% endif %}
 
         {% if award.evidence is not empty %}
         <div class="mb-3">Evidence Files</div>

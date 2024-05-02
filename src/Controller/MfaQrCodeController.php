@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use Endroid\QrCode\Builder\Builder;
@@ -41,6 +43,6 @@ class MfaQrCodeController extends AbstractController
             ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
             ->build();
 
-        return new Response($result->getString(), 200, ['Content-Type' => 'image/png']);
+        return new Response($result->getString(), Response::HTTP_OK, ['Content-Type' => 'image/png']);
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Award;
-use App\Entity\Participant;
 use App\Enums\AwardState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

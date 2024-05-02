@@ -1,4 +1,6 @@
+{% if participant.canDelete %}
 <form method="post" action="{{ path('app_participant_delete', {'id': participant.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
     <button class="btn btn-danger mt-3">Delete</button>
 </form>
+{% endif %}

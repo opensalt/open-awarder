@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\MessageHandler;
 
+use App\Entity\EmailTemplate;
 use App\Enums\AwardState;
 use App\Message\SendOfferedEmail;
 use App\Repository\AwardRepository;
@@ -29,6 +30,11 @@ final readonly class SendOfferedEmailHandler
 
         // Update workflow status
         $this->awardRepository->updateWorkflowStatus($message->awardId, AwardState::Offered);
+
+        if (!($award->getEmailTemplate() instanceof EmailTemplate)) {
+            // No email to be sent
+            return;
+        }
 
         $OcpUrl = $award->getLastResponse()['url'] ?? '';
         $emailContent = $award->getAwardEmail();

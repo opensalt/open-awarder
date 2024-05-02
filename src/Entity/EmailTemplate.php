@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\EmailTemplateRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -36,8 +38,15 @@ class EmailTemplate
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $fields = null;
 
-    #[ORM\ManyToOne(inversedBy: 'emailTemplates')]
-    private ?Awarder $awarder = null;
+    #[ORM\ManyToMany(targetEntity: Awarder::class, inversedBy: 'emailTemplates')]
+    #[ORM\JoinTable(name: 'email_template_awarders')]
+    private Collection $awarders;
+
+    public function __construct()
+    {
+        $this->id = Uuid::v7();
+        $this->awarders = new ArrayCollection();
+    }
 
     public function getId(): ?Uuid
     {
@@ -75,14 +84,29 @@ class EmailTemplate
         return $this;
     }
 
-    public function getAwarder(): ?Awarder
+    /**
+     * @return Collection<int, Awarder>
+     */
+    public function getAwarders(): Collection
     {
-        return $this->awarder;
+        return $this->awarders;
     }
 
-    public function setAwarder(?Awarder $awarder): static
+    public function addAwarder(Awarder $awarder): static
     {
-        $this->awarder = $awarder;
+        if (!$this->awarders->contains($awarder)) {
+            $this->awarders->add($awarder);
+            $awarder->addEmailTemplate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAwarder(Awarder $awarder): static
+    {
+        if ($this->awarders->removeElement($awarder)) {
+            $awarder->removeEmailTemplate($this);
+        }
 
         return $this;
     }

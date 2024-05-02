@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\EvidenceFile;
@@ -10,6 +12,7 @@ use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class EvidenceFileType extends AbstractType
 {
+    #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -22,6 +25,7 @@ class EvidenceFileType extends AbstractType
         ;
     }
 
+    #[\Override]
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

@@ -27,7 +27,8 @@ Your current pathway:<br />
 You can obtain your credential at <a href="OCP_ACCEPT_URL">OCP_ACCEPT_URL</a>
 html
         );
-        $template->setAwarder($this->getReference('awarder-1'));
+        $template->addAwarder($this->getReference('awarder-1'));
+        $template->addAwarder($this->getReference('awarder-2'));
         $template->setFrom('OAS-Awarder1-From-Email@example.com');
         $template->setSubject('OAS-Awarder1: Your award is being offered');
 
@@ -37,7 +38,8 @@ html
         $template = new EmailTemplate();
         $template->setName('Email Template 2');
         $template->setTemplate("Hello {{ subject.firstName }} {{ subject.lastName }},\n\nThis is one more {{ item2 }}.");
-        $template->setAwarder($this->getReference('awarder-2'));
+        $template->addAwarder($this->getReference('awarder-1'));
+        $template->addAwarder($this->getReference('awarder-2'));
         $template->setFrom('OAS-Awarder2-From-Email@example.com');
         $template->setSubject('OAS-Awarder2: Your award is being offered');
 

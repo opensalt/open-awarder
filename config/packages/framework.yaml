@@ -6,6 +6,15 @@ framework:
     # Note that the session will be started ONLY if you read or write from it.
     session:
         handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        name: session
+        cookie_lifetime: 0
+        #cookie_secure: auto
+        cookie_httponly: true
+        cookie_samesite: lax
+        gc_maxlifetime: 3600
+        gc_probability: 25
+        gc_divisor:     100
+        metadata_update_threshold: 120
 
     #esi: true
     #fragments: true

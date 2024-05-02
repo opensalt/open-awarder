@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Namer;
 
 use App\Entity\EvidenceFile;
@@ -13,10 +15,10 @@ use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 #[AsAlias(id: 'app.namer.award_directory_namer', public: true)]
 class AwardFileDirectoryNamer implements DirectoryNamerInterface
 {
-
     /**
      * @inheritDoc
      */
+    #[\Override]
     public function directoryName(object|array $object, PropertyMapping $mapping): string
     {
         if ($object instanceof EvidenceFile) {

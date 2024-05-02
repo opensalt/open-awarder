@@ -49,10 +49,10 @@ class Awarder
     #[ORM\ManyToMany(targetEntity: AchievementDefinition::class, mappedBy: 'awarders')]
     private Collection $achievements;
 
-    #[ORM\OneToMany(targetEntity: AwardTemplate::class, mappedBy: 'awarder')]
+    #[ORM\ManyToMany(targetEntity: AwardTemplate::class, mappedBy: 'awarders')]
     private Collection $awardTemplates;
 
-    #[ORM\OneToMany(targetEntity: EmailTemplate::class, mappedBy: 'awarder')]
+    #[ORM\ManyToMany(targetEntity: EmailTemplate::class, mappedBy: 'awarders')]
     private Collection $emailTemplates;
 
     #[ORM\OneToMany(targetEntity: Award::class, mappedBy: 'awarder')]
@@ -179,7 +179,7 @@ class Awarder
     {
         if (!$this->awardTemplates->contains($awardTemplate)) {
             $this->awardTemplates->add($awardTemplate);
-            $awardTemplate->setAwarder($this);
+            $awardTemplate->addAwarder($this);
         }
 
         return $this;
@@ -188,8 +188,8 @@ class Awarder
     public function removeAwardTemplate(AwardTemplate $awardTemplate): static
     {
         // set the owning side to null (unless already changed)
-        if ($this->awardTemplates->removeElement($awardTemplate) && $awardTemplate->getAwarder() === $this) {
-            $awardTemplate->setAwarder(null);
+        if ($this->awardTemplates->removeElement($awardTemplate) && $awardTemplate->getAwarders()->contains($this)) {
+            $awardTemplate->removeAwarder($this);
         }
 
         return $this;
@@ -207,7 +207,7 @@ class Awarder
     {
         if (!$this->emailTemplates->contains($emailTemplate)) {
             $this->emailTemplates->add($emailTemplate);
-            $emailTemplate->setAwarder($this);
+            $emailTemplate->addAwarder($this);
         }
 
         return $this;
@@ -216,8 +216,8 @@ class Awarder
     public function removeEmailTemplate(EmailTemplate $emailTemplate): static
     {
         // set the owning side to null (unless already changed)
-        if ($this->emailTemplates->removeElement($emailTemplate) && $emailTemplate->getAwarder() === $this) {
-            $emailTemplate->setAwarder(null);
+        if ($this->emailTemplates->removeElement($emailTemplate) && $emailTemplate->getAwarders()->contains($this)) {
+            $emailTemplate->removeAwarder($this);
         }
 
         return $this;

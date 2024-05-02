@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\EvidenceFileRepository;
@@ -56,16 +58,13 @@ class EvidenceFile
         return $this->file;
     }
 
-    /**
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $file
-     */
     public function setFile(?File $file): static
     {
         $this->file = $file;
 
         $this->updatedAt = new \DateTimeImmutable();
 
-        if (null === $file) {
+        if (!$file instanceof File) {
             $this->award->setEvidenceFile(null);
         }
 
@@ -134,7 +133,7 @@ class EvidenceFile
 
     public function getDimensions(): ?array
     {
-        return json_decode($this->dimensions, true);
+        return json_decode((string) $this->dimensions, true);
     }
 
     public function setDimensions(?array $dimensions): static

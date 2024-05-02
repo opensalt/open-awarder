@@ -24,6 +24,7 @@ final readonly class UpdateAwardStatusHandler
         if (null === $award) {
             return;
         }
+
         if (null === $award->getRequestId()) {
             return;
         }

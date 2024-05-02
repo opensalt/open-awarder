@@ -5,6 +5,9 @@
 {% block body %}
     <h1>Awards</h1>
 
+    {{ data_table(tableAwards) }}
+
+    {#
     <table class="table">
         <thead>
             <tr>
@@ -24,6 +27,7 @@
         {% endfor %}
         </tbody>
     </table>
+    #}
 
     {# <a class="btn btn-secondary" href="{{ path('app_award_new') }}">Award</a> #}
 {% endblock %}

@@ -38,8 +38,12 @@ readonly class TwigVariables
         }
     }
 
-    public function getVariables(string $twigTemplateCode): array
+    public function getVariables(?string $twigTemplateCode): array
     {
+        if (null === $twigTemplateCode) {
+            return [];
+        }
+
         $source = $this->twig->createTemplate($twigTemplateCode, 'template')->getSourceContext();
         $tokens = $this->twig->tokenize($source);
         $nodes = $this->twig->parse($tokens);

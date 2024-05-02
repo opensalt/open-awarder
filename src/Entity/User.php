@@ -139,16 +139,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         $this->isTotpEnabled = $isTotpEnabled;
     }
 
+    #[\Override]
     public function isTotpAuthenticationEnabled(): bool
     {
         return null !== $this->totpSecret && true === $this->isTotpEnabled;
     }
 
+    #[\Override]
     public function getTotpAuthenticationUsername(): string
     {
         return $this->getUserIdentifier();
     }
 
+    #[\Override]
     public function getTotpAuthenticationConfiguration(): ?TotpConfigurationInterface
     {
         // Compatible with Google Authenticator

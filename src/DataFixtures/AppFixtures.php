@@ -4,13 +4,6 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\AchievementDefinition;
-use App\Entity\Awarder;
-use App\Entity\AwardTemplate;
-use App\Entity\EmailTemplate;
-use App\Entity\Participant;
-use App\Entity\Pathway;
-use App\Enums\AwarderState;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 

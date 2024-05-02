@@ -15,7 +15,7 @@ class AwardTemplateFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $template = new AwardTemplate();
-        $template->setName('Award Template 1');
+        $template->setName('Generic Award Template');
 
         $json = json_decode(<<<xENDx
 {
@@ -54,7 +54,8 @@ class AwardTemplateFixtures extends Fixture implements DependentFixtureInterface
 xENDx
         , true, 512, JSON_THROW_ON_ERROR);
         $template->setTemplate($json);
-        $template->setAwarder($this->getReference('awarder-1'));
+        $template->addAwarder($this->getReference('awarder-1'));
+        $template->addAwarder($this->getReference('awarder-2'));
 
         $manager->persist($template);
         $this->addReference('award-template-1', $template);
@@ -62,7 +63,7 @@ xENDx
         $template = new AwardTemplate();
         $template->setName('Award Template 2');
         $template->setTemplate($json);
-        $template->setAwarder($this->getReference('awarder-2'));
+        $template->addAwarder($this->getReference('awarder-1'));
 
         $manager->persist($template);
         $this->addReference('award-template-2', $template);

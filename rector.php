@@ -40,4 +40,5 @@ return RectorConfig::configure()
         \Rector\Symfony\Set\SymfonySetList::SYMFONY_64,
         \Rector\Symfony\Set\SymfonySetList::SYMFONY_CODE_QUALITY,
     ])
+    ->withImportNames(true, true, false, true)
     ;

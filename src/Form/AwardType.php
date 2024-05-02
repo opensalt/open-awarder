@@ -13,19 +13,23 @@ use App\Form\Type\JsonType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfonycasts\DynamicForms\DependentField;
+use Symfonycasts\DynamicForms\DynamicFormBuilder;
 
 class AwardType extends AbstractType
 {
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $builder = new DynamicFormBuilder($builder);
+
         $builder
             ->add('awarder', EntityType::class, [
                 'class' => Awarder::class,
@@ -58,14 +62,26 @@ class AwardType extends AbstractType
                 ],
                 'translation_domain' => false,
             ])
-            ->add('awardEmail', TextareaType::class, [
-                'label' => 'Email Body',
+            ->add('emailTemplate', HiddenType::class, [
+                'property_path' => 'emailTemplate?.id.toRfc4122',
                 'required' => false,
-                'attr' => [
-                    'rows' => 10,
-                ],
+                'disabled' => true,
                 'translation_domain' => false,
             ])
+            ->addDependent('awardEmail', ['emailTemplate'], static function (DependentField $field, ?string $emailTemplate): void {
+                if ($emailTemplate === null || $emailTemplate === '') {
+                    return;
+                }
+
+                $field->add(TextareaType::class, [
+                    'label' => 'Email Body',
+                    'required' => false,
+                    'attr' => [
+                        'rows' => 10,
+                    ],
+                    'translation_domain' => false,
+                ]);
+            })
             ->add('deleteFiles', ChoiceType::class, [
                 'label' => 'Delete Evidence',
                 'choices' => [],

@@ -85,7 +85,7 @@ class OcpPublisher
                         ],
                     ],
                 ];
-            } catch (\Throwable $e) {
+            } catch (\Throwable) {
                 // ignore
             }
         }

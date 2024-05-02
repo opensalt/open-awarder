@@ -203,4 +203,9 @@ class Participant
 
         return $this;
     }
+
+    public function canDelete(): bool
+    {
+        return $this->awards->count() === 0;
+    }
 }

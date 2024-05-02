@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use Doctrine\ORM\QueryBuilder;
 use App\Entity\AchievementDefinition;
 use App\Entity\Awarder;
 use App\Form\Type\JsonType;
@@ -31,7 +32,7 @@ class AchievementDefinitionType extends AbstractType
             ->add('awarders', EntityType::class, [
                 'placeholder' => 'Select awarders',
                 'class' => Awarder::class,
-                'query_builder' => static fn(AwarderRepository $er): \Doctrine\ORM\QueryBuilder => $er->createQueryBuilder('a')
+                'query_builder' => static fn(AwarderRepository $er): QueryBuilder => $er->createQueryBuilder('a')
                     ->orderBy('a.name', 'ASC'),
                 'choice_label' => 'name',
                 'multiple' => true,
