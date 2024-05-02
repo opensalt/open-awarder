@@ -58,6 +58,8 @@
         "symfony/web-link": "*",
         "symfony/yaml": "*",
         "symfonycasts/dynamic-forms": "^0.1.2",
+        "symfonycasts/sass-bundle": "^0.6.0",
+        "twbs/bootstrap": "^5.3",
         "twig/cssinliner-extra": "^3.8",
         "twig/extra-bundle": "^3.8",
         "twig/inky-extra": "*",

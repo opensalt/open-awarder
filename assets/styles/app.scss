@@ -1,0 +1,14 @@
+$blue: #003865 !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$red:     #e4002b !default;
+$orange:  #ff8200 !default;
+$yellow:  #fed141 !default;
+$green:   #009a44 !default;
+$teal:    #20c997 !default;
+$cyan:    #62b5e5 !default;
+
+@import 'bootswatch/spacelab/_variables';
+@import '../../vendor/twbs/bootstrap/scss/bootstrap';
+@import 'bootswatch/spacelab/_bootswatch';
