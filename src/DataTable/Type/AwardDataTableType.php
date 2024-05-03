@@ -20,6 +20,7 @@ use Kreyu\Bundle\DataTableBundle\Sorting\SortingData;
 use Kreyu\Bundle\DataTableBundle\Type\AbstractDataTableType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use function Webmozart\Assert\Tests\StaticAnalysis\lower;
 
 class AwardDataTableType extends AbstractDataTableType
 {
@@ -52,9 +53,20 @@ class AwardDataTableType extends AbstractDataTableType
             ->addColumn('state', TextColumnType::class, [
                 'label' => 'State',
                 'property_path' =>'state.value',
-                'value_attr' => [
-                    'class' => 'badge text-bg-secondary',
-                ],
+                'value_attr' => function (string $state) {
+                    $stateClass = 'state-'.preg_replace('/[^a-z0-9]/', '_', strtolower($state));
+                    $bgClass = match ($state) {
+                        AwardState::Pending->value => 'text-bg-warning bg-opacity-50 opacity-75',
+                        AwardState::Publishing->value, AwardState::OcpProcessing->value, AwardState::OcpProcessed->value => 'text-bg-info opacity-75',
+                        AwardState::Published->value, AwardState::Offered->value, AwardState::Accepted->value => 'text-bg-success bg-opacity-75',
+                        AwardState::Revoking->value, AwardState::Revoked->value => 'text-bg-light opacity-50',
+                        AwardState::Failed->value => 'text-bg-danger bg-opacity-50',
+                        default => 'text-bg-secondary',
+                    };
+                    return [
+                        'class' => implode(' ', ['badge', $stateClass, $bgClass]),
+                    ];
+                },
                 'sort' => 'state_rank',
             ])
             ->addFilter('subject', StringFilterType::class, [
