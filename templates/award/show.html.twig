@@ -31,7 +31,7 @@
                 <th>Award JSON</th>
                 <td><pre>{{ award.awardJson|json_encode(constant('JSON_UNESCAPED_SLASHES')+constant('JSON_PRETTY_PRINT')) }}</pre></td>
             </tr>
-            {% if award.requestId %}
+            {% if award.requestId or award.lastResponse %}
                 <tr>
                     <th>Request ID</th>
                     <td>{{ award.requestId }}</td>

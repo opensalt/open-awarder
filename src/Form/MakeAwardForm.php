@@ -133,7 +133,7 @@ class MakeAwardForm extends AbstractType
                 $resultDescriptions = ($achievement->getDefinition() ?? [])['resultDescriptions'] ?? [];
                 foreach ($resultDescriptions as $resultDescription) {
                     if (null !== ($resultDescription['name'] ?? null)) {
-                        $achievementVars[u($resultDescription['name'])->camel()->title()->toString()] = true;
+                        $achievementVars[u($resultDescription['name'])->camel()->title()->toString()] = null;
                     }
                 }
 

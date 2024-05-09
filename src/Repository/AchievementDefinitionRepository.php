@@ -23,28 +23,11 @@ class AchievementDefinitionRepository extends ServiceEntityRepository
         parent::__construct($registry, AchievementDefinition::class);
     }
 
-    //    /**
-    //     * @return AchievementDefinition[] Returns an array of AchievementDefinition objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?AchievementDefinition
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function save(AchievementDefinition $award, bool $flush = true): void
+    {
+        $this->getEntityManager()->persist($award);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }

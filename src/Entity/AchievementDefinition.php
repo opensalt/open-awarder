@@ -40,6 +40,9 @@ class AchievementDefinition
     #[ORM\JoinTable(name: 'achievements_awarders')]
     private Collection $awarders;
 
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private ?array $fields = null;
+
     public function __construct()
     {
         $this->awarders = new ArrayCollection();
@@ -126,6 +129,18 @@ class AchievementDefinition
     public function setIdentifier(?string $identifier): AchievementDefinition
     {
         $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    public function getFields(): ?array
+    {
+        return $this->fields;
+    }
+
+    public function setFields(?array $fields): static
+    {
+        $this->fields = $fields;
 
         return $this;
     }

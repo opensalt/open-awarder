@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary float-end">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block title %}
+Import Achievement Definition
+{% endblock %}
+

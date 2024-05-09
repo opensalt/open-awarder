@@ -20,7 +20,6 @@ use Kreyu\Bundle\DataTableBundle\Sorting\SortingData;
 use Kreyu\Bundle\DataTableBundle\Type\AbstractDataTableType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use function Webmozart\Assert\Tests\StaticAnalysis\lower;
 
 class AwardDataTableType extends AbstractDataTableType
 {
@@ -53,7 +52,7 @@ class AwardDataTableType extends AbstractDataTableType
             ->addColumn('state', TextColumnType::class, [
                 'label' => 'State',
                 'property_path' =>'state.value',
-                'value_attr' => function (string $state) {
+                'value_attr' => static function (string $state) : array {
                     $stateClass = 'state-'.preg_replace('/[^a-z0-9]/', '_', strtolower($state));
                     $bgClass = match ($state) {
                         AwardState::Pending->value => 'text-bg-warning bg-opacity-50 opacity-75',

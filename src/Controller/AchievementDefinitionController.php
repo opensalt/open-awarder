@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Dto\ImportAchievementDefinition;
 use App\Entity\AchievementDefinition;
 use App\Form\AchievementDefinitionType;
+use App\Form\AchievementImportType;
 use App\Repository\AchievementDefinitionRepository;
+use App\Service\AchievementImporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -79,5 +83,27 @@ class AchievementDefinitionController extends AbstractController
         }
 
         return $this->redirectToRoute('app_achievement_definition_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/import', name: 'app_achievement_definition_import', methods: ['GET', 'POST'], priority: 10)]
+    public function import(Request $request, AchievementImporter $importer): Response
+    {
+        $importUri = new ImportAchievementDefinition();
+        $form = $this->createForm(AchievementImportType::class, $importUri);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $importer->import($form->get('uri')->getData());
+
+                return $this->redirectToRoute('app_achievement_definition_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $form->addError(new FormError(message: $e->getMessage(), cause: $e));
+            }
+        }
+
+        return $this->render('achievement_definition/import.html.twig', [
+            'form' => $form,
+        ]);
     }
 }

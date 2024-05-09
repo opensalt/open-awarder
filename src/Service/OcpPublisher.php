@@ -73,8 +73,6 @@ class OcpPublisher
         foreach ($evidence as $file) {
             try {
                 $content = $this->evidenceStorage->read($this->storage->resolvePath($file));
-                //$stream = $this->storage->resolveStream($file);
-                //$content = stream_get_contents($stream);
                 $json['clr']['assertions'][0]['evidence'][] = [
                     'name' => 'evidence',
                     'description' => 'File containing evidence',
@@ -88,6 +86,10 @@ class OcpPublisher
             } catch (\Throwable) {
                 // ignore
             }
+        }
+
+        if (empty($json['clr']['assertions'][0]['evidence'])) {
+            unset($json['clr']['assertions'][0]['evidence']);
         }
 
         $response = $this->authenticate($award->getAwarder())->request('POST', '/api/publish', [
