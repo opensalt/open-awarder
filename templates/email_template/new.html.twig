@@ -5,7 +5,44 @@
 {% block body %}
     <h1>Create new EmailTemplate</h1>
 
-    {{ include('email_template/_form.html.twig') }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.name) }}
+    {{ form_row(form.from) }}
+    {{ form_row(form.subject) }}
+    {{ form_row(form.template) }}
+
+    {% if email_template.attachments is not empty %}
+        <div class="mb-3">Attachments</div>
+        <table class="ms-4 table table-borderless table-striped w-auto">
+            <thead>
+            <tr>
+                <th class="ps-3">Filename</th>
+                <th class="ps-5 pe-3">Delete?</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, attachment in email_template.attachments %}
+                <tr>
+                    <td class="ps-3 align-middle">
+                        <label class="form-check-label" for="email_template_delete_files_{{ key }}">{{ attachment.originalName }}</label>
+                    </td>
+                    <td class="ps-5 pe-3 text-center">
+                        <input type="checkbox" id="email_template_delete_files_{{ key }}" name="email_template[deleteFiles][]" class="form-check-input border-danger" aria-label="Delete {{ attachment.originalName }} checkbox" value="{{ attachment.id }}">
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    {% do form.deleteFiles.setRendered %}
+
+    {{ form_row(form.attachments) }}
+
+
+    <button class="btn btn-primary float-end">{{ button_label|default('Update') }}</button>
+    {{ form_end(form) }}
 
     <a class="btn btn-secondary" href="{{ path('app_email_template_index') }}">Back to list</a>
 {% endblock %}

@@ -8,9 +8,12 @@ use App\Entity\EmailTemplate;
 use App\Enums\AwardState;
 use App\Message\Command\SendOfferedEmail;
 use App\Repository\AwardRepository;
+use League\Flysystem\FilesystemOperator;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 #[AsMessageHandler]
 final readonly class SendOfferedEmailHandler
@@ -18,6 +21,8 @@ final readonly class SendOfferedEmailHandler
     public function __construct(
         private MailerInterface $mailer,
         private AwardRepository $awardRepository,
+        private StorageInterface $storage,
+        private FilesystemOperator $evidenceStorage,
     ) {
     }
 
@@ -31,7 +36,8 @@ final readonly class SendOfferedEmailHandler
         // Update workflow status
         $this->awardRepository->updateWorkflowStatus($message->awardId, AwardState::Offered);
 
-        if (!($award->getEmailTemplate() instanceof EmailTemplate)) {
+        $emailTemplate = $award->getEmailTemplate();
+        if (!($emailTemplate instanceof EmailTemplate)) {
             // No email to be sent
             return;
         }
@@ -46,6 +52,11 @@ final readonly class SendOfferedEmailHandler
             ->subject($award->getAwardEmailSubject())
             ->html($emailContent)
         ;
+
+        foreach ($emailTemplate->getAttachments() as $attachment) {
+            $content = $this->evidenceStorage->read($this->storage->resolvePath($attachment));
+            $email->addPart((new DataPart($content, $attachment->getOriginalName(), $attachment->getMimetype()))->asInline());
+        }
 
         $this->mailer->send($email);
     }

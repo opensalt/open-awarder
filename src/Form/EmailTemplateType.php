@@ -10,8 +10,12 @@ use App\Repository\AwarderRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EmailTemplateType extends AbstractType
@@ -28,6 +32,21 @@ class EmailTemplateType extends AbstractType
                     'rows' => 10,
                 ],
             ])
+            ->add('deleteFiles', ChoiceType::class, [
+                'label' => 'Delete Attachment',
+                'choices' => [],
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+                'translation_domain' => false,
+            ])
+            ->add('attachments', FileType::class, [
+                'label' => 'Add Attachment',
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+                'translation_domain' => false,
+            ])
             ->add('awarders', EntityType::class, [
                 'placeholder' => 'Select awarders',
                 'class' => Awarder::class,
@@ -38,6 +57,31 @@ class EmailTemplateType extends AbstractType
                 'expanded' => true,
             ])
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, static function (FormEvent $event): void {
+            $data = $event->getData();
+            $form = $event->getForm();
+
+            $isDirty = false;
+            $choices = $form->get('deleteFiles')->getConfig()->getOption('choices');
+            $submittedOpts = $data['deleteFiles'] ?? [];
+            foreach ($submittedOpts as $opt) {
+                if (!\in_array($opt, $choices, true)) {
+                    $choices[$opt] = $opt;
+                    $isDirty = true;
+                }
+            }
+
+            if ($isDirty) {
+                $form->add('deleteFiles', ChoiceType::class, [
+                    'choices' => $choices,
+                    'multiple' => true,
+                    'mapped' => false,
+                    'required' => false,
+                    'translation_domain' => false,
+                ]);
+            }
+        });
     }
 
     #[\Override]

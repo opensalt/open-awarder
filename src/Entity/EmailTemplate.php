@@ -42,10 +42,17 @@ class EmailTemplate
     #[ORM\JoinTable(name: 'email_template_awarders')]
     private Collection $awarders;
 
+    /**
+     * @var Collection<int, EmailAttachment>
+     */
+    #[ORM\OneToMany(targetEntity: EmailAttachment::class, mappedBy: 'template', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $attachments;
+
     public function __construct()
     {
         $this->id = Uuid::v7();
         $this->awarders = new ArrayCollection();
+        $this->attachments = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -143,6 +150,56 @@ class EmailTemplate
     public function setSubject(?string $subject): EmailTemplate
     {
         $this->subject = $subject;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmailAttachment>
+     */
+    public function getAttachments(): Collection
+    {
+        return $this->attachments;
+    }
+
+    public function addAttachment(EmailAttachment $attachment): static
+    {
+        if (!$this->attachments->contains($attachment)) {
+            $this->attachments->add($attachment);
+            $attachment->setTemplate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttachment(EmailAttachment $attachment): static
+    {
+        // set the owning side to null (unless already changed)
+        if ($this->attachments->removeElement($attachment) && $attachment->getTemplate() === $this) {
+            $attachment->setTemplate(null);
+        }
+
+        return $this;
+    }
+
+    public function getAttachment(): ?EmailAttachment
+    {
+        $attachment = $this->attachments->first();
+
+        if ($attachment instanceof EmailAttachment) {
+            return $attachment;
+        }
+
+        return null;
+    }
+
+    public function setAttachment(?EmailAttachment $attachment): static
+    {
+        $this->attachments->clear();
+        if ($attachment instanceof EmailAttachment) {
+            $this->attachments->add($attachment);
+            $attachment->setTemplate($this);
+        }
 
         return $this;
     }

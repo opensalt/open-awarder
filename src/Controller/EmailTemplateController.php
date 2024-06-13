@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\EmailAttachment;
 use App\Entity\EmailTemplate;
 use App\Form\EmailTemplateType;
 use App\Repository\EmailTemplateRepository;
@@ -33,6 +34,17 @@ class EmailTemplateController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($emailTemplate);
+
+            $emailAttachments = $form->get('attachments')->getData() ?? [];
+            foreach ($emailAttachments as $attachment) {
+                $evidenceFile = new EmailAttachment();
+                $evidenceFile->setFile($attachment);
+                $evidenceFile->setTemplate($emailTemplate);
+                $entityManager->persist($evidenceFile);
+
+                $emailTemplate->addAttachment($evidenceFile);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
@@ -59,6 +71,30 @@ class EmailTemplateController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $deleteAttachments = $form->get('deleteFiles')->getData() ?? [];
+            $attachments = $emailTemplate->getAttachments();
+            foreach ($deleteAttachments as $evidenceId) {
+                $evidenceFile = $entityManager->getRepository(EmailAttachment::class)->find($evidenceId);
+                if (null === $evidenceFile) {
+                    continue;
+                }
+
+                if ($attachments->contains($evidenceFile)) {
+                    $emailTemplate->removeAttachment($evidenceFile);
+                    $entityManager->remove($evidenceFile);
+                }
+            }
+
+            $emailAttachments = $form->get('attachments')->getData() ?? [];
+            foreach ($emailAttachments as $attachment) {
+                $evidenceFile = new EmailAttachment();
+                $evidenceFile->setFile($attachment);
+                $evidenceFile->setTemplate($emailTemplate);
+                $entityManager->persist($evidenceFile);
+
+                $emailTemplate->addAttachment($evidenceFile);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
