@@ -29,8 +29,6 @@ readonly class TwigVariables
             return;
         }
 
-        dump($node);
-
         if ($node instanceof NameExpression
             && false === $node->getAttribute('always_defined') // ignore scoped names as (key, value) in for loop
         ) {
