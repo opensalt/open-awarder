@@ -6,6 +6,7 @@ namespace App\Service;
 
 use Twig\Environment;
 use Twig\Node\Expression\NameExpression;
+use Twig\Node\MacroNode;
 use Twig\Node\Node;
 use Twig\Node\NodeCaptureInterface;
 
@@ -24,14 +25,20 @@ readonly class TwigVariables
     protected function visit(Node $node, array &$variables): void
     {
         // @see https://github.com/twigphp/Twig/issues/2340 for details about NodeCaptureInterface
-        if ($node instanceof NodeCaptureInterface) {
+        if ($node instanceof NodeCaptureInterface || $node instanceof MacroNode) {
             return;
         }
+
+        dump($node);
 
         if ($node instanceof NameExpression
             && false === $node->getAttribute('always_defined') // ignore scoped names as (key, value) in for loop
         ) {
-            $variables[$node->getAttribute('name')] = null;
+            $varName = $node->getAttribute('name');
+            if (str_starts_with($varName, '_')) {
+                return;
+            }
+            $variables[$varName] = null;
 
             return;
         }
