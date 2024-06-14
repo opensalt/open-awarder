@@ -24,6 +24,9 @@ class ParticipantRepository extends ServiceEntityRepository
         parent::__construct($registry, Participant::class);
     }
 
+    /**
+     * @return array<array-key, string>
+     */
     public function getAchievementsForParticipant(Participant $participant): array
     {
         return $this->getEntityManager()->createQueryBuilder()

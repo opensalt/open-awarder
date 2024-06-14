@@ -37,6 +37,9 @@ class Award
     #[ORM\JoinColumn(nullable: false)]
     private ?AchievementDefinition $achievement = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(nullable: true)]
     private ?array $results = null;
 
@@ -51,6 +54,9 @@ class Award
     #[ORM\JoinColumn(nullable: true)]
     private ?EmailTemplate $emailTemplate = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $awardJson = [];
 
@@ -66,6 +72,9 @@ class Award
     #[ORM\Column(nullable: true)]
     private ?string $requestId = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $lastResponse = null;
 
@@ -118,11 +127,17 @@ class Award
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function getResults(): ?array
     {
         return $this->results;
     }
 
+    /**
+     * @param array<array-key, mixed>|null $results
+     */
     public function setResults(?array $results): static
     {
         $this->results = $results;
@@ -178,11 +193,17 @@ class Award
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function getAwardJson(): array
     {
         return $this->awardJson ?? [];
     }
 
+    /**
+     * @param array<array-key, mixed>|null $awardJson
+     */
     public function setAwardJson(?array $awardJson): Award
     {
         $this->awardJson = $awardJson;
@@ -234,11 +255,17 @@ class Award
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function getLastResponse(): ?array
     {
         return $this->lastResponse;
     }
 
+    /**
+     * @param array<array-key, mixed>|null $lastResponse
+     */
     public function setLastResponse(?array $lastResponse): Award
     {
         $this->lastResponse = $lastResponse;

@@ -111,6 +111,9 @@ class OcpPublisher
         $this->entityManager->flush();
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function getRequestStatus(Award $award): array
     {
         $response = $this->authenticate($award->getAwarder())->request('GET', '/api/requests/'.$award->getRequestId(), [

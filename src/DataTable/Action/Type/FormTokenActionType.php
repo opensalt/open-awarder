@@ -14,6 +14,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FormTokenActionType extends AbstractActionType
 {
+    /**
+     * @param array<array-key, mixed> $options
+     */
     #[\Override]
     public function buildView(ActionView $view, ActionInterface $action, array $options): void
     {

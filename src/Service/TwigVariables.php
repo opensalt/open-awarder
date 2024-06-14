@@ -18,6 +18,9 @@ readonly class TwigVariables
     {
     }
 
+    /**
+     * @param array<array-key, mixed> $variables
+     */
     protected function visit(Node $node, array &$variables): void
     {
         // @see https://github.com/twigphp/Twig/issues/2340 for details about NodeCaptureInterface
@@ -38,6 +41,9 @@ readonly class TwigVariables
         }
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function getVariables(?string $twigTemplateCode): array
     {
         if (null === $twigTemplateCode) {

@@ -122,7 +122,7 @@ class MakeAwardForm extends AbstractType
                 ?AwardTemplate $awardTemplate,
                 ?EmailTemplate $emailTemplate,
                 ?AchievementDefinition $achievement,
-            ) use ($builder): void {
+            ): void {
                 if (!$awardTemplate instanceof AwardTemplate) {
                     return;
                 }

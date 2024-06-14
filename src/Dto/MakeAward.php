@@ -19,8 +19,10 @@ class MakeAward
 
     public ?AchievementDefinition $achievement = null;
 
+    /** @var array<array-key, mixed>|null */
     public ?array $results = null;
 
+    /** @var array<array-key, mixed>|null */
     public ?array $evidence = null;
 
     public ?AwardState $state = AwardState::Pending;
@@ -29,5 +31,6 @@ class MakeAward
 
     public ?EmailTemplate $emailTemplate = null;
 
+    /** @var array<array-key, mixed> */
     public array $vars = [];
 }

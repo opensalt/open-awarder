@@ -7,6 +7,9 @@ namespace App\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * @implements DataTransformerInterface<array<array-key, mixed>, string>
+ */
 class JsonTransformer implements DataTransformerInterface
 {
 

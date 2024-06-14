@@ -131,11 +131,17 @@ class EvidenceFile
         return $this;
     }
 
+    /**
+     * @return array<array-key, int>|null
+     */
     public function getDimensions(): ?array
     {
         return json_decode((string) $this->dimensions, true);
     }
 
+    /**
+     * @param array<array-key, int>|null $dimensions
+     */
     public function setDimensions(?array $dimensions): static
     {
         $this->dimensions = json_encode($dimensions, JSON_THROW_ON_ERROR);

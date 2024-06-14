@@ -35,9 +35,15 @@ class EmailTemplate
     #[ORM\Column(type: Types::TEXT)]
     private ?string $template = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $fields = null;
 
+    /**
+     * @var Collection<array-key, Awarder>
+     */
     #[ORM\ManyToMany(targetEntity: Awarder::class, inversedBy: 'emailTemplates')]
     #[ORM\JoinTable(name: 'email_template_awarders')]
     private Collection $awarders;
@@ -118,11 +124,17 @@ class EmailTemplate
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function getFields(): ?array
     {
         return $this->fields;
     }
 
+    /**
+     * @param array<array-key, mixed>|null $fields
+     */
     public function setFields(?array $fields): static
     {
         $this->fields = $fields;

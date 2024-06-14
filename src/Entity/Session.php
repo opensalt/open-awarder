@@ -18,17 +18,16 @@ class Session
     private mixed $id;
 
     #[ORM\Column(name: 'sess_data', type: Types::BLOB)]
-    private mixed $data;
+    private mixed $data; // @phpstan-ignore property.onlyRead
 
     #[ORM\Column(name: 'sess_time')]
-    private int $lastUsed;
+    private int $lastUsed; // @phpstan-ignore property.onlyRead
 
     #[ORM\Column(name: 'sess_lifetime')]
-    private int $lifetime;
+    private int $lifetime; // @phpstan-ignore property.onlyRead
 
     public function getId(): string
     {
-        /** @phpstan-ignore-next-line */
         if (is_resource($this->id)) {
             $this->id = stream_get_contents($this->id);
         }

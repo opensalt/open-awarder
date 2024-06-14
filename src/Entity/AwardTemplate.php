@@ -27,12 +27,21 @@ class AwardTemplate
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(type: Types::JSON)]
     private ?array $template = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $fields = null;
 
+    /**
+     * @var Collection<array-key, Awarder>
+     */
     #[ORM\ManyToMany(targetEntity: Awarder::class, inversedBy: 'awardTemplates')]
     #[ORM\JoinTable(name: 'award_template_awarders')]
     private Collection $awarders;
@@ -67,11 +76,17 @@ class AwardTemplate
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function getTemplate(): ?array
     {
         return $this->template;
     }
 
+    /**
+     * @param array<array-key, mixed> $template
+     */
     public function setTemplate(array $template): static
     {
         $this->template = $template;
@@ -106,11 +121,17 @@ class AwardTemplate
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function getFields(): ?array
     {
         return $this->fields;
     }
 
+    /**
+     * @param array<array-key, mixed> $fields
+     */
     public function setFields(?array $fields): static
     {
         $this->fields = $fields;

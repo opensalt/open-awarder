@@ -50,6 +50,9 @@ readonly class UpdateFieldsEventListener
         };
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     private function getVariables(object $entity): array
     {
         return match ($entity::class) {

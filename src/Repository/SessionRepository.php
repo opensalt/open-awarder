@@ -9,6 +9,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Session>
+ *
  * @method Session|null findOneBy(array $criteria, array $orderBy = null)
  */
 class SessionRepository extends ServiceEntityRepository

@@ -40,21 +40,36 @@ class Awarder
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $protocol = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(nullable: true)]
     private ?array $ocpInfo = null;
 
     #[ORM\Column]
     private AwarderState $state = AwarderState::Active;
 
+    /**
+     * @var Collection<array-key, AchievementDefinition>
+     */
     #[ORM\ManyToMany(targetEntity: AchievementDefinition::class, mappedBy: 'awarders')]
     private Collection $achievements;
 
+    /**
+     * @var Collection<array-key, AwardTemplate>
+     */
     #[ORM\ManyToMany(targetEntity: AwardTemplate::class, mappedBy: 'awarders')]
     private Collection $awardTemplates;
 
+    /**
+     * @var Collection<array-key, EmailTemplate>
+     */
     #[ORM\ManyToMany(targetEntity: EmailTemplate::class, mappedBy: 'awarders')]
     private Collection $emailTemplates;
 
+    /**
+     * @var Collection<array-key, Award>
+     */
     #[ORM\OneToMany(targetEntity: Award::class, mappedBy: 'awarder')]
     private Collection $awards;
 
@@ -131,11 +146,17 @@ class Awarder
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function getOcpInfo(): ?array
     {
         return $this->ocpInfo;
     }
 
+    /**
+     * @param array<array-key, mixed>|null $ocpInfo
+     */
     public function setOcpInfo(?array $ocpInfo): static
     {
         $this->ocpInfo = $ocpInfo;

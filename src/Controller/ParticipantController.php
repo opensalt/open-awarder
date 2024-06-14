@@ -112,10 +112,14 @@ class ParticipantController extends AbstractController
                                 $participant = Participant::fromCsv($rec);
                             } catch (\ErrorException $e) {
                                 if (str_contains($e->getMessage(), 'Undefined array key')) {
-                                    throw new \ErrorException((preg_replace('/.*"([^"]+)"/', '$1', $e->getMessage()).' column missing.'), $e->getCode(), $e);
+                                    throw new \ErrorException(
+                                        message: (preg_replace('/.*"([^"]+)"/', '$1', $e->getMessage()).' column missing.'),
+                                        code: $e->getCode(),
+                                        previous: $e
+                                    );
                                 }
 
-                                throw new \ErrorException($e->getMessage(), $e->getCode(), $e);
+                                throw new \ErrorException(message: $e->getMessage(), code: $e->getCode(), previous: $e);
                             }
 
                             $entityManager->persist($participant);

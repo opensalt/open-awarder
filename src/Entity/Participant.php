@@ -49,6 +49,7 @@ class Participant
     #[ORM\Column(length: 255)]
     private ?ParticipantState $state = ParticipantState::Active;
 
+    /** @var Collection<array-key, Award> $awards */
     #[ORM\OneToMany(targetEntity: Award::class, mappedBy: 'subject')]
     private Collection $awards;
 
@@ -58,9 +59,12 @@ class Participant
         $this->awards = new ArrayCollection();
     }
 
-    public static function fromCsv(array $rec): static
+    /**
+     * @param array<array-key, mixed> $rec
+     */
+    public static function fromCsv(array $rec): self
     {
-        $participant = new static();
+        $participant = new self();
         $participant
             ->setFirstName($rec['firstName'])
             ->setLastName($rec['lastName'])

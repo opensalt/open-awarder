@@ -63,7 +63,7 @@ class EmailAttachment
         $this->updatedAt = new \DateTimeImmutable();
 
         if (!$file instanceof File) {
-            $this->award->setEvidenceFile(null);
+            $this->template->setAttachment(null);
         }
 
         return $this;
@@ -129,11 +129,17 @@ class EmailAttachment
         return $this;
     }
 
+    /**
+     * @return array<array-key, int>|null
+     */
     public function getDimensions(): ?array
     {
         return json_decode((string) $this->dimensions, true);
     }
 
+    /**
+     * @param array<array-key, int>|null $dimensions
+     */
     public function setDimensions(?array $dimensions): static
     {
         $this->dimensions = json_encode($dimensions, JSON_THROW_ON_ERROR);

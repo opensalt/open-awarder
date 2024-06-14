@@ -17,6 +17,7 @@ use App\Message\Command\CheckIfAwardPublished;
 use App\Message\Command\PublishAward;
 use App\Message\Command\RevokeAward;
 use App\Repository\AwardRepository;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,10 +79,14 @@ class AwardController extends AbstractController
             $assertionId = Uuid::v7();
             $clrId = Uuid::v5(Uuid::fromString('018e5209-5518-757b-8cc1-6fb5f378a7ff'), $assertionId->toRfc4122());
 
-            $credentials = $entityManager->getRepository(Participant::class)->getAchievementsForParticipant($subject);
+            /** @var ParticipantRepository $participantRepo */
+            $participantRepo = $entityManager->getRepository(Participant::class);
+            $credentials = $participantRepo->getAchievementsForParticipant($subject);
             $credentials[] = $achievement->getIdentifier();
 
             $templateErrored = false;
+            $awardTemplate = null;
+            $emailTemplate = null;
             try {
                 $context = [
                     'issuedOn' => new \DateTimeImmutable(),
@@ -115,7 +120,6 @@ class AwardController extends AbstractController
                 $template = $twig->createTemplate(preg_replace('/("~|~")/', '', $renderedTemplate));
                 $awardTemplate = json_decode($template->render($templateVars), true);
 
-                $emailTemplate = null;
                 if ($award->emailTemplate instanceof EmailTemplate) {
                     $template = $twig->createTemplate($award->emailTemplate->getTemplate());
                     $emailTemplate = $template->render($templateVars);

@@ -33,13 +33,22 @@ class AchievementDefinition
     #[ORM\Column(nullable: true)]
     private ?string $identifier = null;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $definition = null;
 
+    /**
+     * @var Collection<array-key, Awarder>
+     */
     #[ORM\ManyToMany(targetEntity: Awarder::class, inversedBy: 'achievements')]
     #[ORM\JoinTable(name: 'achievements_awarders')]
     private Collection $awarders;
 
+    /**
+     * @var array<array-key, mixed>|null
+     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $fields = null;
 
@@ -104,11 +113,17 @@ class AchievementDefinition
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function getDefinition(): ?array
     {
         return $this->definition;
     }
 
+    /**
+     * @param array<array-key, mixed>|null $definition
+     */
     public function setDefinition(?array $definition): AchievementDefinition
     {
         $this->definition = $definition;
@@ -133,11 +148,17 @@ class AchievementDefinition
         return $this;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function getFields(): ?array
     {
         return $this->fields;
     }
 
+    /**
+     * @param array<array-key, mixed>|null $fields
+     */
     public function setFields(?array $fields): static
     {
         $this->fields = $fields;
