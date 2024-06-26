@@ -29,9 +29,8 @@ class ParticipantRepository extends ServiceEntityRepository
      */
     public function getAchievementsForParticipant(Participant $participant): array
     {
-        return $this->getEntityManager()->createQueryBuilder()
-            ->from(Participant::class, 's')
-            ->join('s.awards', 'a')
+        return $this->createQueryBuilder('p')
+            ->join('p.awards', 'a')
             ->join('a.achievement', 'ad')
             ->select('ad.identifier')
             ->andWhere('s.id = :subject')
@@ -45,4 +44,15 @@ class ParticipantRepository extends ServiceEntityRepository
             ;
     }
 
+    /**
+     * @return iterable<array-key, Participant>
+     */
+    public function getParticipants(): iterable
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->getQuery()
+            ->toIterable()
+            ;
+    }
 }

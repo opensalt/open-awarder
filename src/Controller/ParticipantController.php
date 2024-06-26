@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Entity\Pathway;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,12 +16,23 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Service\ResetInterface;
 
 #[Route('/participant')]
-class ParticipantController extends AbstractController
+class ParticipantController extends AbstractController implements ResetInterface
 {
     use DataTableFactoryAwareTrait;
+
+    /** @var array<array-key, Pathway> */
+    private array $pathways = [];
+
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    ) {
+    }
 
     #[Route('/', name: 'app_participant_index', methods: ['GET'])]
     public function index(ParticipantRepository $participantRepository): Response
@@ -59,13 +71,13 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Participant $participant): Response
     {
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -77,18 +89,18 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_participant_delete', methods: ['POST'])]
-    public function delete(Request $request, Participant $participant, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Participant $participant): Response
     {
         if ($this->isCsrfTokenValid('delete'.$participant->getId(), $request->getPayload()->get('_token'))) {
-            $entityManager->remove($participant);
-            $entityManager->flush();
+            $this->entityManager->remove($participant);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/import', name: 'app_participant_import', methods: ['GET', 'POST'], priority: 10)]
-    public function import(Request $request, EntityManagerInterface $entityManager): Response
+    public function import(Request $request): Response
     {
         $uploadForm = $this->createFormBuilder()
             ->add('file', FileType::class, [
@@ -109,6 +121,8 @@ class ParticipantController extends AbstractController
 
                         foreach ($participants as $rec) {
                             try {
+                                $rec['pathway'] = $this->getPathwayFromName($rec['pathway']);
+
                                 $participant = Participant::fromCsv($rec);
                             } catch (\ErrorException $e) {
                                 if (str_contains($e->getMessage(), 'Undefined array key')) {
@@ -122,10 +136,10 @@ class ParticipantController extends AbstractController
                                 throw new \ErrorException(message: $e->getMessage(), code: $e->getCode(), previous: $e);
                             }
 
-                            $entityManager->persist($participant);
+                            $this->entityManager->persist($participant);
                         }
 
-                        $entityManager->flush();
+                        $this->entityManager->flush();
                     }
 
                     return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
@@ -143,5 +157,67 @@ class ParticipantController extends AbstractController
         return $this->render('participant/import.html.twig', [
             'uploadForm' => $uploadForm->createView(),
         ]);
+    }
+
+    #[Route('/export', name: 'app_participant_export', methods: ['GET'], priority: 10)]
+    public function export(ParticipantRepository $repo): Response
+    {
+        $response = new StreamedResponse();
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set(
+            'Content-Disposition',
+            $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'participants.csv')
+        );
+        $response->setCallback(function () use ($repo) {
+            $fd = fopen('php://output', 'w+');
+
+            fputcsv($fd, [
+                'firstName',
+                'lastName',
+                'email',
+                'pathway',
+                'acceptedTerms',
+                'phone',
+                'aboutMe',
+            ]);
+
+            $participants = $repo->getParticipants();
+
+            /** @var Participant $participant */
+            foreach ($participants as $participant) {
+                fputcsv($fd, [
+                    $participant->getFirstName(),
+                    $participant->getLastName(),
+                    $participant->getEmail(),
+                    $participant->getSubscribedPathway()?->getName(),
+                    $participant->isAcceptedTerms() ? 'Yes' : 'No',
+                    $participant->getPhone(),
+                    $participant->getAboutMe(),
+                ]);
+            }
+            fclose($fd);
+        });
+
+        return $response;
+    }
+
+    private function getPathwayFromName(?string $name): ?Pathway
+    {
+        if (null === $name || '' === $name) {
+            return null;
+        }
+
+        if (array_key_exists($name, $this->pathways)) {
+            return $this->pathways[$name];
+        }
+
+        $this->pathways[$name] = $this->entityManager->getRepository(Pathway::class)->findOneBy(['name' => $name]);
+
+        return $this->pathways[$name];
+    }
+
+    public function reset(): void
+    {
+        $this->pathways = [];
     }
 }
