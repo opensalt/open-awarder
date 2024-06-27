@@ -145,7 +145,6 @@ class ParticipantController extends AbstractController implements ResetInterface
                     return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
                 }
             } catch (\Throwable $e) {
-                dump($e);
                 $uploadForm->get('file')->addError(new FormError(message: 'Upload failed: '.$e->getMessage()));
 
                 return $this->render('participant/import.html.twig', [
