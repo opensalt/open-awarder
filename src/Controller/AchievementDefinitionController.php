@@ -16,8 +16,10 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/achievement/definition')]
+#[IsGranted('ROLE_ADMIN')]
 class AchievementDefinitionController extends AbstractController
 {
     #[Route('/', name: 'app_achievement_definition_index', methods: ['GET'])]

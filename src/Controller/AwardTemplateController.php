@@ -12,8 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/template/award')]
+#[IsGranted('ROLE_ADMIN')]
 class AwardTemplateController extends AbstractController
 {
     #[Route('/', name: 'app_award_template_index', methods: ['GET'])]

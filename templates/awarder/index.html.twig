@@ -5,33 +5,35 @@
 {% block body %}
     <h1>Awarders</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>IssuerId</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for awarder in awarders %}
-            <tr>
-                <td>{{ awarder.name }}</td>
-                <td>{{ awarder.description }}</td>
-                <td>{{ awarder.issuerId }}</td>
-                <td>
-                    <a class="btn btn-primary" href="{{ path('app_awarder_show', {'id': awarder.id}) }}">Show</a>
-                    <a class="btn btn-secondary" href="{{ path('app_awarder_edit', {'id': awarder.id}) }}">Edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>IssuerId</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for awarder in awarders %}
+                <tr>
+                    <td>{{ awarder.name }}</td>
+                    <td>{{ awarder.description }}</td>
+                    <td>{{ awarder.issuerId }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('app_awarder_show', {'id': awarder.id}) }}">Show</a>
+                        <a class="btn btn-secondary" href="{{ path('app_awarder_edit', {'id': awarder.id}) }}">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <a class="btn btn-secondary float-end" href="{{ path('app_awarder_new') }}">Create new</a>
+    <a class="btn btn-secondary float-end" href="{{ path('app_awarder_new') }}">Add awarder</a>
 {% endblock %}

@@ -28,11 +28,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
 use Twig\Environment;
 use function Symfony\Component\String\u;
 
 #[Route('/award')]
+#[IsGranted('ROLE_ADMIN')]
 class AwardController extends AbstractController
 {
     use DataTableFactoryAwareTrait;

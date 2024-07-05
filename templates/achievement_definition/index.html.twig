@@ -5,32 +5,36 @@
 {% block body %}
     <h1>Achievement Definitions</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Uri</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for achievement_definition in achievement_definitions %}
-            <tr>
-                <td>{{ achievement_definition.name }}</td>
-                <td>{{ achievement_definition.uri }}</td>
-                <td>
-                    <a class="btn btn-primary" href="{{ path('app_achievement_definition_show', {'id': achievement_definition.id}) }}">Show</a>
-                    <a class="btn btn-secondary" href="{{ path('app_achievement_definition_edit', {'id': achievement_definition.id}) }}">Edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Uri</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for achievement_definition in achievement_definitions %}
+                <tr>
+                    <td>{{ achievement_definition.name }}</td>
+                    <td>{{ achievement_definition.uri }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('app_achievement_definition_show', {'id': achievement_definition.id}) }}">Show</a>
+                        <a class="btn btn-secondary" href="{{ path('app_achievement_definition_edit', {'id': achievement_definition.id}) }}">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <a class="btn btn-secondary" href="{{ path('app_achievement_definition_new') }}">Create new</a>
-    <a class="btn btn-secondary" href="{{ path('app_achievement_definition_import') }}">Import</a>
+    <div class="float-end">
+        <a class="btn btn-secondary" href="{{ path('app_achievement_definition_new') }}">Add achievement</a>
+        <a class="btn btn-secondary" href="{{ path('app_achievement_definition_import') }}">Import</a>
+    </div>
 {% endblock %}

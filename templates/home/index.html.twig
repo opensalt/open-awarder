@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="">
+    <h1>Open Awarding Service</h1>
 
-</div>
+    <div class="mt-5">
+        {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <p>Please log in to access the Open Awarding Service.</p>
+        {% else %}
+            <p>Please select the areas from the menu.</p>
+        {% endif %}
+    </div>
 {% endblock %}

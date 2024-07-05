@@ -3,31 +3,33 @@
 {% block title %}AwardTemplate index{% endblock %}
 
 {% block body %}
-    <h1>AwardTemplate index</h1>
+    <h1>Award Templates</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for award_template in award_templates %}
-            <tr>
-                <td>{{ award_template.name }}</td>
-                <td>
-                    <a class="btn btn-primary" href="{{ path('app_award_template_show', {'id': award_template.id}) }}">Show</a>
-                    <a class="btn btn-secondary" href="{{ path('app_award_template_edit', {'id': award_template.id}) }}">Edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for award_template in award_templates %}
+                <tr>
+                    <td>{{ award_template.name }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ path('app_award_template_show', {'id': award_template.id}) }}">Show</a>
+                        <a class="btn btn-secondary" href="{{ path('app_award_template_edit', {'id': award_template.id}) }}">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <a class="btn btn-secondary" href="{{ path('app_award_template_new') }}">Create new</a>
+    <a class="btn btn-secondary float-end" href="{{ path('app_award_template_new') }}">Add template</a>
 {% endblock %}

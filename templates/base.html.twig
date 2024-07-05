@@ -1,3 +1,4 @@
+{% set current_route = app.request.get('_route') %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -13,30 +14,45 @@
         {% endblock %}
     </head>
     <body>
-        <main class="container container-fluid min-vh-100 d-flex flex-column">
+        <main class="container container-fluid d-flex flex-column">
             <div class="row">
-                <div class="col col-md-2 min-vh-100 bg-body-tertiary">
-                    <a href="{{ path('app_home') }}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">OAS</a>
+                <div class="col col-md-2 min-vh-100 bg-body-tertiary pt-3 pe-3">
+                    <div class="text-center">
+                        <a href="{{ path('app_home') }}" class="link-dark text-decoration-none">OAS</a>
+                    </div>
                     <hr />
                     <ul class="nav nav-pills flex-column mb-auto">
-                        <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link link-dark" aria-current="page">Home</a></li>
-                        <li class="nav-item"><a href="{{ path('app_awarder_index')}}" class="nav-link link-dark">Awarders</a></li>
-                        <li class="nav-item"><a href="{{ path('app_achievement_definition_index')}}" class="nav-link link-dark">Achievements</a></li>
-                        <li class="nav-item"><a href="{{ path('app_pathway_index')}}" class="nav-link link-dark">Pathways</a></li>
-                        <li class="nav-item"><a href="{{ path('app_award_template_index') }}" class="nav-link link-dark">Award Templates</a></li>
-                        <li class="nav-item"><a href="{{ path('app_email_template_index') }}" class="nav-link link-dark">Email Templates</a></li>
-                        <li class="nav-item"><a href="{{ path('app_participant_index')}}" class="nav-link link-dark">Participants</a></li>
-                        <li class="nav-item"><a href="{{ path('app_award_index')}}" class="nav-link link-dark">Awards</a></li>
+                        {{ _self.navItem('Home', 'app_home', current_route) }}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            {{ _self.navItem('Awarders', 'app_awarder_index', current_route) }}
+                            {{ _self.navItem('Achievements', 'app_achievement_definition_index', current_route) }}
+                            {{ _self.navItem('Pathways', 'app_pathway_index', current_route) }}
+                            {{ _self.navItem('Award Templates', 'app_award_template_index', current_route) }}
+                            {{ _self.navItem('Email Templates', 'app_email_template_index', current_route) }}
+                            {{ _self.navItem('Participants', 'app_participant_index', current_route) }}
+                            {{ _self.navItem('Awards', 'app_award_index', current_route) }}
+                            {{ _self.navItem('Users', 'app_user_index', current_route) }}
+                        {% endif %}
+                        {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <hr />
+                            <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link link-dark" aria-current="page">Login</a></li>
+                        {% endif %}
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <hr />
+                            <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link link-dark" aria-current="page">Logout</a></li>
+                        {% endif %}
                     </ul>
-                    <div class="text-center">
-                        <a href="{{ path('app_award_new') }}" class="btn btn-primary mb-3 mt-5">Issue Award</a>
-                    </div>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="text-center">
+                            <a href="{{ path('app_award_new') }}" class="btn btn-primary mt-5">Issue Award</a>
+                        </div>
+                    {% endif %}
                     {#
                     <hr />
                     <a href="#" class="d-flex align-items-center link-dark text-decoration-none">User Info</a>
                     #}
                 </div>
-                <div class="col flex-grow-1 bg-body">
+                <div class="col flex-grow-1 bg-body pt-3 pe-3">
                     <div class="row flex-grow-1">
                         <div class="col">
                         </div>
@@ -51,3 +67,6 @@
         </main>
     </body>
 </html>
+{% macro navItem(name, route, current_route) %}
+    <li class="nav-item"><a href="{{ path(route)}}" class="nav-link {% if route == current_route %}link-light active{% else %}link-dark{% endif %}">{{ name }}</a></li>
+{% endmacro %}
