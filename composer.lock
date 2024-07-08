@@ -253,16 +253,16 @@
         },
         {
             "name": "dflydev/dot-access-data",
-            "version": "v3.0.2",
+            "version": "v3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dflydev/dflydev-dot-access-data.git",
-                "reference": "f41715465d65213d644d3141a6a93081be5d3549"
+                "reference": "a23a2bf4f31d3518f3ecb38660c95715dfead60f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dflydev/dflydev-dot-access-data/zipball/f41715465d65213d644d3141a6a93081be5d3549",
-                "reference": "f41715465d65213d644d3141a6a93081be5d3549",
+                "url": "https://api.github.com/repos/dflydev/dflydev-dot-access-data/zipball/a23a2bf4f31d3518f3ecb38660c95715dfead60f",
+                "reference": "a23a2bf4f31d3518f3ecb38660c95715dfead60f",
                 "shasum": ""
             },
             "require": {
@@ -322,9 +322,9 @@
             ],
             "support": {
                 "issues": "https://github.com/dflydev/dflydev-dot-access-data/issues",
-                "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.2"
+                "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.3"
             },
-            "time": "2022-10-27T11:44:00+00:00"
+            "time": "2024-07-08T12:26:09+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -1611,16 +1611,16 @@
         },
         {
             "name": "ecotone/ecotone",
-            "version": "1.222.5",
+            "version": "1.224.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecotoneframework/ecotone.git",
-                "reference": "26e858ebe40aa2ac798d172977034a537584b961"
+                "reference": "8471fd25a96c0ecc693aa02a9b642b4d3ade0b9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecotoneframework/ecotone/zipball/26e858ebe40aa2ac798d172977034a537584b961",
-                "reference": "26e858ebe40aa2ac798d172977034a537584b961",
+                "url": "https://api.github.com/repos/ecotoneframework/ecotone/zipball/8471fd25a96c0ecc693aa02a9b642b4d3ade0b9b",
+                "reference": "8471fd25a96c0ecc693aa02a9b642b4d3ade0b9b",
                 "shasum": ""
             },
             "require": {
@@ -1638,7 +1638,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.222.5-dev"
+                    "dev-main": "1.224.0-dev"
                 },
                 "ecotone": {
                     "repository": "ecotone"
@@ -1677,7 +1677,7 @@
                 "service-bus"
             ],
             "support": {
-                "source": "https://github.com/ecotoneframework/ecotone/tree/1.222.5"
+                "source": "https://github.com/ecotoneframework/ecotone/tree/1.224.0"
             },
             "funding": [
                 {
@@ -1685,24 +1685,24 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-30T10:00:01+00:00"
+            "time": "2024-07-08T09:54:09+00:00"
         },
         {
             "name": "ecotone/symfony-bundle",
-            "version": "1.222.5",
+            "version": "1.224.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecotoneframework/symfony-bundle.git",
-                "reference": "ac47281f8cd08a76162fd5e9603a49b55375b254"
+                "reference": "bb76822d8f1dd481a50177228b629794153cd0cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecotoneframework/symfony-bundle/zipball/ac47281f8cd08a76162fd5e9603a49b55375b254",
-                "reference": "ac47281f8cd08a76162fd5e9603a49b55375b254",
+                "url": "https://api.github.com/repos/ecotoneframework/symfony-bundle/zipball/bb76822d8f1dd481a50177228b629794153cd0cd",
+                "reference": "bb76822d8f1dd481a50177228b629794153cd0cd",
                 "shasum": ""
             },
             "require": {
-                "ecotone/ecotone": "~1.222.5",
+                "ecotone/ecotone": "~1.224.0",
                 "laminas/laminas-zendframework-bridge": "^1.0.0",
                 "symfony/console": "^5.4|^6.0|^7.0",
                 "symfony/dependency-injection": ">=v5.4.19 <6.0.0 || >=v6.0.19 <6.1.0 || >=v6.1.11 <6.2.0 || >=v6.2.5 <7.0.0 || >=v7.0.0 <8.0.0",
@@ -1712,7 +1712,7 @@
                 "behat/behat": "^3.10",
                 "doctrine/doctrine-bundle": "^2.7.2",
                 "doctrine/orm": "^2.0|^3.0",
-                "ecotone/dbal": "~1.222.5",
+                "ecotone/dbal": "~1.224.0",
                 "friends-of-behat/symfony-extension": "<=2.4.2|^2.5",
                 "monolog/monolog": "^2.9|^3.3.1",
                 "phpstan/phpstan": "^1.8",
@@ -1726,7 +1726,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.222.5-dev"
+                    "dev-main": "1.224.0-dev"
                 },
                 "ecotone": {
                     "repository": "symfony"
@@ -1766,7 +1766,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/ecotoneframework/symfony-bundle/tree/1.222.5"
+                "source": "https://github.com/ecotoneframework/symfony-bundle/tree/1.224.0"
             },
             "funding": [
                 {
@@ -1774,7 +1774,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-30T09:58:38+00:00"
+            "time": "2024-07-08T09:52:44+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -11873,16 +11873,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.6",
+            "version": "1.11.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "6ac78f1165346c83b4a753f7e4186d969c6ad0ee"
+                "reference": "52d2bbfdcae7f895915629e4694e9497d0f8e28d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6ac78f1165346c83b4a753f7e4186d969c6ad0ee",
-                "reference": "6ac78f1165346c83b4a753f7e4186d969c6ad0ee",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/52d2bbfdcae7f895915629e4694e9497d0f8e28d",
+                "reference": "52d2bbfdcae7f895915629e4694e9497d0f8e28d",
                 "shasum": ""
             },
             "require": {
@@ -11927,7 +11927,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-01T15:33:06+00:00"
+            "time": "2024-07-06T11:17:41+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
