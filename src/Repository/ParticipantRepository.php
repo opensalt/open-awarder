@@ -33,7 +33,7 @@ class ParticipantRepository extends ServiceEntityRepository
             ->join('p.awards', 'a')
             ->join('a.achievement', 'ad')
             ->select('ad.identifier')
-            ->andWhere('s.id = :subject')
+            ->andWhere('p.id = :subject')
             ->setParameter('subject', $participant->getId())
             ->andWhere('a.state <> :pending')
             ->setParameter('pending', AwardState::Pending)
