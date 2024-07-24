@@ -122,16 +122,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.4.0",
+            "version": "3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "35e8d0af4486141bc745f23a29cc2091eb624a32"
+                "reference": "c51258e759afdb17f1fd1fe83bc12baaef6309d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/35e8d0af4486141bc745f23a29cc2091eb624a32",
-                "reference": "35e8d0af4486141bc745f23a29cc2091eb624a32",
+                "url": "https://api.github.com/repos/composer/semver/zipball/c51258e759afdb17f1fd1fe83bc12baaef6309d6",
+                "reference": "c51258e759afdb17f1fd1fe83bc12baaef6309d6",
                 "shasum": ""
             },
             "require": {
@@ -183,7 +183,7 @@
             "support": {
                 "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.4.0"
+                "source": "https://github.com/composer/semver/tree/3.4.2"
             },
             "funding": [
                 {
@@ -199,7 +199,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-08-31T09:50:34+00:00"
+            "time": "2024-07-12T11:35:52+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -1611,16 +1611,16 @@
         },
         {
             "name": "ecotone/ecotone",
-            "version": "1.224.0",
+            "version": "1.225.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecotoneframework/ecotone.git",
-                "reference": "8471fd25a96c0ecc693aa02a9b642b4d3ade0b9b"
+                "reference": "318afa847e94db428113a3fc93e17a28e41ca8d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecotoneframework/ecotone/zipball/8471fd25a96c0ecc693aa02a9b642b4d3ade0b9b",
-                "reference": "8471fd25a96c0ecc693aa02a9b642b4d3ade0b9b",
+                "url": "https://api.github.com/repos/ecotoneframework/ecotone/zipball/318afa847e94db428113a3fc93e17a28e41ca8d0",
+                "reference": "318afa847e94db428113a3fc93e17a28e41ca8d0",
                 "shasum": ""
             },
             "require": {
@@ -1638,7 +1638,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.224.0-dev"
+                    "dev-main": "1.225.0-dev"
                 },
                 "ecotone": {
                     "repository": "ecotone"
@@ -1647,6 +1647,17 @@
                     "include": [
                         "../local_packages.json"
                     ]
+                },
+                "license-info": {
+                    "Apache-2.0": {
+                        "name": "Apache License 2.0",
+                        "url": "https://github.com/ecotoneframework/ecotone-dev/blob/main/LICENSE",
+                        "description": "Allows to use non Enterprise features of Ecotone. For more information please write to support@simplycodedsoftware.com"
+                    },
+                    "proprietary": {
+                        "name": "Enterprise License",
+                        "description": "Allows to use Enterprise features of Ecotone. For more information please write to support@simplycodedsoftware.com"
+                    }
                 }
             },
             "autoload": {
@@ -1656,12 +1667,13 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "Apache-2.0",
+                "proprietary"
             ],
             "authors": [
                 {
                     "name": "Dariusz Gafka",
-                    "email": "dgafka.mail@gmail.com"
+                    "email": "support@simplycodedsoftware.com"
                 }
             ],
             "description": "Supporting you in building DDD, CQRS, Event Sourcing applications with ease.",
@@ -1677,7 +1689,7 @@
                 "service-bus"
             ],
             "support": {
-                "source": "https://github.com/ecotoneframework/ecotone/tree/1.224.0"
+                "source": "https://github.com/ecotoneframework/ecotone/tree/1.225.0"
             },
             "funding": [
                 {
@@ -1685,24 +1697,24 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-08T09:54:09+00:00"
+            "time": "2024-07-19T18:39:07+00:00"
         },
         {
             "name": "ecotone/symfony-bundle",
-            "version": "1.224.0",
+            "version": "1.225.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecotoneframework/symfony-bundle.git",
-                "reference": "bb76822d8f1dd481a50177228b629794153cd0cd"
+                "reference": "1bed4016942f846ec00b34b7b6db13fda79badd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecotoneframework/symfony-bundle/zipball/bb76822d8f1dd481a50177228b629794153cd0cd",
-                "reference": "bb76822d8f1dd481a50177228b629794153cd0cd",
+                "url": "https://api.github.com/repos/ecotoneframework/symfony-bundle/zipball/1bed4016942f846ec00b34b7b6db13fda79badd5",
+                "reference": "1bed4016942f846ec00b34b7b6db13fda79badd5",
                 "shasum": ""
             },
             "require": {
-                "ecotone/ecotone": "~1.224.0",
+                "ecotone/ecotone": "~1.225.0",
                 "laminas/laminas-zendframework-bridge": "^1.0.0",
                 "symfony/console": "^5.4|^6.0|^7.0",
                 "symfony/dependency-injection": ">=v5.4.19 <6.0.0 || >=v6.0.19 <6.1.0 || >=v6.1.11 <6.2.0 || >=v6.2.5 <7.0.0 || >=v7.0.0 <8.0.0",
@@ -1712,7 +1724,7 @@
                 "behat/behat": "^3.10",
                 "doctrine/doctrine-bundle": "^2.7.2",
                 "doctrine/orm": "^2.0|^3.0",
-                "ecotone/dbal": "~1.224.0",
+                "ecotone/dbal": "~1.225.0",
                 "friends-of-behat/symfony-extension": "<=2.4.2|^2.5",
                 "monolog/monolog": "^2.9|^3.3.1",
                 "phpstan/phpstan": "^1.8",
@@ -1726,7 +1738,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.224.0-dev"
+                    "dev-main": "1.225.0-dev"
                 },
                 "ecotone": {
                     "repository": "symfony"
@@ -1735,6 +1747,17 @@
                     "include": [
                         "../local_packages.json"
                     ]
+                },
+                "license-info": {
+                    "Apache-2.0": {
+                        "name": "Apache License 2.0",
+                        "url": "https://github.com/ecotoneframework/ecotone-dev/blob/main/LICENSE",
+                        "description": "Allows to use non Enterprise features of Ecotone. For more information please write to support@simplycodedsoftware.com"
+                    },
+                    "proprietary": {
+                        "name": "Enterprise License",
+                        "description": "Allows to use Enterprise features of Ecotone. For more information please write to support@simplycodedsoftware.com"
+                    }
                 }
             },
             "autoload": {
@@ -1745,12 +1768,13 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "Apache-2.0",
+                "proprietary"
             ],
             "authors": [
                 {
                     "name": "Dariusz Gafka",
-                    "email": "dgafka.mail@gmail.com"
+                    "email": "support@simplycodedsoftware.com"
                 }
             ],
             "description": "Extends Ecotone with Symfony integration",
@@ -1766,7 +1790,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/ecotoneframework/symfony-bundle/tree/1.224.0"
+                "source": "https://github.com/ecotoneframework/symfony-bundle/tree/1.225.0"
             },
             "funding": [
                 {
@@ -1774,7 +1798,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-08T09:52:44+00:00"
+            "time": "2024-07-19T18:39:08+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -2327,16 +2351,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.4.2",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "91c24291965bd6d7c46c46a12ba7492f83b1cadf"
+                "reference": "ac815920de0eff6de947eac0a6a94e5ed0fb147c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/91c24291965bd6d7c46c46a12ba7492f83b1cadf",
-                "reference": "91c24291965bd6d7c46c46a12ba7492f83b1cadf",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/ac815920de0eff6de947eac0a6a94e5ed0fb147c",
+                "reference": "ac815920de0eff6de947eac0a6a94e5ed0fb147c",
                 "shasum": ""
             },
             "require": {
@@ -2349,8 +2373,8 @@
             },
             "require-dev": {
                 "cebe/markdown": "^1.0",
-                "commonmark/cmark": "0.30.3",
-                "commonmark/commonmark.js": "0.30.0",
+                "commonmark/cmark": "0.31.0",
+                "commonmark/commonmark.js": "0.31.0",
                 "composer/package-versions-deprecated": "^1.8",
                 "embed/embed": "^4.4",
                 "erusev/parsedown": "^1.0",
@@ -2372,7 +2396,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "2.5-dev"
+                    "dev-main": "2.6-dev"
                 }
             },
             "autoload": {
@@ -2429,7 +2453,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-02T11:59:32+00:00"
+            "time": "2024-07-24T12:52:09+00:00"
         },
         {
             "name": "league/config",
@@ -11873,16 +11897,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.11.7",
+            "version": "1.11.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "52d2bbfdcae7f895915629e4694e9497d0f8e28d"
+                "reference": "6adbd118e6c0515dd2f36b06cde1d6da40f1b8ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/52d2bbfdcae7f895915629e4694e9497d0f8e28d",
-                "reference": "52d2bbfdcae7f895915629e4694e9497d0f8e28d",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/6adbd118e6c0515dd2f36b06cde1d6da40f1b8ec",
+                "reference": "6adbd118e6c0515dd2f36b06cde1d6da40f1b8ec",
                 "shasum": ""
             },
             "require": {
@@ -11927,7 +11951,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-06T11:17:41+00:00"
+            "time": "2024-07-24T07:01:22+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -12254,16 +12278,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.2.6",
+            "version": "11.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "1dc0fedac703199e8704de085e47dd46bac0dde4"
+                "reference": "a7a29e8d3113806f18f99d670f580a30e8ffff39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/1dc0fedac703199e8704de085e47dd46bac0dde4",
-                "reference": "1dc0fedac703199e8704de085e47dd46bac0dde4",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a7a29e8d3113806f18f99d670f580a30e8ffff39",
+                "reference": "a7a29e8d3113806f18f99d670f580a30e8ffff39",
                 "shasum": ""
             },
             "require": {
@@ -12273,25 +12297,25 @@
                 "ext-mbstring": "*",
                 "ext-xml": "*",
                 "ext-xmlwriter": "*",
-                "myclabs/deep-copy": "^1.10.1",
-                "phar-io/manifest": "^2.0.3",
-                "phar-io/version": "^3.0.2",
+                "myclabs/deep-copy": "^1.12.0",
+                "phar-io/manifest": "^2.0.4",
+                "phar-io/version": "^3.2.1",
                 "php": ">=8.2",
-                "phpunit/php-code-coverage": "^11.0",
-                "phpunit/php-file-iterator": "^5.0",
-                "phpunit/php-invoker": "^5.0",
-                "phpunit/php-text-template": "^4.0",
-                "phpunit/php-timer": "^7.0",
-                "sebastian/cli-parser": "^3.0",
-                "sebastian/code-unit": "^3.0",
-                "sebastian/comparator": "^6.0",
-                "sebastian/diff": "^6.0",
-                "sebastian/environment": "^7.0",
-                "sebastian/exporter": "^6.1.2",
-                "sebastian/global-state": "^7.0",
-                "sebastian/object-enumerator": "^6.0",
-                "sebastian/type": "^5.0",
-                "sebastian/version": "^5.0"
+                "phpunit/php-code-coverage": "^11.0.5",
+                "phpunit/php-file-iterator": "^5.0.1",
+                "phpunit/php-invoker": "^5.0.1",
+                "phpunit/php-text-template": "^4.0.1",
+                "phpunit/php-timer": "^7.0.1",
+                "sebastian/cli-parser": "^3.0.2",
+                "sebastian/code-unit": "^3.0.1",
+                "sebastian/comparator": "^6.0.1",
+                "sebastian/diff": "^6.0.2",
+                "sebastian/environment": "^7.2.0",
+                "sebastian/exporter": "^6.1.3",
+                "sebastian/global-state": "^7.0.2",
+                "sebastian/object-enumerator": "^6.0.1",
+                "sebastian/type": "^5.0.1",
+                "sebastian/version": "^5.0.1"
             },
             "suggest": {
                 "ext-soap": "To be able to generate mocks based on WSDL files"
@@ -12334,7 +12358,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.6"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.8"
             },
             "funding": [
                 {
@@ -12350,20 +12374,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-03T05:51:49+00:00"
+            "time": "2024-07-18T14:56:37+00:00"
         },
         {
             "name": "rector/rector",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "2fa387553db22b6f9bcccf5ff16f2c2c18a52a65"
+                "reference": "b38a3eed3ce2046f40c001255e2fec9d2746bacf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/2fa387553db22b6f9bcccf5ff16f2c2c18a52a65",
-                "reference": "2fa387553db22b6f9bcccf5ff16f2c2c18a52a65",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/b38a3eed3ce2046f40c001255e2fec9d2746bacf",
+                "reference": "b38a3eed3ce2046f40c001255e2fec9d2746bacf",
                 "shasum": ""
             },
             "require": {
@@ -12401,7 +12425,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/1.2.0"
+                "source": "https://github.com/rectorphp/rector/tree/1.2.1"
             },
             "funding": [
                 {
@@ -12409,7 +12433,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-01T14:24:45+00:00"
+            "time": "2024-07-16T00:22:54+00:00"
         },
         {
             "name": "sebastian/cli-parser",
