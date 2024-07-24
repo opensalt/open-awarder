@@ -46,6 +46,7 @@
         "symfony/runtime": "*",
         "symfony/scheduler": "*",
         "symfony/security-bundle": "*",
+        "symfony/sendgrid-mailer": "7.1.*",
         "symfony/serializer": "*",
         "symfony/stimulus-bundle": "^2.15",
         "symfony/string": "*",

@@ -33,7 +33,7 @@ services:
       MERCURE_PUBLIC_URL: http://php.oas-default/.well-known/mercure
       # See https://xdebug.org/docs/all_settings#mode
       XDEBUG_MODE: "${XDEBUG_MODE:-off}"
-      MAILER_DSN: "smtp://mailer:1025"
+      MAILER_DSN: "${MAILER_DSN:-smtp://mailer:1025}"
     extra_hosts:
       # Ensure that host.docker.internal is correctly defined on Linux
       - host.docker.internal:host-gateway
