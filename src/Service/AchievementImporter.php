@@ -40,11 +40,16 @@ readonly class AchievementImporter
             unset($achievement['@context']);
         }
 
+        if (is_array($achievement['achievementType'] ?? null)) {
+            $achievement['achievementType'] = $achievement['achievementType'][0];
+        }
+
         if (null !== ($achievement['image'] ?? null) && null !== ($achievement['image']['id'] ?? null)) {
             $achievement['image'] = $achievement['image']['id'];
         }
 
         if (null === ($achievement['issuer'] ?? null)) {
+            // OB3 to CLR1 difference
             $achievement['issuer'] = [
                 'id' => 'urn:uuid:{{ awarder.id }}',
                 'name' => '{{ awarder.name }}',
@@ -67,10 +72,6 @@ readonly class AchievementImporter
             // OB3 to CLR1 difference
             $achievement['alignments'] = $achievement['alignment'];
             unset($achievement['alignment']);
-        }
-
-        if (is_array($achievement['achievementType'] ?? null)) {
-            $achievement['achievementType'] = $achievement['achievementType'][0];
         }
 
         if (null === $achievementDefinition) {

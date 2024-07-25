@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\DataTable\Type\AwardDataTableType;
 use App\Dto\MakeAward;
+use App\Entity\AchievementDefinition;
 use App\Entity\Award;
 use App\Entity\EmailTemplate;
 use App\Entity\EvidenceFile;
@@ -76,6 +77,7 @@ class AwardController extends AbstractController
             }
 
             $awarder = $form->get('awarder')->getData();
+            /** @var AchievementDefinition $achievement */
             $achievement = $form->get('achievement')->getData();
             $subject = $form->get('subject')->getData();
             $assertionId = Uuid::v7();
@@ -102,16 +104,34 @@ class AwardController extends AbstractController
                 $templateVars = array_merge($vars, ['awarder' => $awarder, 'achievement' => $achievement, 'subject' => $subject, 'context' => $context]);
 
                 $awardTemplate = $award->awardTemplate->getTemplate();
-                $resultDescriptions = ($achievement->getDefinition() ?? [])['resultDescriptions'] ?? [];
+                $achievementDefinition = $achievement->getDefinition() ?? [];
+                $resultDescriptions = $achievementtDefinition['resultDescription'] ?? $achievementDefinition['resultDescriptions'] ?? [];
                 if (null !== ($resultDescriptions[0]['name'] ?? null)) {
-                    $awardTemplate['clr']['assertions'][0]['results'] = [];
+                    if (null !== ($awardTemplate['clr']['assertions'] ?? null)) {
+                        // CLR1
+                        $awardTemplate['clr']['assertions'][0]['results'] = [];
 
-                    foreach ($resultDescriptions as $resultDescription) {
-                        if (null !== ($resultDescription['name'] ?? null)) {
-                            $awardTemplate['clr']['assertions'][0]['results'][] = [
-                                'resultDescription' => $resultDescription['id'],
-                                'value' => '{{ ' . u($resultDescription['name'])->camel()->title()->toString() . ' }}',
-                            ];
+                        foreach ($resultDescriptions as $resultDescription) {
+                            if (null !== ($resultDescription['name'] ?? null)) {
+                                $awardTemplate['clr']['assertions'][0]['results'][] = [
+                                    'resultDescription' => $resultDescription['id'],
+                                    'value' => '{{ ' . u($resultDescription['name'])->camel()->title()->toString() . ' }}',
+                                ];
+                            }
+                        }
+                    }
+
+                    if (null !== ($awardTemplate['clr']['credentialSubject'] ?? null)) {
+                        // CLR2
+                        $awardTemplate['clr']['credentialSubject']['verifiableCredential']['credentialSubject']['result'] = [];
+
+                        foreach ($resultDescriptions as $resultDescription) {
+                            if (null !== ($resultDescription['name'] ?? null)) {
+                                $awardTemplate['clr']['credentialSubject']['verifiableCredential']['credentialSubject']['result'][] = [
+                                    'resultDescription' => $resultDescription['id'],
+                                    'value' => '{{ ' . u($resultDescription['name'])->camel()->title()->toString() . ' }}',
+                                ];
+                            }
                         }
                     }
                 }

@@ -69,30 +69,57 @@ class OcpPublisher
 
         $evidence = $award->getEvidence();
 
-        $json['clr']['assertions'][0]['evidence'] = [];
+
+        $clrType = null;
+        $postUrl = null;
+        if (null !== ($awardTemplate['clr']['assertions'] ?? null)) {
+            $clrType = 1;
+            $postUrl = '/api/publish';
+        }
+        if (null !== ($awardTemplate['clr']['credentialSubject'] ?? null)) {
+            $clrType = 2;
+            $postUrl = '/api/publish/2_0';
+        }
+
+        $evidenceJson = [];
         foreach ($evidence as $file) {
             try {
                 $content = $this->evidenceStorage->read($this->storage->resolvePath($file));
-                $json['clr']['assertions'][0]['evidence'][] = [
-                    'name' => 'evidence',
-                    'description' => 'File containing evidence',
-                    'artifacts' => [
-                        [
-                            'name' => $file->getOriginalName(),
-                            'url' => 'data:'.$file->getMimetype().';base64,'.base64_encode($content),
+                $evidenceJson[] = match($clrType) {
+                    1 => [
+                        'name' => 'evidence',
+                        'description' => 'File containing evidence',
+                        'artifacts' => [
+                            [
+                                'name' => $file->getOriginalName(),
+                                'url' => 'data:'.$file->getMimetype().';base64,'.base64_encode($content),
+                            ],
                         ],
                     ],
-                ];
+                    2 => [
+                        'id' => 'data:'.$file->getMimetype().';base64,'.base64_encode($content),
+                        'type' => 'Evidence',
+                        'name' => $file->getOriginalName(),
+                        'description' => 'File containing evidence',
+                    ]
+                };
             } catch (\Throwable) {
                 // ignore
             }
         }
 
-        if (empty($json['clr']['assertions'][0]['evidence'])) {
-            unset($json['clr']['assertions'][0]['evidence']);
+        if (count($evidenceJson) > 0) {
+            switch ($clrType) {
+                case 1:
+                    $json['clr']['assertions'][0]['evidence'] = $evidenceJson;
+                    break;
+                case 2:
+                    $json['clr']['credentialSubject']['verifiableCredential']['evidence'] = $evidenceJson;
+                    break;
+            }
         }
 
-        $response = $this->authenticate($award->getAwarder())->request('POST', '/api/publish', [
+        $response = $this->authenticate($award->getAwarder())->request('POST', $postUrl, [
             'json' => $json,
         ]);
 

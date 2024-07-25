@@ -57,7 +57,7 @@ readonly class UpdateFieldsEventListener
     {
         return match ($entity::class) {
             AchievementDefinition::class => $this->twigVariables->getVariables($entity->getDefinitionString()),
-            AwardTemplate::class => $this->twigVariables->getVariables(json_encode($entity->getTemplate() ?? '', JSON_THROW_ON_ERROR)),
+            AwardTemplate::class => $this->twigVariables->getVariables(json_encode($entity->getTemplate() ?? '', JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)),
             EmailTemplate::class => $this->twigVariables->getVariables($entity->getTemplate() ?? ''),
             default => [],
         };
