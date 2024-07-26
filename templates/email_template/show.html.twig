@@ -5,22 +5,24 @@
 {% block body %}
     <h1>EmailTemplate</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ email_template.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ email_template.name }}</td>
-            </tr>
-            <tr>
-                <th>Template</th>
-                <td><pre>{{ email_template.template }}</pre></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="overflow-x-auto mb-1">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ email_template.id }}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ email_template.name }}</td>
+                </tr>
+                <tr>
+                    <th>Template</th>
+                    <td><pre>{{ email_template.template }}</pre></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <a class="btn btn-primary" href="{{ path('app_email_template_index') }}">Back to list</a>
 
