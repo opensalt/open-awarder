@@ -72,13 +72,13 @@ class OcpPublisher
 
         $clrType = null;
         $postUrl = null;
-        if (null !== ($awardTemplate['clr']['assertions'] ?? null)) {
+        if (null !== ($json['clr']['assertions'] ?? null)) {
             $clrType = 1;
-            $postUrl = '/api/publish';
+            $postUrl = '/api/publish/ThenPush';
         }
-        if (null !== ($awardTemplate['clr']['credentialSubject'] ?? null)) {
+        if (null !== ($json['clr']['credentialSubject'] ?? null)) {
             $clrType = 2;
-            $postUrl = '/api/publish/2_0';
+            $postUrl = '/api/publish/2_0/Push';
         }
 
         $evidenceJson = [];

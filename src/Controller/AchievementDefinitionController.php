@@ -96,9 +96,9 @@ class AchievementDefinitionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $importer->import($form->get('uri')->getData());
+                $achievementDefinition = $importer->import($form->get('uri')->getData());
 
-                return $this->redirectToRoute('app_achievement_definition_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_achievement_definition_edit', ['id' => $achievementDefinition->getId()], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
                 $form->addError(new FormError(message: $e->getMessage(), cause: $e));
             }

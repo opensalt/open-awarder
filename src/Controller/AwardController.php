@@ -105,36 +105,83 @@ class AwardController extends AbstractController
 
                 $awardTemplate = $award->awardTemplate->getTemplate();
                 $achievementDefinition = $achievement->getDefinition() ?? [];
-                $resultDescriptions = $achievementtDefinition['resultDescription'] ?? $achievementDefinition['resultDescriptions'] ?? [];
-                if (null !== ($resultDescriptions[0]['name'] ?? null)) {
-                    if (null !== ($awardTemplate['clr']['assertions'] ?? null)) {
-                        // CLR1
-                        $awardTemplate['clr']['assertions'][0]['results'] = [];
 
-                        foreach ($resultDescriptions as $resultDescription) {
-                            if (null !== ($resultDescription['name'] ?? null)) {
-                                $awardTemplate['clr']['assertions'][0]['results'][] = [
-                                    'resultDescription' => $resultDescription['id'],
-                                    'value' => '{{ ' . u($resultDescription['name'])->camel()->title()->toString() . ' }}',
-                                ];
-                            }
-                        }
+                // @context is not needed in the CLR achievement as it is already included in the outer template
+                if (null !== ($achievementDefinition['@context'] ?? null)) {
+                    unset($achievementDefinition['@context']);
+                }
+
+                // achievementType should be a single string, fix if it is an array
+                if (is_array($achievementDefinition['achievementType'] ?? null)) {
+                    $achievementDefinition['achievementType'] = $achievementDefinition['achievementType'][0];
+                }
+
+                // Convert to CLR1 if needed, otherwise CLR2
+                $clrType = null;
+                if (null !== ($awardTemplate['clr']['assertions'] ?? null)) {
+                    $clrType = 1;
+                    unset($achievementDefinition['type']);
+
+                    if (null !== ($achievementDefinition['image'] ?? null) && null !== ($achievementDefinition['image']['id'] ?? null)) {
+                        $achievementDefinition['image'] = $achievementDefinition['image']['id'];
                     }
 
-                    if (null !== ($awardTemplate['clr']['credentialSubject'] ?? null)) {
-                        // CLR2
-                        $awardTemplate['clr']['credentialSubject']['verifiableCredential']['credentialSubject']['result'] = [];
+                    if (null === ($achievementDefinition['issuer'] ?? null)) {
+                        // OB3 to CLR1 difference
+                        $achievementDefinition['issuer'] = [
+                            'id' => 'urn:uuid:{{ awarder.id }}',
+                            'name' => '{{ awarder.name }}',
+                        ];
+                    }
 
-                        foreach ($resultDescriptions as $resultDescription) {
-                            if (null !== ($resultDescription['name'] ?? null)) {
-                                $awardTemplate['clr']['credentialSubject']['verifiableCredential']['credentialSubject']['result'][] = [
-                                    'resultDescription' => $resultDescription['id'],
-                                    'value' => '{{ ' . u($resultDescription['name'])->camel()->title()->toString() . ' }}',
-                                ];
-                            }
+                    if (null !== ($achievementDefinition['criteria'] ?? null)) {
+                        // OB3 to CLR1 difference
+                        $achievementDefinition['requirement'] = $achievementDefinition['criteria'];
+                        unset($achievementDefinition['criteria']);
+                    }
+
+                    if (null !== ($achievementDefinition['resultDescription'] ?? null)) {
+                        // OB3 to CLR1 difference
+                        $achievementDefinition['resultDescriptions'] = $achievementDefinition['resultDescription'];
+                        unset($achievementDefinition['resultDescriptions']);
+                    }
+
+                    if (null !== ($achievementDefinition['alignment'] ?? null)) {
+                        // OB3 to CLR1 difference
+                        $achievementDefinition['alignments'] = $achievementDefinition['alignment'];
+                        unset($achievementDefinition['alignment']);
+                    }
+                }
+
+                if (null !== ($awardTemplate['clr']['credentialSubject'] ?? null)) {
+                    $clrType = 2;
+                }
+
+                $results = [];
+                $resultDescriptions = $achievementDefinition['resultDescription'] ?? $achievementDefinition['resultDescriptions'] ?? [];
+                if (null !== ($resultDescriptions[0]['name'] ?? null)) {
+                    foreach ($resultDescriptions as $resultDescription) {
+                        if (null !== ($resultDescription['name'] ?? null)) {
+                            $results[] = [
+                                'resultDescription' => $resultDescription['id'],
+                                'value' => '{{ ' . u($resultDescription['name'])->camel()->title()->toString() . ' }}',
+                            ];
                         }
                     }
                 }
+
+                if (count($results) > 0) {
+                    switch ($clrType) {
+                        case 1:
+                            $awardTemplate['clr']['assertions'][0]['results'] = $results;
+                            break;
+                        case 2:
+                            $awardTemplate['clr']['credentialSubject']['verifiableCredential']['credentialSubject']['result'] = $results;
+                            break;
+                    }
+                }
+
+                $achievement->setDefinition($achievementDefinition);
 
                 $template = $twig->createTemplate(preg_replace('/("~|~")/', '', json_encode($awardTemplate, JSON_THROW_ON_ERROR)));
                 $renderedTemplate = $template->render($templateVars);
