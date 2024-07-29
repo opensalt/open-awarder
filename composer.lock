@@ -1611,34 +1611,35 @@
         },
         {
             "name": "ecotone/ecotone",
-            "version": "1.225.0",
+            "version": "1.226.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecotoneframework/ecotone.git",
-                "reference": "318afa847e94db428113a3fc93e17a28e41ca8d0"
+                "reference": "371d1b5b101acdc3fe6168cbabdbef0cd05afe0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecotoneframework/ecotone/zipball/318afa847e94db428113a3fc93e17a28e41ca8d0",
-                "reference": "318afa847e94db428113a3fc93e17a28e41ca8d0",
+                "url": "https://api.github.com/repos/ecotoneframework/ecotone/zipball/371d1b5b101acdc3fe6168cbabdbef0cd05afe0a",
+                "reference": "371d1b5b101acdc3fe6168cbabdbef0cd05afe0a",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp/proxy-manager-lts": "^1.0.12",
+                "laminas/laminas-code": "^4",
                 "php": "^8.0",
+                "psr/container": "^1.1.1|^2.0.1",
                 "psr/log": "^2.0|^3.0",
                 "ramsey/uuid": "^4.0"
             },
             "require-dev": {
                 "behat/behat": "^3.10",
                 "phpstan/phpstan": "^1.8",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "^9.6",
                 "symfony/expression-language": "^6.0|^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.225.0-dev"
+                    "dev-main": "1.226.0-dev"
                 },
                 "ecotone": {
                     "repository": "ecotone"
@@ -1689,7 +1690,7 @@
                 "service-bus"
             ],
             "support": {
-                "source": "https://github.com/ecotoneframework/ecotone/tree/1.225.0"
+                "source": "https://github.com/ecotoneframework/ecotone/tree/1.226.0"
             },
             "funding": [
                 {
@@ -1697,48 +1698,50 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-19T18:39:07+00:00"
+            "time": "2024-07-27T19:20:37+00:00"
         },
         {
             "name": "ecotone/symfony-bundle",
-            "version": "1.225.0",
+            "version": "1.226.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ecotoneframework/symfony-bundle.git",
-                "reference": "1bed4016942f846ec00b34b7b6db13fda79badd5"
+                "reference": "5f8d7bb012f1acca48f40c4b7755cca30785832e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ecotoneframework/symfony-bundle/zipball/1bed4016942f846ec00b34b7b6db13fda79badd5",
-                "reference": "1bed4016942f846ec00b34b7b6db13fda79badd5",
+                "url": "https://api.github.com/repos/ecotoneframework/symfony-bundle/zipball/5f8d7bb012f1acca48f40c4b7755cca30785832e",
+                "reference": "5f8d7bb012f1acca48f40c4b7755cca30785832e",
                 "shasum": ""
             },
             "require": {
-                "ecotone/ecotone": "~1.225.0",
-                "laminas/laminas-zendframework-bridge": "^1.0.0",
+                "ecotone/ecotone": "~1.226.0",
                 "symfony/console": "^5.4|^6.0|^7.0",
                 "symfony/dependency-injection": ">=v5.4.19 <6.0.0 || >=v6.0.19 <6.1.0 || >=v6.1.11 <6.2.0 || >=v6.2.5 <7.0.0 || >=v7.0.0 <8.0.0",
                 "symfony/framework-bundle": "^5.4|^6.0|^7.0"
             },
+            "conflict": {
+                "symfony/proxy-manager-bridge": "<5.4.0"
+            },
             "require-dev": {
                 "behat/behat": "^3.10",
                 "doctrine/doctrine-bundle": "^2.7.2",
-                "doctrine/orm": "^2.0|^3.0",
-                "ecotone/dbal": "~1.225.0",
+                "doctrine/orm": "^2.11|^3.0",
+                "ecotone/dbal": "~1.226.0",
                 "friends-of-behat/symfony-extension": "<=2.4.2|^2.5",
                 "monolog/monolog": "^2.9|^3.3.1",
                 "phpstan/phpstan": "^1.8",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "^9.6",
                 "symfony/amqp-messenger": "^5.4.31|^6.0|^7.0",
                 "symfony/doctrine-messenger": "^5.4|^6.0|^7.0",
                 "symfony/expression-language": "^6.0|^7.0",
                 "symfony/messenger": "^5.4|^6.0|^7.0",
-                "wikimedia/composer-merge-plugin": "^2.0"
+                "wikimedia/composer-merge-plugin": "^2.1"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.225.0-dev"
+                    "dev-main": "1.226.0-dev"
                 },
                 "ecotone": {
                     "repository": "symfony"
@@ -1790,7 +1793,7 @@
                 "symfony"
             ],
             "support": {
-                "source": "https://github.com/ecotoneframework/symfony-bundle/tree/1.225.0"
+                "source": "https://github.com/ecotoneframework/symfony-bundle/tree/1.226.0"
             },
             "funding": [
                 {
@@ -1798,7 +1801,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-19T18:39:08+00:00"
+            "time": "2024-07-27T19:20:30+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -1938,88 +1941,6 @@
                 }
             ],
             "time": "2024-05-08T08:09:28+00:00"
-        },
-        {
-            "name": "friendsofphp/proxy-manager-lts",
-            "version": "v1.0.18",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfPHP/proxy-manager-lts.git",
-                "reference": "2c8a6cffc3220e99352ad958fe7cf06bf6f7690f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/proxy-manager-lts/zipball/2c8a6cffc3220e99352ad958fe7cf06bf6f7690f",
-                "reference": "2c8a6cffc3220e99352ad958fe7cf06bf6f7690f",
-                "shasum": ""
-            },
-            "require": {
-                "laminas/laminas-code": "~3.4.1|^4.0",
-                "php": ">=7.1",
-                "symfony/filesystem": "^4.4.17|^5.0|^6.0|^7.0"
-            },
-            "conflict": {
-                "laminas/laminas-stdlib": "<3.2.1",
-                "zendframework/zend-stdlib": "<3.2.1"
-            },
-            "replace": {
-                "ocramius/proxy-manager": "^2.1"
-            },
-            "require-dev": {
-                "ext-phar": "*",
-                "symfony/phpunit-bridge": "^5.4|^6.0|^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "name": "ocramius/proxy-manager",
-                    "url": "https://github.com/Ocramius/ProxyManager"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ProxyManager\\": "src/ProxyManager"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com",
-                    "homepage": "https://ocramius.github.io/"
-                },
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                }
-            ],
-            "description": "Adding support for a wider range of PHP versions to ocramius/proxy-manager",
-            "homepage": "https://github.com/FriendsOfPHP/proxy-manager-lts",
-            "keywords": [
-                "aop",
-                "lazy loading",
-                "proxy",
-                "proxy pattern",
-                "service proxies"
-            ],
-            "support": {
-                "issues": "https://github.com/FriendsOfPHP/proxy-manager-lts/issues",
-                "source": "https://github.com/FriendsOfPHP/proxy-manager-lts/tree/v1.0.18"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/Ocramius",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/ocramius/proxy-manager",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-03-20T12:50:41+00:00"
         },
         {
             "name": "jms/metadata",
@@ -2212,69 +2133,6 @@
                 }
             ],
             "time": "2024-06-17T08:50:25+00:00"
-        },
-        {
-            "name": "laminas/laminas-zendframework-bridge",
-            "version": "1.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
-                "reference": "eb0d96c708b92177a92bc2239543d3ed523452c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/eb0d96c708b92177a92bc2239543d3ed523452c6",
-                "reference": "eb0d96c708b92177a92bc2239543d3ed523452c6",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^10.4",
-                "psalm/plugin-phpunit": "^0.18.0",
-                "squizlabs/php_codesniffer": "^3.7.1",
-                "vimeo/psalm": "^5.16.0"
-            },
-            "type": "library",
-            "extra": {
-                "laminas": {
-                    "module": "Laminas\\ZendFrameworkBridge"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/autoload.php"
-                ],
-                "psr-4": {
-                    "Laminas\\ZendFrameworkBridge\\": "src//"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Alias legacy ZF class names to Laminas Project equivalents.",
-            "keywords": [
-                "ZendFramework",
-                "autoloading",
-                "laminas",
-                "zf"
-            ],
-            "support": {
-                "forum": "https://discourse.laminas.dev/",
-                "issues": "https://github.com/laminas/laminas-zendframework-bridge/issues",
-                "rss": "https://github.com/laminas/laminas-zendframework-bridge/releases.atom",
-                "source": "https://github.com/laminas/laminas-zendframework-bridge"
-            },
-            "funding": [
-                {
-                    "url": "https://funding.communitybridge.org/projects/laminas-project",
-                    "type": "community_bridge"
-                }
-            ],
-            "abandoned": true,
-            "time": "2023-11-24T13:56:19+00:00"
         },
         {
             "name": "lcobucci/jwt",

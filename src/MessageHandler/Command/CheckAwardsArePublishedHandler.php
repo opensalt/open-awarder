@@ -34,7 +34,7 @@ final readonly class CheckAwardsArePublishedHandler
             $award->setLastUpdated(new \DateTimeImmutable());
             $this->awardRepository->save($award);
 
-            if (($status['status'] ?? null) === OcpRequestStatus::Complete->value) {
+            if ((($status['status'] ?? null) === OcpRequestStatus::Complete->value) && in_array(($status['pushed'] ?? null), [null, true], true)) {
                 $this->awardRepository->updateWorkflowStatus($award->getId(), AwardState::OcpProcessed);
 
                 $this->bus->dispatch(new AwardWasProcessedEvent($award->getId()), [
