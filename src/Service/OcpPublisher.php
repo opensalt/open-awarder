@@ -98,7 +98,7 @@ class OcpPublisher
                     ],
                     2 => [
                         'id' => 'data:'.$file->getMimetype().';base64,'.base64_encode($content),
-                        'type' => 'Evidence',
+                        'type' => ['Evidence'],
                         'name' => $file->getOriginalName(),
                         'description' => 'File containing evidence',
                     ]
@@ -114,7 +114,7 @@ class OcpPublisher
                     $json['clr']['assertions'][0]['evidence'] = $evidenceJson;
                     break;
                 case 2:
-                    $json['clr']['credentialSubject']['verifiableCredential']['evidence'] = $evidenceJson;
+                    $json['clr']['credentialSubject']['verifiableCredential'][0]['evidence'] = $evidenceJson;
                     break;
             }
         }
