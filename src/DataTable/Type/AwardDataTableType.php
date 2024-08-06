@@ -48,6 +48,7 @@ class AwardDataTableType extends AbstractDataTableType
                 'property_path' => 'dateIssued',
                 'format' => 'Y-m-d H:i:s',
                 'sort' => 'id',
+                'value_attr' => ['class' => 'date-issued'],
             ])
             ->addColumn('state', TextColumnType::class, [
                 'label' => 'State',

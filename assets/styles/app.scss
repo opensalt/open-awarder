@@ -12,3 +12,8 @@ $cyan:    #62b5e5 !default;
 @import 'bootswatch/spacelab/_variables';
 @import '../../vendor/twbs/bootstrap/scss/bootstrap';
 @import 'bootswatch/spacelab/_bootswatch';
+
+.table-responsive th,
+td .date-issued {
+    white-space: nowrap;
+}
