@@ -69,5 +69,5 @@
     </body>
 </html>
 {% macro navItem(name, route, current_route) %}
-    <li class="nav-item"><a href="{{ path(route)}}" class="nav-link {% if route == current_route %}link-light active{% else %}link-dark{% endif %}">{{ name }}</a></li>
+    <li class="nav-item"><a href="{{ path(route)}}" class="nav-link {% if route == current_route %}link-light active{% else %}link-dark{% endif %}"{% if route == current_route %} aria-current="page" {% endif %}>{{ name }}</a></li>
 {% endmacro %}
