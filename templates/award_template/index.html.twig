@@ -17,7 +17,7 @@
             {% for award_template in award_templates %}
                 <tr>
                     <td>{{ award_template.name }}</td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" href="{{ path('app_award_template_show', {'id': award_template.id}) }}">Show</a>
                         <a class="btn btn-secondary" href="{{ path('app_award_template_edit', {'id': award_template.id}) }}">Edit</a>
                     </td>

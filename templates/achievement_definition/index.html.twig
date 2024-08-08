@@ -19,7 +19,7 @@
                 <tr>
                     <td>{{ achievement_definition.name }}</td>
                     <td>{{ achievement_definition.uri }}</td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" href="{{ path('app_achievement_definition_show', {'id': achievement_definition.id}) }}">Show</a>
                         <a class="btn btn-secondary" href="{{ path('app_achievement_definition_edit', {'id': achievement_definition.id}) }}">Edit</a>
                     </td>

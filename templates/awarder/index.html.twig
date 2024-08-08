@@ -21,7 +21,7 @@
                     <td>{{ awarder.name }}</td>
                     <td>{{ awarder.description }}</td>
                     <td>{{ awarder.issuerId }}</td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" href="{{ path('app_awarder_show', {'id': awarder.id}) }}">Show</a>
                         <a class="btn btn-secondary" href="{{ path('app_awarder_edit', {'id': awarder.id}) }}">Edit</a>
                     </td>

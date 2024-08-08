@@ -17,7 +17,7 @@
             {% for email_template in email_templates %}
                 <tr>
                     <td>{{ email_template.name }}</td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" href="{{ path('app_email_template_show', {'id': email_template.id}) }}">Show</a>
                         <a class="btn btn-secondary" href="{{ path('app_email_template_edit', {'id': email_template.id}) }}">Edit</a>
                     </td>

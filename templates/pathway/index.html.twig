@@ -17,7 +17,7 @@
             {% for pathway in pathways %}
                 <tr>
                     <td>{{ pathway.name }}</td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" href="{{ path('app_pathway_show', {'id': pathway.id}) }}">Show</a>
                         <a class="btn btn-secondary" href="{{ path('app_pathway_edit', {'id': pathway.id}) }}">Edit</a>
                     </td>

@@ -27,7 +27,7 @@
                     <td>{{ participant.subscribedPathway.name }}</td>
                     <td><i class="{{ participant.acceptedTerms ? 'bi bi-check text-success' : 'bi bi-x-octagon-fill text-danger' }}"></i></td>
                     <td>{{ participant.state.name }}</td>
-                    <td>
+                    <td class="text-nowrap">
                         <a class="btn btn-primary" href="{{ path('app_participant_show', {'id': participant.id}) }}">Show</a>
                         <a class="btn btn-secondary" href="{{ path('app_participant_edit', {'id': participant.id}) }}">Edit</a>
                     </td>
