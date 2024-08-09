@@ -40,8 +40,14 @@
 
     {{ form_row(form.attachments) }}
 
+    {{ form_row(form.awarders) }}
 
-    <button class="btn btn-primary float-end">{{ button_label|default('Update') }}</button>
+    <div>
+        <button type="submit" class="btn btn-primary float-end">{{ button_label|default('Update') }}</button>
+        {% do form.saveAndContinue.setRendered %}
+        <button type="submit" name="email_template[saveAndContinue]" class="btn btn-primary me-2 float-end">{{ button_label|default('Save and Continue') }}</button>
+    </div>
+
     {{ form_end(form) }}
 
     <a class="btn btn-secondary" href="{{ path('app_email_template_index') }}">Back to list</a>

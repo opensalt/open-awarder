@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Awarder;
 use App\Entity\EmailAttachment;
 use App\Entity\EmailTemplate;
 use App\Form\EmailTemplateType;
@@ -100,6 +99,9 @@ class EmailTemplateController extends AbstractController
 
             $entityManager->flush();
 
+            if ($form->get('saveAndContinue')->isClicked()) {
+                return $this->redirectToRoute('app_email_template_edit', ['id' => $emailTemplate->getId()], Response::HTTP_SEE_OTHER);
+            }
             return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
         }
 
