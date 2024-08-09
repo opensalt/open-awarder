@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Awarder;
 use App\Entity\EmailAttachment;
 use App\Entity\EmailTemplate;
 use App\Form\EmailTemplateType;
@@ -106,6 +107,44 @@ class EmailTemplateController extends AbstractController
             'email_template' => $emailTemplate,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/{id}/duplicate', name: 'app_email_template_duplicate', methods: ['POST'])]
+    public function duplicate(Request $request, EmailTemplate $emailTemplate, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('duplicate'.$emailTemplate->getId(), $request->getPayload()->get('_token'))) {
+            $copy = new EmailTemplate();
+            $copy->setName($emailTemplate->getName().' - Copy '.\uniqid(''));
+            $copy->setFrom($emailTemplate->getFrom());
+            $copy->setSubject($emailTemplate->getSubject());
+            $copy->setTemplate($emailTemplate->getTemplate());
+            $copy->setFields($emailTemplate->getFields());
+            foreach ($emailTemplate->getAwarders() as $awarder) {
+                $copy->addAwarder($awarder);
+                $awarder->addEmailTemplate($copy);
+            }
+            foreach ($emailTemplate->getAttachments() as $attachment) {
+                $copyAttachment = new EmailAttachment();
+                $copyAttachment->setTemplate($copy);
+                $copyAttachment->setFile($attachment->getFile());
+                $copyAttachment->setName($attachment->getName());
+                $copyAttachment->setSize($attachment->getSize());
+                $copyAttachment->setMimetype($attachment->getMimetype());
+                $copyAttachment->setOriginalName($attachment->getOriginalName());
+                $copyAttachment->setDimensions($attachment->getDimensions());
+
+                $copy->addAttachment($copyAttachment);
+                $entityManager->persist($copyAttachment);
+            }
+
+            $entityManager->persist($copy);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_email_template_edit', ['id' => $copy->getId()], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->redirectToRoute('app_email_template_show', ['id' => $emailTemplate->getId()], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}', name: 'app_email_template_delete', methods: ['POST'])]
