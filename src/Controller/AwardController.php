@@ -299,7 +299,7 @@ class AwardController extends AbstractController
     #[Route('/{id}', name: 'app_award_delete', methods: ['POST'])]
     public function delete(Request $request, Award $award, EntityManagerInterface $entityManager): Response
     {
-        if ($award->getState() !== AwardState::Pending) {
+        if (!$award->canDelete()) {
             return $this->redirectToRoute('app_award_index', [], Response::HTTP_SEE_OTHER);
         }
 
