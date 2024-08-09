@@ -4,16 +4,27 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\AchievementDefinition;
+use App\Entity\Awarder;
 use App\Entity\EmailAttachment;
 use App\Entity\EmailTemplate;
+use App\Entity\Participant;
+use App\Enums\ParticipantState;
 use App\Form\EmailTemplateType;
 use App\Repository\EmailTemplateRepository;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Lcobucci\JWT\Exception;
+use League\Flysystem\FilesystemOperator;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Uuid;
+use Twig\Environment;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 #[Route('/template/email')]
 #[IsGranted('ROLE_ADMIN')]
@@ -158,5 +169,124 @@ class EmailTemplateController extends AbstractController
         }
 
         return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/preview', name: 'app_email_template_preview_setup', methods: ['GET'])]
+    public function previewSetup(EmailTemplate $emailTemplate, Environment $twig, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createFormBuilder([])
+            ->add('awarder', EntityType::class, [
+                'class' => Awarder::class,
+                'query_builder' => static fn($er) => $er->createQueryBuilder('a')
+                    ->addOrderBy('a.name', 'ASC'),
+                'choice_label' => 'name',
+                'required' => false,
+                'translation_domain' => false,
+                'placeholder' => 'Select the awarder',
+                'attr' => ['onchange' => 'updatePreview()'],
+            ])
+            ->add('achievement', EntityType::class, [
+                'class' => AchievementDefinition::class,
+                'query_builder' => static fn($er) => $er->createQueryBuilder('a')
+                    ->addOrderBy('a.name', 'ASC'),
+                'choice_label' => 'name',
+                'required' => false,
+                'translation_domain' => false,
+                'placeholder' => 'Select the achievement being awarded',
+                'attr' => ['onchange' => 'updatePreview()'],
+            ])
+            ->add('participant', EntityType::class, [
+                'class' => Participant::class,
+                'choice_label' => static fn(Participant $participant): string => $participant->getFirstName().' '.$participant->getLastName().' - '.$participant->getEmail(),
+                'query_builder' => static fn($er) => $er->createQueryBuilder('p')
+                    ->where('p.state = :state')
+                    ->setParameter('state', ParticipantState::Active)
+                    ->andWhere('p.acceptedTerms = true')
+                    ->orderBy('p.lastName', 'ASC')
+                    ->addOrderBy('p.firstName', 'ASC')
+                    ->addOrderBy('p.email', 'ASC'),
+                'required' => false,
+                'translation_domain' => false,
+                'placeholder' => 'Select the person the award is to',
+                'attr' => ['onchange' => 'updatePreview()'],
+            ])
+            ->getForm();
+
+        return $this->render('email_template/preview.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/{id:emailTemplate}/preview/{awarder}/{achievement}/{subject}', name: 'app_email_template_preview', methods: ['GET'])]
+    public function preview(
+        EmailTemplate $emailTemplate,
+        ?Awarder $awarder,
+        ?AchievementDefinition $achievement,
+        ?Participant $subject,
+        Environment $twig,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $response = new Response();
+
+        try {
+            $assertionId = Uuid::v7();
+            $clrId = Uuid::v5(Uuid::fromString('018e5209-5518-757b-8cc1-6fb5f378a7ff'), $assertionId->toRfc4122());
+
+            $credentialIds = [];
+
+            if (null !== $subject) {
+                /** @var ParticipantRepository $participantRepo */
+                $participantRepo = $entityManager->getRepository(Participant::class);
+                $credentialIds = $participantRepo->getAchievementsForParticipant($subject);
+            }
+
+            if (null !== $achievement) {
+                $credentialIds[] = $achievement->getIdentifier();
+            }
+
+            $context = [
+                'issuedOn' => new \DateTimeImmutable(),
+                'assertionId' => 'urn:uuid:' . $assertionId->toRfc4122(),
+                'clrId' => 'urn:uuid:' . $clrId->toRfc4122(),
+                'requestIdentity' => Uuid::v7()->toRfc4122(),
+                'pathway' => $subject?->getSubscribedPathway()->getName(),
+                'pathwayEmailTemplate' => $subject?->getSubscribedPathway()->getEmailTemplate(),
+                'pathwayFinalCredential' => $subject?->getSubscribedPathway()->getFinalCredential()->getIdentifier(),
+                'credentialIds' => $credentialIds,
+            ];
+            $templateVars = array_merge(['awarder' => $awarder, 'achievement' => $achievement, 'subject' => $subject, 'context' => $context]);
+
+            $template = $twig->createTemplate($emailTemplate->getTemplate());
+            $content = $template->render($templateVars);
+            // 2nd pass to replace variables that had variables in their content
+            $template = $twig->createTemplate($content);
+            $content = $template->render([]);
+
+            $content = preg_replace('#\bcid:#', 'preview/', $content);
+
+            $response->setContent($content);
+        } catch (\Throwable $e) {
+            $response = new Response($e->getMessage(), 402);
+        }
+
+        return $response;
+    }
+
+    #[Route('/{id:emailTemplate}/preview/{awarder}/{achievement}/{participant}/{filename}', name: 'app_email_template_preview_file', methods: ['GET'])]
+    public function previewFile(EmailTemplate $emailTemplate, string $filename, StorageInterface $storage, FilesystemOperator $evidenceStorage): Response
+    {
+        foreach ($emailTemplate->getAttachments() as $attachment) {
+            if ($attachment->getOriginalName() === $filename) {
+                $content = $evidenceStorage->read($storage->resolvePath($attachment));
+                $response = new Response();
+                $response->headers->set('Content-Type', $attachment->getMimetype());
+                $response->setContent($content);
+
+                return $response;
+            }
+        }
+
+        return new Response('No file found', 404);
     }
 }
