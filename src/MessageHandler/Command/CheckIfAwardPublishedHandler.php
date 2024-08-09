@@ -44,6 +44,18 @@ readonly final class CheckIfAwardPublishedHandler
             $award->setAcceptUrl($status['url'] ?? null);
             $this->awardRepository->save($award);
 
+            if (($status['hasError'] ?? null) === true) {
+                $this->awardRepository->updateWorkflowStatus($award->getId(), AwardState::Failed);
+
+                return;
+            }
+
+            if (($status['status'] ?? null) === OcpRequestStatus::PushFailed->value) {
+                $this->awardRepository->updateWorkflowStatus($award->getId(), AwardState::Failed);
+
+                return;
+            }
+
             if ((($status['status'] ?? null) === OcpRequestStatus::Complete->value) && in_array(($status['pushed'] ?? null), [null, true], true)) {
                 $this->awardRepository->updateWorkflowStatus($award->getId(), AwardState::OcpProcessed);
 
