@@ -8,6 +8,7 @@ use App\DataTable\Type\AwardDataTableType;
 use App\Dto\MakeAward;
 use App\Entity\AchievementDefinition;
 use App\Entity\Award;
+use App\Entity\Awarder;
 use App\Entity\EmailTemplate;
 use App\Entity\EvidenceFile;
 use App\Entity\Participant;
@@ -76,17 +77,19 @@ class AwardController extends AbstractController
                 ]);
             }
 
+            /** @var Awarder $awarder */
             $awarder = $form->get('awarder')->getData();
             /** @var AchievementDefinition $achievement */
             $achievement = $form->get('achievement')->getData();
+            /** @var Participant $subject */
             $subject = $form->get('subject')->getData();
             $assertionId = Uuid::v7();
             $clrId = Uuid::v5(Uuid::fromString('018e5209-5518-757b-8cc1-6fb5f378a7ff'), $assertionId->toRfc4122());
 
             /** @var ParticipantRepository $participantRepo */
             $participantRepo = $entityManager->getRepository(Participant::class);
-            $credentials = $participantRepo->getAchievementsForParticipant($subject);
-            $credentials[] = $achievement->getIdentifier();
+            $credentialIds = $participantRepo->getAchievementsForParticipant($subject);
+            $credentialIds[] = $achievement->getIdentifier();
 
             $templateErrored = false;
             $awardTemplate = null;
@@ -97,8 +100,10 @@ class AwardController extends AbstractController
                     'assertionId' => 'urn:uuid:' . $assertionId->toRfc4122(),
                     'clrId' => 'urn:uuid:' . $clrId->toRfc4122(),
                     'requestIdentity' => Uuid::v7()->toRfc4122(),
-                    'pathway' => $subject->getSubscribedPathway()->getEmailTemplate(),
-                    'credentialIds' => $credentials,
+                    'pathway' => $subject->getSubscribedPathway()->getName(),
+                    'pathwayEmailTemplate' => $subject->getSubscribedPathway()->getEmailTemplate(),
+                    'pathwayFinalCredential' => $subject->getSubscribedPathway()->getFinalCredential()->getIdentifier(),
+                    'credentialIds' => $credentialIds,
                 ];
                 $vars = $form->get('vars')->getData();
                 $templateVars = array_merge($vars, ['awarder' => $awarder, 'achievement' => $achievement, 'subject' => $subject, 'context' => $context]);
