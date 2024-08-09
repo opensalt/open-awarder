@@ -26,13 +26,17 @@ readonly class AchievementImporter
 
         $achievement = $response->toArray();
 
+        if (null === ($achievement['id'] ?? null)) {
+            throw new \InvalidArgumentException('URL does not point to an achievement');
+        }
+
         $achievementDefinition = $this->achievementDefinitionRepository->findOneBy(['uri' => $achievement['id']]);
 
         if (null !== $achievementDefinition) {
             throw new \InvalidArgumentException('This achievement is already in the system.');
         }
 
-        if ('Achievement' !== $achievement['type'] && !in_array('Achievement', $achievement['type'] ?? [])) {
+        if ('Achievement' !== ($achievement['type'] ?? '') && !in_array('Achievement', $achievement['type'] ?? [])) {
            throw new \InvalidArgumentException('URL does not point to an achievement');
         }
 
