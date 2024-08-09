@@ -7,6 +7,8 @@ services:
       - database
     restart: unless-stopped
     environment:
+      FRANKENPHP_CONFIG: worker ./public/index.php
+      APP_RUNTIME: 'Runtime\FrankenPhpSymfony\Runtime'
       SERVER_NAME: ${SERVER_NAME:-localhost}, :80
       MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
