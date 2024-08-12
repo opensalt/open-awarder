@@ -14,7 +14,6 @@ use App\Form\EmailTemplateType;
 use App\Repository\EmailTemplateRepository;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Lcobucci\JWT\Exception;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -110,9 +109,11 @@ class EmailTemplateController extends AbstractController
 
             $entityManager->flush();
 
+            /* @phpstan-ignore method.notFound */
             if ($form->get('saveAndContinue')->isClicked()) {
                 return $this->redirectToRoute('app_email_template_edit', ['id' => $emailTemplate->getId()], Response::HTTP_SEE_OTHER);
             }
+
             return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -235,13 +236,13 @@ class EmailTemplateController extends AbstractController
 
             $credentialIds = [];
 
-            if (null !== $subject) {
+            if ($subject instanceof Participant) {
                 /** @var ParticipantRepository $participantRepo */
                 $participantRepo = $entityManager->getRepository(Participant::class);
                 $credentialIds = $participantRepo->getAchievementsForParticipant($subject);
             }
 
-            if (null !== $achievement) {
+            if ($achievement instanceof AchievementDefinition) {
                 $credentialIds[] = $achievement->getIdentifier();
             }
 
@@ -255,7 +256,7 @@ class EmailTemplateController extends AbstractController
                 'pathwayFinalCredential' => $subject?->getSubscribedPathway()->getFinalCredential()->getIdentifier(),
                 'credentialIds' => $credentialIds,
             ];
-            $templateVars = array_merge(['awarder' => $awarder, 'achievement' => $achievement, 'subject' => $subject, 'context' => $context]);
+            $templateVars = ['awarder' => $awarder, 'achievement' => $achievement, 'subject' => $subject, 'context' => $context];
 
             $template = $twig->createTemplate($emailTemplate->getTemplate());
             $content = $template->render($templateVars);
@@ -266,8 +267,8 @@ class EmailTemplateController extends AbstractController
             $content = preg_replace('#\bcid:#', 'preview/', $content);
 
             $response->setContent($content);
-        } catch (\Throwable $e) {
-            $response = new Response($e->getMessage(), 402);
+        } catch (\Throwable $throwable) {
+            $response = new Response($throwable->getMessage(), Response::HTTP_PAYMENT_REQUIRED);
         }
 
         return $response;
@@ -287,6 +288,6 @@ class EmailTemplateController extends AbstractController
             }
         }
 
-        return new Response('No file found', 404);
+        return new Response('No file found', Response::HTTP_NOT_FOUND);
     }
 }
