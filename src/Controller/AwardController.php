@@ -181,7 +181,7 @@ class AwardController extends AbstractController
                             $awardTemplate['clr']['assertions'][0]['results'] = $results;
                             break;
                         case 2:
-                            $awardTemplate['clr']['credentialSubject']['verifiableCredential']['credentialSubject']['result'] = $results;
+                            $awardTemplate['clr']['credentialSubject']['verifiableCredential'][0]['credentialSubject']['result'] = $results;
                             break;
                     }
                 }
