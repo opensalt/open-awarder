@@ -130,7 +130,8 @@ class MakeAwardForm extends AbstractType
                 $awardVars = $this->twigVariables->getVariables(json_encode($awardTemplate->getTemplate(), JSON_THROW_ON_ERROR));
                 $emailVars = $this->twigVariables->getVariables($emailTemplate?->getTemplate());
                 $achievementVars = $this->twigVariables->getVariables($achievement->getDefinitionString());
-                $resultDescriptions = ($achievement->getDefinition() ?? [])['resultDescriptions'] ?? [];
+                $achievementDefinition = $achievement->getDefinition() ?? [];
+                $resultDescriptions = $achievementDefinition['resultDescription'] ?? $achievementDefinition['resultDescriptions'] ?? [];
                 foreach ($resultDescriptions as $resultDescription) {
                     if (null !== ($resultDescription['name'] ?? null)) {
                         $achievementVars[u($resultDescription['name'])->camel()->title()->toString()] = null;
