@@ -33,9 +33,10 @@ readonly class TwigVariables
             && false === $node->getAttribute('always_defined') // ignore scoped names as (key, value) in for loop
         ) {
             $varName = $node->getAttribute('name');
-            if (str_starts_with($varName, '_')) {
+            if (str_starts_with((string) $varName, '_')) {
                 return;
             }
+
             $variables[$varName] = null;
 
             return;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
 use App\Enums\AwardState;
@@ -23,11 +25,12 @@ class SendAwardEmailCommand extends Command
 {
     public function __construct(
         private readonly AwardRepository $awardRepository,
-        private MessageBusInterface $bus,
+        private readonly MessageBusInterface $bus,
     ) {
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure(): void
     {
         $this
@@ -35,6 +38,7 @@ class SendAwardEmailCommand extends Command
         ;
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);

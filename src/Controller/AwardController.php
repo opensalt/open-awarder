@@ -175,7 +175,7 @@ class AwardController extends AbstractController
                     }
                 }
 
-                if (count($results) > 0) {
+                if ($results !== []) {
                     switch ($clrType) {
                         case 1:
                             $awardTemplate['clr']['assertions'][0]['results'] = $results;

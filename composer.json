@@ -128,6 +128,11 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.5",
         "fakerphp/faker": "^1.23",
+        "phpstan/phpstan": "^1.11",
+        "phpstan/phpstan-deprecation-rules": "^1.2",
+        "phpstan/phpstan-doctrine": "^1.5",
+        "phpstan/phpstan-symfony": "^1.4",
+        "phpstan/phpstan-webmozart-assert": "^1.2",
         "phpunit/phpunit": "^9.5 || ^11.0",
         "rector/rector": "^1.0",
         "symfony/browser-kit": "*",

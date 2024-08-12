@@ -37,7 +37,7 @@ return RectorConfig::configure()
     )
     ->withSets([
         \Rector\Set\ValueObject\LevelSetList::UP_TO_PHP_83,
-        \Rector\Symfony\Set\SymfonySetList::SYMFONY_64,
+        \Rector\Symfony\Set\SymfonySetList::SYMFONY_71,
         \Rector\Symfony\Set\SymfonySetList::SYMFONY_CODE_QUALITY,
     ])
     ->withImportNames(true, true, false, true)

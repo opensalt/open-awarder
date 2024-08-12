@@ -169,7 +169,7 @@ class ParticipantController extends AbstractController implements ResetInterface
             'Content-Disposition',
             $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'participants.csv')
         );
-        $response->setCallback(function () use ($repo) {
+        $response->setCallback(function () use ($repo): void {
             $fd = fopen('php://output', 'w+');
 
             fputcsv($fd, [
@@ -196,6 +196,7 @@ class ParticipantController extends AbstractController implements ResetInterface
                     $participant->getAboutMe(),
                 ]);
             }
+
             fclose($fd);
         });
 
@@ -217,6 +218,7 @@ class ParticipantController extends AbstractController implements ResetInterface
         return $this->pathways[$name];
     }
 
+    #[\Override]
     public function reset(): void
     {
         $this->pathways = [];

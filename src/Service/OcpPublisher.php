@@ -76,6 +76,7 @@ class OcpPublisher
             $clrType = 1;
             $postUrl = '/api/publish/ThenPush';
         }
+
         if (null !== ($json['clr']['credentialSubject'] ?? null)) {
             $clrType = 2;
             $postUrl = '/api/publish/2_0/Push';
@@ -108,7 +109,7 @@ class OcpPublisher
             }
         }
 
-        if (count($evidenceJson) > 0) {
+        if ($evidenceJson !== []) {
             switch ($clrType) {
                 case 1:
                     $json['clr']['assertions'][0]['evidence'] = $evidenceJson;
