@@ -123,6 +123,9 @@
             "allow-contrib": false,
             "require": "7.1.*",
             "docker": true
+        },
+	"runtime": {
+            "dotenv_path": ".symfony.env"
         }
     },
     "require-dev": {

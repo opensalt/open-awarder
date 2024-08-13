@@ -1,0 +1,37 @@
+services:
+  php:
+    depends_on: !reset []
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.kyoas.rule=Host(`${SERVER_NAME:?error}`)"
+      - "traefik.http.routers.kyoas.tls=true"
+      #- "traefik.http.routers.kyoas.tls.certresolver=myresolver"
+      - "traefik.http.middlewares.kyoas.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.kyoas.headers.sslredirect=true"
+      - "traefik.http.services.kyoas.loadbalancer.server.port=80"
+      #- "traefik.http.services.kyoas.loadbalancer.server.scheme=http"
+      - "traefik.http.services.kyoas.loadbalancer.passhostheader=true"
+#      - "traefik.http.services.kyoas.loadbalancer.healthcheck.path=/revision.txt"
+#      - "traefik.http.services.kyoas.loadbalancer.healthcheck.interval=30s"
+#      - "traefik.http.services.kyoas.loadbalancer.healthcheck.timeout=25s"
+    networks:
+      default:
+      proxy:
+        aliases:
+          - "qa-oas"
+
+  consumer:
+    depends_on: !reset []
+
+###> doctrine/doctrine-bundle ###
+  database:
+    deploy:
+      replicas: 0
+###< doctrine/doctrine-bundle ###
+
+networks:
+  proxy:
+    name: traefik
+    external: true
+

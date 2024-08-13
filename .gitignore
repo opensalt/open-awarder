@@ -1,10 +1,16 @@
 /.idea
 /docker-compose.override.yml
+/email/markup
+/tmp
+/.env
 
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
 /.env.*.local
+/.symfony.env.local
+/.symfony.env.local.php
+/.symfony.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
