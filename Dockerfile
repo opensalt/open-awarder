@@ -3,6 +3,11 @@
 # Adapted from https://github.com/dunglas/symfony-docker
 
 
+# Version and build of Open Awarding Service
+ARG VERSION=1.0.0
+ARG BUILD_NUMBER=x
+ARG COMMIT=unknown
+
 #========================================================================
 # Versions
 FROM dunglas/frankenphp:1-php8.3 AS frankenphp_upstream
@@ -72,6 +77,13 @@ RUN set -eux; \
 		xdebug \
 	;
 
+ARG VERSION
+ARG BUILD_NUMBER
+ARG COMMIT
+
+RUN echo ${VERSION}.${BUILD_NUMBER}+$(date -u '+%Y%m%d%H%M%S') > public/version.txt ; \
+    echo ${VERSION}.${BUILD_NUMBER}+$(date -u '+%Y%m%d%H%M%S').${COMMIT} > public/revision.txt
+
 COPY --link frankenphp/conf.d/app.dev.ini $PHP_INI_DIR/conf.d/
 
 CMD [ "frankenphp", "run", "--config", "/etc/caddy/Caddyfile", "--watch" ]
@@ -106,3 +118,9 @@ RUN set -eux; \
 	bin/console sass:build; \
 	bin/console asset-map:compile;
 
+ARG VERSION
+ARG BUILD_NUMBER
+ARG COMMIT
+
+RUN echo ${VERSION}.${BUILD_NUMBER}+$(date -u '+%Y%m%d%H%M%S') > public/version.txt ; \
+    echo ${VERSION}.${BUILD_NUMBER}+$(date -u '+%Y%m%d%H%M%S').${COMMIT} > public/revision.txt
