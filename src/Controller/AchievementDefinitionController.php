@@ -65,6 +65,7 @@ class AchievementDefinitionController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $achievementDefinition->setIdentifier($achievementDefinition->getUri());
             $entityManager->flush();
 
             return $this->redirectToRoute('app_achievement_definition_index', [], Response::HTTP_SEE_OTHER);
