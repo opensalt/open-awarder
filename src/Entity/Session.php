@@ -45,7 +45,7 @@ class Session
         return $this->lastUsed;
     }
 
-    public function getLastUsedTime(): \DateTimeImmutable
+    public function getLastUsedTime(): \DateTimeInterface
     {
         return \DateTimeImmutable::createFromFormat('U', (string) $this->getLastUsed());
     }

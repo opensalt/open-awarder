@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\User;
@@ -69,7 +71,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $plainPassword = $targetUser->getPlainPassword();
-            if (!empty($plainPassword)) {
+            if ($plainPassword !== null && $plainPassword !== '') {
                 $password = $this->passwordEncoder
                     ->hashPassword($targetUser, $targetUser->getPlainPassword());
                 $targetUser->setPassword($password);
