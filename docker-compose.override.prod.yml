@@ -1,6 +1,9 @@
 services:
   php:
     depends_on: !reset []
+    build:
+      context: ./
+      target: frankenphp_prod
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
