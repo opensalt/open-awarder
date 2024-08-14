@@ -37,7 +37,7 @@ class EvidenceFile
     #[ORM\Column(nullable: true)]
     private ?string $dimensions = null;
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'evidence')]
