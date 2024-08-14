@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Import Awards</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <p>
+                You can upload a CSV file of awards to be awarded.
+            </p>
+
+            <p>
+                The CSV file should have the following headers:<br/>
+            </p>
+
+            <table class="table table-bordered text-center">
+                <tr>
+                    <td>awarder</td>
+                    <td>achievement</td>
+                    <td>participant</td>
+                    <td>awardTemplate</td>
+                    <td>emailTemplate</td>
+                    <td>var1</td>
+                    <td>var2</td>
+                    <td>...</td>
+                </tr>
+            </table>
+
+            <p>
+                Where <code>var1</code>, <code>var2</code>, ... are the names of variables and scores in the award and email templates used.
+            </p>
+        </div>
+    </div>
+
+    {{ form_start(uploadForm) }}
+    {{ form_errors(uploadForm) }}
+    {{ form_widget(uploadForm) }}
+    <button type="submit" class="btn btn-primary float-end">{{ button_label|default('Save') }}</button>
+    {{ form_end(uploadForm) }}
+{% endblock %}
+
+{% block title %}
+    Award Import
+{% endblock %}
+

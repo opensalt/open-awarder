@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\AchievementDefinition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @extends ServiceEntityRepository<AchievementDefinition>
@@ -16,8 +17,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method AchievementDefinition[]    findAll()
  * @method AchievementDefinition[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AchievementDefinitionRepository extends ServiceEntityRepository
+class AchievementDefinitionRepository extends ServiceEntityRepository implements ResetInterface
 {
+    /** @var array<array-key, AchievementDefinition> */
+    private array $definitions = [];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AchievementDefinition::class);
@@ -29,5 +33,25 @@ class AchievementDefinitionRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getAchievementDefinitionFromName(?string $achievement): ?AchievementDefinition
+    {
+        if (null === $achievement || '' === $achievement) {
+            return null;
+        }
+
+        if (array_key_exists($achievement, $this->definitions)) {
+            return $this->definitions[$achievement];
+        }
+
+        $this->definitions[$achievement] = $this->findOneBy(['name' => $achievement]);
+
+        return $this->definitions[$achievement];
+    }
+
+    public function reset(): void
+    {
+        $this->definitions = [];
     }
 }

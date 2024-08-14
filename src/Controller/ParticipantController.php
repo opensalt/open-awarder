@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Participant;
-use App\Entity\Pathway;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use App\Repository\PathwayRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
 use League\Csv\Reader;
@@ -28,11 +28,9 @@ class ParticipantController extends AbstractController implements ResetInterface
 {
     use DataTableFactoryAwareTrait;
 
-    /** @var array<array-key, Pathway> */
-    private array $pathways = [];
-
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly PathwayRepository $pathwayRepository,
     ) {
     }
 
@@ -123,10 +121,10 @@ class ParticipantController extends AbstractController implements ResetInterface
 
                         foreach ($participants as $rec) {
                             try {
-                                $rec['pathway'] = $this->getPathwayFromName($rec['pathway']);
+                                $rec['pathway'] = $this->pathwayRepository->getPathwayFromName($rec['pathway']);
 
                                 $participant = Participant::fromCsv($rec);
-                            } catch (\ErrorException $e) {
+                            } catch (\Throwable $e) {
                                 if (str_contains($e->getMessage(), 'Undefined array key')) {
                                     throw new \ErrorException(
                                         message: (preg_replace('/.*"([^"]+)"/', '$1', $e->getMessage()).' column missing.'),
@@ -201,21 +199,6 @@ class ParticipantController extends AbstractController implements ResetInterface
         });
 
         return $response;
-    }
-
-    private function getPathwayFromName(?string $name): ?Pathway
-    {
-        if (null === $name || '' === $name) {
-            return null;
-        }
-
-        if (array_key_exists($name, $this->pathways)) {
-            return $this->pathways[$name];
-        }
-
-        $this->pathways[$name] = $this->entityManager->getRepository(Pathway::class)->findOneBy(['name' => $name]);
-
-        return $this->pathways[$name];
     }
 
     #[\Override]

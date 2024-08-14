@@ -8,6 +8,7 @@ use App\Entity\Participant;
 use App\Enums\AwardState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @extends ServiceEntityRepository<Participant>
@@ -17,8 +18,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Participant[]    findAll()
  * @method Participant[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParticipantRepository extends ServiceEntityRepository
+class ParticipantRepository extends ServiceEntityRepository implements ResetInterface
 {
+    /** @var array<array-key, Participant> */
+    private array $participants = [];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Participant::class);
@@ -54,5 +58,25 @@ class ParticipantRepository extends ServiceEntityRepository
             ->getQuery()
             ->toIterable()
             ;
+    }
+
+    public function getParticipantFromEmail(?string $participant): ?Participant
+    {
+        if (null === $participant || '' === $participant) {
+            return null;
+        }
+
+        if (array_key_exists($participant, $this->participants)) {
+            return $this->participants[$participant];
+        }
+
+        $this->participants[$participant] = $this->findOneBy(['email' => $participant]);
+
+        return $this->participants[$participant];
+    }
+
+    public function reset(): void
+    {
+        $this->participants = [];
     }
 }
