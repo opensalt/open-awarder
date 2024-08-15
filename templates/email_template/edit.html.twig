@@ -46,7 +46,7 @@
         <button type="submit" class="btn btn-primary float-end">{{ button_label|default('Update') }}</button>
         {% do form.saveAndContinue.setRendered %}
         <button type="submit" name="email_template[saveAndContinue]" class="btn btn-primary me-2 float-end">{{ button_label|default('Save and Continue') }}</button>
-        <a class="btn btn-primary me-2 float-end" href="preview">Preview</a>
+        <a class="btn btn-primary me-2 float-end" href="{{ path('app_email_template_preview_setup', {'id': email_template.id}) }}">Preview</a>
     </div>
 
     {{ form_end(form) }}
