@@ -230,6 +230,8 @@ class AwardController extends AbstractController
             ->getForm();
 
         if ($request->getMethod() === 'POST') {
+            $this->entityManager->beginTransaction();
+
             $uploadForm->handleRequest($request);
 
             try {
@@ -247,23 +249,23 @@ class AwardController extends AbstractController
                             try {
                                 $awarder = $this->awarderRepository->getAwarderFromName($rec['awarder']);
                                 if (null === $awarder) {
-                                    throw new \ErrorException(message: "Row {$row}: Awarder `{$rec['awarder']}` not found.", code: 0);
+                                    throw new \ErrorException(message: "Awarder `{$rec['awarder']}` not found.", code: 0);
                                 }
                                 $achievement = $this->achievementRepository->getAchievementDefinitionFromName($rec['achievement']);
                                 if (null === $achievement) {
-                                    throw new \ErrorException(message: "Row {$row}: Achievement `{$rec['achievement']}` not found.", code: 0);
+                                    throw new \ErrorException(message: "Achievement `{$rec['achievement']}` not found.", code: 0);
                                 }
                                 $subject = $this->participantRepository->getParticipantFromEmail($rec['participant']);
                                 if (null === $subject) {
-                                    throw new \ErrorException(message: "Row {$row}: Participant `{$rec['participant']}` not found.", code: 0);
+                                    throw new \ErrorException(message: "Participant `{$rec['participant']}` not found.", code: 0);
                                 }
                                 $awardTemplate = $this->awardTemplateRepository->getTemplateFromName($rec['awardTemplate']);
                                 if (null === $awardTemplate) {
-                                    throw new \ErrorException(message: "Row {$row}: Award template `{$rec['awardTemplate']}` not found.", code: 0);
+                                    throw new \ErrorException(message: "Award template `{$rec['awardTemplate']}` not found.", code: 0);
                                 }
                                 $emailTemplate = $this->emailTemplateRepository->getTemplateFromName($rec['emailTemplate']);
                                 if (null === $emailTemplate) {
-                                    throw new \ErrorException(message: "Row {$row}: Email template `{$rec['emailTemplate']}` not found.", code: 0);
+                                    throw new \ErrorException(message: "Email template `{$rec['emailTemplate']}` not found.", code: 0);
                                 }
 
                                 $award = new MakeAward();
@@ -298,9 +300,13 @@ class AwardController extends AbstractController
                         }
                     }
 
+                    $this->entityManager->commit();
+
                     return $this->redirectToRoute('app_award_index', [], Response::HTTP_SEE_OTHER);
                 }
             } catch (\Throwable $e) {
+                $this->entityManager->rollback();
+
                 $uploadForm->get('file')->addError(new FormError(message: 'Upload failed: '.$e->getMessage()));
 
                 return $this->render('award/import.html.twig', [
