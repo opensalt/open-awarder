@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Import Awards</h1>
 
-    <div class="card">
+    <div class="card mb-4">
         <div class="card-body">
             <p>
                 You can upload a CSV file of awards to be awarded.
@@ -13,22 +13,22 @@
                 The CSV file should have the following headers:<br/>
             </p>
 
-            <table class="table table-bordered text-center">
-                <tr>
-                    <td>awarder</td>
-                    <td>achievement</td>
-                    <td>participant</td>
-                    <td>awardTemplate</td>
-                    <td>emailTemplate</td>
-                    <td>var1</td>
-                    <td>var2</td>
-                    <td>...</td>
-                </tr>
-            </table>
+            <pre class="border p-1 ms-4">awarder,achievement,participant,awardTemplate,emailTemplate,var1,var2,...</pre>
 
             <p>
                 Where <code>var1</code>, <code>var2</code>, ... are the names of variables and scores in the award and email templates used.
             </p>
+            <p>
+                The values sent in each row for the columns should be the following:
+            </p>
+            <ul>
+                <li><code>awarder</code> - the name of the awarder</li>
+                <li><code>achievement</code> - the name of the achievement</li>
+                <li><code>awardTemplate</code> - the name of the award template</li>
+                <li><code>emailTemplate</code> - the name of the email template</li>
+                <li><code>participant</code> - the email address of the participant</li>
+                <li><code>var1</code>, <code>var2</code>, ... - the values of variables and scores in the award and email templates used.</li>
+            </ul>
         </div>
     </div>
 
