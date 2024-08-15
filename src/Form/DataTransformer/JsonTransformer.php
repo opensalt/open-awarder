@@ -19,7 +19,7 @@ class JsonTransformer implements DataTransformerInterface
     #[\Override]
     public function transform(mixed $value): mixed
     {
-        if (empty($value)) {
+        if (null === $value) {
             return '';
         }
 
@@ -32,12 +32,12 @@ class JsonTransformer implements DataTransformerInterface
     #[\Override]
     public function reverseTransform(mixed $value): mixed
     {
-        if (empty($value)) {
+        if (null === $value) {
             return [];
         }
 
         try {
-            $modelData = json_decode((string) $value, true, 512, JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
+            $modelData = json5_decode((string) $value, true, 512, JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING);
         } catch (\JsonException) {
             throw new TransformationFailedException('Invalid JSON');
         }
