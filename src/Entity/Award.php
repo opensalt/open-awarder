@@ -8,6 +8,7 @@ use App\Enums\AwardState;
 use App\Repository\AwardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -57,10 +58,10 @@ class Award
     /**
      * @var array<array-key, mixed>|null
      */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $awardJson = [];
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $awardEmail = null;
 
     #[ORM\Column(nullable: true)]
@@ -75,13 +76,13 @@ class Award
     /**
      * @var array<array-key, mixed>|null
      */
-    #[ORM\Column(type: 'json', nullable: true)]
+    #[ORM\Column(type: Types::JSON, nullable: true)]
     private ?array $lastResponse = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $acceptUrl = null;
 
-    #[ORM\Column(type: 'datetimetz_immutable')]
+    #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
     private \DateTimeInterface $lastUpdated;
 
     /**
