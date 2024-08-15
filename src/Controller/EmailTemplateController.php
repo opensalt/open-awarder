@@ -76,6 +76,14 @@ class EmailTemplateController extends AbstractController
         ]);
     }
 
+    #[Route('/{id:emailTemplate}/send', name: 'app_email_template_send', methods: ['GET', 'POST'])]
+    public function send(EmailTemplate $emailTemplate): Response
+    {
+        return $this->render('email_template/send.html.twig', [
+            'email_template' => $emailTemplate,
+        ]);
+    }
+
     #[Route('/{id}/edit', name: 'app_email_template_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EmailTemplate $emailTemplate, EntityManagerInterface $entityManager): Response
     {
@@ -137,6 +145,7 @@ class EmailTemplateController extends AbstractController
                 $copy->addAwarder($awarder);
                 $awarder->addEmailTemplate($copy);
             }
+
             foreach ($emailTemplate->getAttachments() as $attachment) {
                 $copyAttachment = new EmailAttachment();
                 $copyAttachment->setTemplate($copy);

@@ -4,25 +4,26 @@ declare(strict_types=1);
 
 namespace App\MessageHandler\Command;
 
+use App\Entity\Email;
 use App\Entity\EmailTemplate;
 use App\Enums\AwardState;
+use App\Enums\EmailState;
+use App\Message\Command\SendEmail;
 use App\Message\Command\SendOfferedEmail;
 use App\Repository\AwardRepository;
-use League\Flysystem\FilesystemOperator;
-use Symfony\Component\Mailer\MailerInterface;
+use App\Repository\EmailRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\Part\DataPart;
-use Vich\UploaderBundle\Storage\StorageInterface;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 #[AsMessageHandler]
 final readonly class SendOfferedEmailHandler
 {
     public function __construct(
-        private MailerInterface $mailer,
         private AwardRepository $awardRepository,
-        private StorageInterface $storage,
-        private FilesystemOperator $evidenceStorage,
+        private EmailRepository $emailRepository,
+        private MessageBusInterface $bus,
     ) {
     }
 
@@ -46,18 +47,17 @@ final readonly class SendOfferedEmailHandler
         $emailContent = $award->getAwardEmail();
         $emailContent = str_replace('OCP_ACCEPT_URL', $OcpUrl, (string) $emailContent);
 
-        $email = (new Email())
-            ->from($award->getAwardEmailFrom())
-            ->to($award->getSubject()->getEmail())
-            ->subject($award->getAwardEmailSubject())
-            ->html($emailContent)
-        ;
+        $pendingEmail = new Email(EmailState::Ready);
+        $pendingEmail->setFromEmailTemplate($emailTemplate);
+        $pendingEmail->setRenderedEmail($emailContent);
+        $pendingEmail->setAward($award);
+        $pendingEmail->setSubject($award->getSubject());
+        $this->emailRepository->save($pendingEmail);
 
-        foreach ($emailTemplate->getAttachments() as $attachment) {
-            $content = $this->evidenceStorage->read($this->storage->resolvePath($attachment));
-            $email->addPart((new DataPart($content, $attachment->getOriginalName(), $attachment->getMimetype()))->asInline());
-        }
-
-        $this->mailer->send($email);
+        $this->bus->dispatch(
+            new Envelope(new SendEmail($pendingEmail->getId()), [
+                new DispatchAfterCurrentBusStamp()
+            ])
+        );
     }
 }
