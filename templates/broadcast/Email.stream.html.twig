@@ -1,22 +1,15 @@
 {# Learn how to use Turbo Streams: https://github.com/symfony/ux-turbo#broadcast-doctrine-entities-update #}
 {% block create %}
-    <turbo-stream action="append" target="emails">
-        <template>
-            <div id="{{ 'email_' ~ id }}">
-                #{{ id }} created
-            </div>
-        </template>
+    <turbo-stream action="refresh">
     </turbo-stream>
 {% endblock %}
 
 {% block update %}
-    <turbo-stream action="update" target="email_{{ id }}">
-        <template>
-            #{{ id }} updated
-        </template>
+    <turbo-stream action="refresh">
     </turbo-stream>
 {% endblock %}
 
 {% block remove %}
-    <turbo-stream action="remove" target="email_{{ id }}"></turbo-stream>
+    <turbo-stream action="refresh">
+    </turbo-stream>
 {% endblock %}

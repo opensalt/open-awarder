@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email index{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        td:nth-child(5) {
+            white-space:nowrap;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Email index</h1>
+
+    <div {{ turbo_stream_listen('App\\Entity\\Email') }}>
+        {{ data_table(table) }}
+    </div>
+{% endblock %}

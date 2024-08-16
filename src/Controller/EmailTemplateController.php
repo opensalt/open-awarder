@@ -4,21 +4,29 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Dto\SendFromTemplate;
+use App\Dto\TemplatePreview;
 use App\Entity\AchievementDefinition;
 use App\Entity\Awarder;
+use App\Entity\Email;
 use App\Entity\EmailAttachment;
 use App\Entity\EmailTemplate;
 use App\Entity\Participant;
-use App\Enums\ParticipantState;
+use App\Enums\EmailState;
 use App\Form\EmailTemplateType;
+use App\Form\SendFromTemplateType;
+use App\Form\TemplatePreviewType;
+use App\Message\Command\SendEmail;
 use App\Repository\EmailTemplateRepository;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Uuid;
@@ -29,6 +37,12 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 #[IsGranted('ROLE_ADMIN')]
 class EmailTemplateController extends AbstractController
 {
+    public function __construct(
+        private readonly Environment $twig,
+        private readonly EntityManagerInterface $entityManager
+    ) {
+    }
+
     #[Route('/', name: 'app_email_template_index', methods: ['GET'])]
     public function index(EmailTemplateRepository $emailTemplateRepository): Response
     {
@@ -77,10 +91,37 @@ class EmailTemplateController extends AbstractController
     }
 
     #[Route('/{id:emailTemplate}/send', name: 'app_email_template_send', methods: ['GET', 'POST'])]
-    public function send(EmailTemplate $emailTemplate): Response
+    public function send(Request $request, EmailTemplate $emailTemplate, MessageBusInterface $bus): Response
     {
+        $template = new SendFromTemplate();
+        $template->emailTemplate = $emailTemplate;
+        $form = $this->createForm(SendFromTemplateType::class, $template);
+        $form->handleRequest($request);
+
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $content = $this->generateContent($emailTemplate, $template->participant, $template->achievement, $template->awarder);
+
+                $email = new Email(EmailState::Ready);
+                $email->setFromEmailTemplate($emailTemplate);
+                $email->setSubject($template->participant);
+                $email->setRenderedEmail($content);
+
+                $this->entityManager->persist($email);
+                $this->entityManager->flush();
+
+                $bus->dispatch(new SendEmail($email->getId()), [
+                    DelayStamp::delayFor(\DateInterval::createFromDateString('5 seconds'))
+                ]);
+
+                return $this->redirectToRoute('app_email_index');
+            }
+        } catch (\Throwable $e) {
+            $form->addError(new FormError(message: $e->getMessage(), cause: $e));
+        }
+
         return $this->render('email_template/send.html.twig', [
-            'email_template' => $emailTemplate,
+            'form' => $form,
         ]);
     }
 
@@ -182,45 +223,12 @@ class EmailTemplateController extends AbstractController
     }
 
     #[Route('/{id}/preview', name: 'app_email_template_preview_setup', methods: ['GET'])]
-    public function previewSetup(EmailTemplate $emailTemplate, Environment $twig, EntityManagerInterface $entityManager): Response
+    public function previewSetup(Request $request, EmailTemplate $emailTemplate, Environment $twig, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createFormBuilder([])
-            ->add('awarder', EntityType::class, [
-                'class' => Awarder::class,
-                'query_builder' => static fn($er) => $er->createQueryBuilder('a')
-                    ->addOrderBy('a.name', 'ASC'),
-                'choice_label' => 'name',
-                'required' => false,
-                'translation_domain' => false,
-                'placeholder' => 'Select the awarder',
-                'attr' => ['onchange' => 'updatePreview()'],
-            ])
-            ->add('achievement', EntityType::class, [
-                'class' => AchievementDefinition::class,
-                'query_builder' => static fn($er) => $er->createQueryBuilder('a')
-                    ->addOrderBy('a.name', 'ASC'),
-                'choice_label' => 'name',
-                'required' => false,
-                'translation_domain' => false,
-                'placeholder' => 'Select the achievement being awarded',
-                'attr' => ['onchange' => 'updatePreview()'],
-            ])
-            ->add('participant', EntityType::class, [
-                'class' => Participant::class,
-                'choice_label' => static fn(Participant $participant): string => $participant->getFirstName().' '.$participant->getLastName().' - '.$participant->getEmail(),
-                'query_builder' => static fn($er) => $er->createQueryBuilder('p')
-                    ->where('p.state = :state')
-                    ->setParameter('state', ParticipantState::Active)
-                    ->andWhere('p.acceptedTerms = true')
-                    ->orderBy('p.lastName', 'ASC')
-                    ->addOrderBy('p.firstName', 'ASC')
-                    ->addOrderBy('p.email', 'ASC'),
-                'required' => false,
-                'translation_domain' => false,
-                'placeholder' => 'Select the person the award is to',
-                'attr' => ['onchange' => 'updatePreview()'],
-            ])
-            ->getForm();
+        $template = new TemplatePreview();
+        $template->emailTemplate = $emailTemplate;
+        $form = $this->createForm(TemplatePreviewType::class, $template);
+        $form->handleRequest($request);
 
         return $this->render('email_template/preview.html.twig', [
             'form' => $form,
@@ -233,46 +241,12 @@ class EmailTemplateController extends AbstractController
         ?Awarder $awarder,
         ?AchievementDefinition $achievement,
         ?Participant $subject,
-        Environment $twig,
-        EntityManagerInterface $entityManager
     ): Response
     {
         $response = new Response();
 
         try {
-            $assertionId = Uuid::v7();
-            $clrId = Uuid::v5(Uuid::fromString('018e5209-5518-757b-8cc1-6fb5f378a7ff'), $assertionId->toRfc4122());
-
-            $credentialIds = [];
-
-            if ($subject instanceof Participant) {
-                /** @var ParticipantRepository $participantRepo */
-                $participantRepo = $entityManager->getRepository(Participant::class);
-                $credentialIds = $participantRepo->getAchievementsForParticipant($subject);
-            }
-
-            if ($achievement instanceof AchievementDefinition) {
-                $credentialIds[] = $achievement->getIdentifier();
-            }
-
-            $context = [
-                'issuedOn' => new \DateTimeImmutable(),
-                'assertionId' => 'urn:uuid:' . $assertionId->toRfc4122(),
-                'clrId' => 'urn:uuid:' . $clrId->toRfc4122(),
-                'requestIdentity' => Uuid::v7()->toRfc4122(),
-                'pathway' => $subject?->getSubscribedPathway()->getName(),
-                'pathwayEmailTemplate' => $subject?->getSubscribedPathway()->getEmailTemplate(),
-                'pathwayFinalCredential' => $subject?->getSubscribedPathway()->getFinalCredential()->getIdentifier(),
-                'credentialIds' => $credentialIds,
-            ];
-            $templateVars = ['awarder' => $awarder, 'achievement' => $achievement, 'subject' => $subject, 'context' => $context];
-
-            $template = $twig->createTemplate($emailTemplate->getTemplate());
-            $content = $template->render($templateVars);
-            // 2nd pass to replace variables that had variables in their content
-            $template = $twig->createTemplate($content);
-            $content = $template->render([]);
-
+            $content = $this->generateContent($emailTemplate, $subject, $achievement, $awarder);
             $content = preg_replace('#\bcid:#', 'preview/', $content);
 
             $response->setContent($content);
@@ -298,5 +272,46 @@ class EmailTemplateController extends AbstractController
         }
 
         return new Response('No file found', Response::HTTP_NOT_FOUND);
+    }
+
+    private function generateContent(
+        EmailTemplate $emailTemplate,
+        ?Participant $subject,
+        ?AchievementDefinition $achievement,
+        ?Awarder $awarder,
+    ): string
+    {
+        $assertionId = Uuid::v7();
+        $clrId = Uuid::v5(Uuid::fromString('018e5209-5518-757b-8cc1-6fb5f378a7ff'), $assertionId->toRfc4122());
+
+        $credentialIds = [];
+
+        if ($subject instanceof Participant) {
+            /** @var ParticipantRepository $participantRepo */
+            $participantRepo = $this->entityManager->getRepository(Participant::class);
+            $credentialIds = $participantRepo->getAchievementsForParticipant($subject);
+        }
+
+        if ($achievement instanceof AchievementDefinition) {
+            $credentialIds[] = $achievement->getIdentifier();
+        }
+
+        $context = [
+            'issuedOn' => new \DateTimeImmutable(),
+            'assertionId' => 'urn:uuid:' . $assertionId->toRfc4122(),
+            'clrId' => 'urn:uuid:' . $clrId->toRfc4122(),
+            'requestIdentity' => Uuid::v7()->toRfc4122(),
+            'pathway' => $subject?->getSubscribedPathway()->getName(),
+            'pathwayEmailTemplate' => $subject?->getSubscribedPathway()->getEmailTemplate(),
+            'pathwayFinalCredential' => $subject?->getSubscribedPathway()->getFinalCredential()->getIdentifier(),
+            'credentialIds' => $credentialIds,
+        ];
+        $templateVars = ['awarder' => $awarder, 'achievement' => $achievement, 'subject' => $subject, 'context' => $context];
+
+        $template = $this->twig->createTemplate($emailTemplate->getTemplate());
+        $content = $template->render($templateVars);
+        // 2nd pass to replace variables that had variables in their content
+        $template = $this->twig->createTemplate($content);
+        return $template->render([]);
     }
 }

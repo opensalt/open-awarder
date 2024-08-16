@@ -59,13 +59,12 @@ class AwardController extends AbstractController
     }
 
     #[Route('/', name: 'app_award_index', methods: ['GET'])]
-    public function index(Request $request, AwardRepository $awardRepository): Response
+    public function index(Request $request): Response
     {
         $dataTable = $this->createDataTable(AwardDataTableType::class);
         $dataTable->handleRequest($request);
 
         return $this->render('award/index.html.twig', [
-            //'awards' => $awardRepository->findBy([], ['id' => 'ASC']),
             'tableAwards' => $dataTable->createView(),
         ]);
     }

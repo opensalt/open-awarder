@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Email{% endblock %}
+
+{% block body %}
+    <h1>Email</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ email.id }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ email.status }}</td>
+            </tr>
+            <tr>
+                <th>LastUpdated</th>
+                <td>{{ email.lastUpdated ? email.lastUpdated|date('Y-m-d H:i:s T') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Email From</th>
+                <td>{{ email.emailFrom }}</td>
+            </tr>
+            <tr>
+                <th>Email Subject</th>
+                <td>{{ email.emailSubject }}</td>
+            </tr>
+            <tr>
+                <th>Rendered Email</th>
+                <td><iframe title="Rendered Email" id="preview" class="container-fluid vh-100" src="{{ email.id }}/preview"></iframe></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('app_email_index') }}">Back to list</a>
+
+    {#<a class="btn btn-secondary" href="{{ path('app_email_edit', {'id': email.id}) }}">Edit</a>#}
+
+    {{ include('email/_delete_form.html.twig') }}
+{% endblock %}

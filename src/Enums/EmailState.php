@@ -10,4 +10,5 @@ enum EmailState: string
     case Ready = 'Ready';
     case Sending = 'Sending';
     case Sent = 'Sent';
+    case Failed = 'Failed';
 }

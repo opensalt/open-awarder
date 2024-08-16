@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <h1>Email Template Preview</h1>
+
     <p class="alert alert-info">
         Select the context for the email preview (not all are always required).
     </p>
@@ -24,9 +26,9 @@
     {{ parent() }}
     <script>
         function updatePreview() {
-            const awarder = document.getElementById('form_awarder').value || '-';
-            const achievement = document.getElementById('form_achievement').value || '-';
-            const participant = document.getElementById('form_participant').value || '-';
+            const awarder = document.getElementById('template_preview_awarder').value || '-';
+            const achievement = document.getElementById('template_preview_achievement').value || '-';
+            const participant = document.getElementById('template_preview_participant').value || '-';
 
             const preview = document.getElementById('preview');
             preview.src = `./preview/${awarder}/${achievement}/${participant}`;
