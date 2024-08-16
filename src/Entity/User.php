@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use App\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Kreyu\Bundle\DataTableBundle\Persistence\PersistenceSubjectInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface;
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFactorInterface, PersistenceSubjectInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
@@ -170,5 +171,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
     {
         // Compatible with Google Authenticator
         return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
+    }
+
+    public function getDataTablePersistenceIdentifier(): string
+    {
+        return $this->id->toBase58();
     }
 }
