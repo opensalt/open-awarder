@@ -41,7 +41,7 @@ class SendFromTemplateType extends AbstractType
                     ->orderBy('p.lastName', 'ASC')
                     ->addOrderBy('p.firstName', 'ASC')
                     ->addOrderBy('p.email', 'ASC'),
-                'required' => false,
+                'required' => true,
                 'translation_domain' => false,
                 'placeholder' => 'Select the person the award is to',
                 'attr' => ['onchange' => 'updatePreview()'],
