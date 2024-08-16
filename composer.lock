@@ -2468,16 +2468,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "df09d5b6a4188f8f3c3ab2e43a109076a5eeb767"
+                "reference": "b650144166dfa7703e62a22e493b853b58d874b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/df09d5b6a4188f8f3c3ab2e43a109076a5eeb767",
-                "reference": "df09d5b6a4188f8f3c3ab2e43a109076a5eeb767",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/b650144166dfa7703e62a22e493b853b58d874b0",
+                "reference": "b650144166dfa7703e62a22e493b853b58d874b0",
                 "shasum": ""
             },
             "require": {
@@ -2490,8 +2490,8 @@
             },
             "require-dev": {
                 "cebe/markdown": "^1.0",
-                "commonmark/cmark": "0.31.0",
-                "commonmark/commonmark.js": "0.31.0",
+                "commonmark/cmark": "0.31.1",
+                "commonmark/commonmark.js": "0.31.1",
                 "composer/package-versions-deprecated": "^1.8",
                 "embed/embed": "^4.4",
                 "erusev/parsedown": "^1.0",
@@ -2570,7 +2570,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-14T10:56:57+00:00"
+            "time": "2024-08-16T11:46:16+00:00"
         },
         {
             "name": "league/config",
@@ -9884,16 +9884,16 @@
         },
         {
             "name": "symfony/ux-dropzone",
-            "version": "v2.19.0",
+            "version": "v2.19.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-dropzone.git",
-                "reference": "0ce6c7be94bc4a8c011945b69dc0f4ce9e27f6a1"
+                "reference": "aacd654a9b344d574fa55d572fea9330aa47ece5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/0ce6c7be94bc4a8c011945b69dc0f4ce9e27f6a1",
-                "reference": "0ce6c7be94bc4a8c011945b69dc0f4ce9e27f6a1",
+                "url": "https://api.github.com/repos/symfony/ux-dropzone/zipball/aacd654a9b344d574fa55d572fea9330aa47ece5",
+                "reference": "aacd654a9b344d574fa55d572fea9330aa47ece5",
                 "shasum": ""
             },
             "require": {
@@ -9943,7 +9943,7 @@
                 "symfony-ux"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-dropzone/tree/v2.19.0"
+                "source": "https://github.com/symfony/ux-dropzone/tree/v2.19.3"
             },
             "funding": [
                 {
@@ -9959,7 +9959,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-30T16:00:35+00:00"
+            "time": "2024-08-14T04:55:38+00:00"
         },
         {
             "name": "symfony/ux-icons",
@@ -10144,16 +10144,16 @@
         },
         {
             "name": "symfony/ux-turbo",
-            "version": "v2.19.0",
+            "version": "v2.19.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/ux-turbo.git",
-                "reference": "abfee7181ce8b71f9a2447cdf9c562ed719a0e3e"
+                "reference": "4a38f267193017958d487171c0a86e64f36164a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ux-turbo/zipball/abfee7181ce8b71f9a2447cdf9c562ed719a0e3e",
-                "reference": "abfee7181ce8b71f9a2447cdf9c562ed719a0e3e",
+                "url": "https://api.github.com/repos/symfony/ux-turbo/zipball/4a38f267193017958d487171c0a86e64f36164a3",
+                "reference": "4a38f267193017958d487171c0a86e64f36164a3",
                 "shasum": ""
             },
             "require": {
@@ -10221,7 +10221,7 @@
                 "turbo-stream"
             ],
             "support": {
-                "source": "https://github.com/symfony/ux-turbo/tree/v2.19.0"
+                "source": "https://github.com/symfony/ux-turbo/tree/v2.19.3"
             },
             "funding": [
                 {
@@ -10237,7 +10237,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-30T16:00:35+00:00"
+            "time": "2024-08-14T04:55:38+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
