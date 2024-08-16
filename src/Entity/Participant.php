@@ -212,4 +212,9 @@ class Participant
     {
         return $this->awards->count() === 0;
     }
+
+    public function getFullName(): string
+    {
+        return $this->firstName.' '.$this->lastName;
+    }
 }

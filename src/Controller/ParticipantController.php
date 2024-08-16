@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\DataTable\Type\ParticipantTableType;
 use App\Entity\Participant;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
@@ -35,10 +36,13 @@ class ParticipantController extends AbstractController implements ResetInterface
     }
 
     #[Route('/', name: 'app_participant_index', methods: ['GET'])]
-    public function index(ParticipantRepository $participantRepository): Response
+    public function index(Request $request): Response
     {
+        $dataTable = $this->createDataTable(ParticipantTableType::class);
+        $dataTable->handleRequest($request);
+
         return $this->render('participant/index.html.twig', [
-            'participants' => $participantRepository->findBy([], ['id' => 'ASC']),
+            'table' => $dataTable->createView(),
         ]);
     }
 

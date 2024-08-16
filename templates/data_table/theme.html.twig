@@ -62,3 +62,7 @@
         </form>
     {% endif %}
 {% endblock %}
+
+{% block column_check_or_x_value %}
+    <i class="{{ value ? 'bi bi-check text-success' : 'bi bi-x-octagon-fill text-danger' }}" aria-label="{{ value ? 'Yes' : 'No' }}"></i>
+{% endblock %}

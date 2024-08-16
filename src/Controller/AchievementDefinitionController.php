@@ -9,7 +9,6 @@ use App\Dto\ImportAchievementDefinition;
 use App\Entity\AchievementDefinition;
 use App\Form\AchievementDefinitionType;
 use App\Form\AchievementImportType;
-use App\Repository\AchievementDefinitionRepository;
 use App\Service\AchievementImporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
@@ -27,7 +26,7 @@ class AchievementDefinitionController extends AbstractController
     use DataTableFactoryAwareTrait;
 
     #[Route('/', name: 'app_achievement_definition_index', methods: ['GET'])]
-    public function index(Request $request, AchievementDefinitionRepository $achievementDefinitionRepository): Response
+    public function index(Request $request): Response
     {
         $dataTable = $this->createDataTable(AchievementDefinitionTableType::class);
         $dataTable->handleRequest($request);
