@@ -33,8 +33,6 @@ class AchievementDefinitionController extends AbstractController
         $dataTable->handleRequest($request);
 
         return $this->render('achievement_definition/index.html.twig', [
-            //'awards' => $awardRepository->findBy([], ['id' => 'ASC']),
-            'achievement_definitions' => $achievementDefinitionRepository->findBy([], ['name' => 'ASC']),
             'table' => $dataTable->createView(),
         ]);
     }

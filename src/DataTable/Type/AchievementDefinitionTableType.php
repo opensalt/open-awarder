@@ -5,6 +5,7 @@ namespace App\DataTable\Type;
 use App\Entity\AchievementDefinition;
 use App\Entity\Awarder;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Kreyu\Bundle\DataTableBundle\Action\Type\ButtonActionType;
 use Kreyu\Bundle\DataTableBundle\Bridge\Doctrine\Orm\Filter\Type\EntityFilterType;
@@ -57,6 +58,11 @@ class AchievementDefinitionTableType extends AbstractDataTableType
             ->addFilter('awarders', EntityFilterType::class, [
                 'form_options' => [
                     'class' => Awarder::class,
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('a')
+                            ->orderBy('a.name', 'ASC')
+                         ;
+                    },
                     'choice_label' => 'name',
                     //'multiple' => true,
                 ],
