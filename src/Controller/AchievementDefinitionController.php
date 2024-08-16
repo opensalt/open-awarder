@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\DataTable\Type\AchievementDefinitionTableType;
 use App\Dto\ImportAchievementDefinition;
 use App\Entity\AchievementDefinition;
 use App\Form\AchievementDefinitionType;
@@ -11,6 +12,7 @@ use App\Form\AchievementImportType;
 use App\Repository\AchievementDefinitionRepository;
 use App\Service\AchievementImporter;
 use Doctrine\ORM\EntityManagerInterface;
+use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +24,18 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class AchievementDefinitionController extends AbstractController
 {
+    use DataTableFactoryAwareTrait;
+
     #[Route('/', name: 'app_achievement_definition_index', methods: ['GET'])]
-    public function index(AchievementDefinitionRepository $achievementDefinitionRepository): Response
+    public function index(Request $request, AchievementDefinitionRepository $achievementDefinitionRepository): Response
     {
+        $dataTable = $this->createDataTable(AchievementDefinitionTableType::class);
+        $dataTable->handleRequest($request);
+
         return $this->render('achievement_definition/index.html.twig', [
-            'achievement_definitions' => $achievementDefinitionRepository->findBy([], ['id' => 'ASC']),
+            //'awards' => $awardRepository->findBy([], ['id' => 'ASC']),
+            'achievement_definitions' => $achievementDefinitionRepository->findBy([], ['name' => 'ASC']),
+            'table' => $dataTable->createView(),
         ]);
     }
 

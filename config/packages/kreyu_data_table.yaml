@@ -3,3 +3,11 @@ kreyu_data_table:
     themes:
       - '@KreyuDataTable/themes/bootstrap_5.html.twig'
       - 'data_table/theme.html.twig'
+    filtration:
+      persistence_enabled: true
+      persistence_adapter: kreyu_data_table.filtration.persistence.adapter.cache
+      persistence_subject_provider: kreyu_data_table.persistence.subject_provider.token_storage
+    pagination:
+      persistence_enabled: true
+      persistence_adapter: kreyu_data_table.sorting.persistence.adapter.cache
+      persistence_subject_provider: kreyu_data_table.persistence.subject_provider.token_storage

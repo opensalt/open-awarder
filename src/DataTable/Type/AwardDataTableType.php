@@ -84,7 +84,6 @@ class AwardDataTableType extends AbstractDataTableType
                 ],
                 'default_operator' => Operator::In,
             ])
-            ->setDefaultSortingData(SortingData::fromArray(['id' => 'desc']))
             ->addRowAction('show', ButtonActionType::class, [
                 'href' => fn(Award $award): string => $this->urlGenerator->generate('app_award_show', ['id' => $award->getId()]),
                 'label' => 'Show',
