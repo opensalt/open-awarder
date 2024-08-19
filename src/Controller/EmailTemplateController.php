@@ -134,6 +134,7 @@ class EmailTemplateController extends AbstractController
 
         return $this->render('email_template/send.html.twig', [
             'form' => $form,
+            'email_template' => $emailTemplate,
         ]);
     }
 
@@ -249,6 +250,7 @@ class EmailTemplateController extends AbstractController
 
         return $this->render('email_template/preview.html.twig', [
             'form' => $form,
+            'email_template' => $emailTemplate,
         ]);
     }
 
