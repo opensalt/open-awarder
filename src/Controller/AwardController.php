@@ -94,6 +94,10 @@ class AwardController extends AbstractController
             }
 
             try {
+                // Populate $award with the dynamic field form data
+                $award->evidence = $form->get('evidence')->getData() ?? [];
+                $award->vars = $form->get('vars')->getData() ?? [];
+
                 $this->createAward($award);
 
                 return $this->redirectToRoute('app_award_index', [], Response::HTTP_SEE_OTHER);
