@@ -48,7 +48,7 @@ class EmailTemplateDataTableType extends AbstractDataTableType
             ])
             ->addRowAction('Send', ButtonActionType::class, [
                 'href' => fn(EmailTemplate $template): string => $this->urlGenerator->generate('app_email_template_send', ['id' => $template->getId()]),
-                'label' => 'Edit',
+                'label' => 'Send',
                 'attr' => ['class' => 'btn btn-outline-secondary'],
             ])
             ->setQuery(new DoctrineOrmProxyQuery(
