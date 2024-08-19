@@ -173,6 +173,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, TwoFact
         return new TotpConfiguration($this->totpSecret, TotpConfiguration::ALGORITHM_SHA1, 30, 6);
     }
 
+    #[\Override]
     public function getDataTablePersistenceIdentifier(): string
     {
         return $this->id->toBase58();

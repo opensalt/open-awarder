@@ -42,6 +42,7 @@ class AwarderRepository extends ServiceEntityRepository implements ResetInterfac
         return $this->awarders[$awarder];
     }
 
+    #[\Override]
     public function reset(): void
     {
         $this->awarders = [];

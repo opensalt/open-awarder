@@ -42,6 +42,7 @@ class PathwayRepository extends ServiceEntityRepository implements ResetInterfac
         return $this->pathways[$name];
     }
 
+    #[\Override]
     public function reset(): void
     {
         $this->pathways = [];

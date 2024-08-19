@@ -21,11 +21,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Contracts\Service\ResetInterface;
 
 #[Route('/participant')]
 #[IsGranted('ROLE_ADMIN')]
-class ParticipantController extends AbstractController implements ResetInterface
+class ParticipantController extends AbstractController
 {
     use DataTableFactoryAwareTrait;
 
@@ -203,11 +202,5 @@ class ParticipantController extends AbstractController implements ResetInterface
         });
 
         return $response;
-    }
-
-    #[\Override]
-    public function reset(): void
-    {
-        $this->pathways = [];
     }
 }

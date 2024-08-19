@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enums\EmailState;
@@ -100,11 +102,7 @@ class Email
 
     public function setStatus(EmailState|string $status): static
     {
-        if ($status instanceof EmailState) {
-            $this->status = $status->value;
-        } else {
-            $this->status = EmailState::from($status)->value;
-        }
+        $this->status = $status instanceof EmailState ? $status->value : EmailState::from($status)->value;
 
         return $this;
     }

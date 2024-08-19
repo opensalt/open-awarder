@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataTable\Type;
 
 use App\Entity\AchievementDefinition;
@@ -26,6 +28,7 @@ class AchievementDefinitionTableType extends AbstractDataTableType
     ) {
     }
 
+    #[\Override]
     public function buildDataTable(DataTableBuilderInterface $builder, array $options): void
     {
         $builder
@@ -58,11 +61,8 @@ class AchievementDefinitionTableType extends AbstractDataTableType
             ->addFilter('awarders', EntityFilterType::class, [
                 'form_options' => [
                     'class' => Awarder::class,
-                    'query_builder' => function (EntityRepository $er): QueryBuilder {
-                        return $er->createQueryBuilder('a')
-                            ->orderBy('a.name', 'ASC')
-                         ;
-                    },
+                    'query_builder' => fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC'),
                     'choice_label' => 'name',
                     //'multiple' => true,
                 ],

@@ -42,6 +42,7 @@ class EmailTemplateRepository extends ServiceEntityRepository implements ResetIn
         return $this->templates[$template];
     }
 
+    #[\Override]
     public function reset(): void
     {
         $this->templates = [];

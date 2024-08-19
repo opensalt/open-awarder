@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\DataTable\Type\EmailDataTableType;
@@ -54,7 +56,7 @@ class EmailController extends AbstractController
     #[Route('/{id}/preview', name: 'app_email_preview', methods: ['GET'])]
     public function preview(Email $email, ?Profiler $profiler): Response
     {
-        if (null !== $profiler) {
+        if ($profiler instanceof Profiler) {
             // Disable displaying the profiler in the iframe
             $profiler->disable();
         }
@@ -63,6 +65,7 @@ class EmailController extends AbstractController
 
         $content = $email->getRenderedEmail();
         $content = preg_replace('#\bcid:#', 'preview/', $content);
+
         $response->setContent($content);
 
         return $response;

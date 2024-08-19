@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\AwardTemplate;
 use App\DataTable\Type\AwardDataTableType;
 use App\Dto\MakeAward;
 use App\Entity\AchievementDefinition;
@@ -20,7 +21,6 @@ use App\Message\Command\PublishAward;
 use App\Message\Command\RevokeAward;
 use App\Repository\AchievementDefinitionRepository;
 use App\Repository\AwarderRepository;
-use App\Repository\AwardRepository;
 use App\Repository\AwardTemplateRepository;
 use App\Repository\EmailTemplateRepository;
 use App\Repository\ParticipantRepository;
@@ -247,24 +247,28 @@ class AwardController extends AbstractController
                             $row++;
                             try {
                                 $awarder = $this->awarderRepository->getAwarderFromName($rec['awarder']);
-                                if (null === $awarder) {
-                                    throw new \ErrorException(message: "Awarder `{$rec['awarder']}` not found.", code: 0);
+                                if (!$awarder instanceof Awarder) {
+                                    throw new \ErrorException(message: sprintf('Awarder `%s` not found.', $rec['awarder']), code: 0);
                                 }
+
                                 $achievement = $this->achievementRepository->getAchievementDefinitionFromName($rec['achievement']);
-                                if (null === $achievement) {
-                                    throw new \ErrorException(message: "Achievement `{$rec['achievement']}` not found.", code: 0);
+                                if (!$achievement instanceof AchievementDefinition) {
+                                    throw new \ErrorException(message: sprintf('Achievement `%s` not found.', $rec['achievement']), code: 0);
                                 }
+
                                 $subject = $this->participantRepository->getParticipantFromEmail($rec['participant']);
-                                if (null === $subject) {
-                                    throw new \ErrorException(message: "Participant `{$rec['participant']}` not found.", code: 0);
+                                if (!$subject instanceof Participant) {
+                                    throw new \ErrorException(message: sprintf('Participant `%s` not found.', $rec['participant']), code: 0);
                                 }
+
                                 $awardTemplate = $this->awardTemplateRepository->getTemplateFromName($rec['awardTemplate']);
-                                if (null === $awardTemplate) {
-                                    throw new \ErrorException(message: "Award template `{$rec['awardTemplate']}` not found.", code: 0);
+                                if (!$awardTemplate instanceof AwardTemplate) {
+                                    throw new \ErrorException(message: sprintf('Award template `%s` not found.', $rec['awardTemplate']), code: 0);
                                 }
+
                                 $emailTemplate = $this->emailTemplateRepository->getTemplateFromName($rec['emailTemplate']);
-                                if (null === $emailTemplate) {
-                                    throw new \ErrorException(message: "Email template `{$rec['emailTemplate']}` not found.", code: 0);
+                                if (!$emailTemplate instanceof EmailTemplate) {
+                                    throw new \ErrorException(message: sprintf('Email template `%s` not found.', $rec['emailTemplate']), code: 0);
                                 }
 
                                 $award = new MakeAward();
@@ -294,7 +298,7 @@ class AwardController extends AbstractController
                                     );
                                 }
 
-                                throw new \ErrorException(message: "Row {$row}: ".$e->getMessage(), code: $e->getCode(), previous: $e);
+                                throw new \ErrorException(message: sprintf('Row %d: ', $row).$e->getMessage(), code: $e->getCode(), previous: $e);
                             }
                         }
                     }
@@ -370,7 +374,7 @@ class AwardController extends AbstractController
 
         // Convert to CLR1 if needed, otherwise CLR2
         if (1 === $clrType) {
-            $achievementDefinition = $this->useClr1Definition($achievementDefinition);
+            return $this->useClr1Definition($achievementDefinition);
         }
 
         return $achievementDefinition;
@@ -499,6 +503,7 @@ class AwardController extends AbstractController
 
         $achievementDefinition = $achievement->getDefinition() ?? [];
         $achievementDefinition = $this->fixupDefinition($achievementDefinition, $clrType);
+
         $achievement->setDefinition($achievementDefinition);
 
         $awardTemplate = $this->addResults($achievementDefinition, $awardTemplate);

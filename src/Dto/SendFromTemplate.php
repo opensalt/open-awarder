@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dto;
 
 use App\Entity\AchievementDefinition;
@@ -11,8 +13,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class SendFromTemplate
 {
     public ?EmailTemplate $emailTemplate = null;
+
     #[NotBlank]
     public ?Participant $participant = null;
+
     public ?AchievementDefinition $achievement = null;
+
     public ?Awarder $awarder = null;
 }

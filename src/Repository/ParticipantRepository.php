@@ -75,6 +75,7 @@ class ParticipantRepository extends ServiceEntityRepository implements ResetInte
         return $this->participants[$participant];
     }
 
+    #[\Override]
     public function reset(): void
     {
         $this->participants = [];

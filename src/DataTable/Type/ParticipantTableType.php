@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataTable\Type;
 
 use App\Entity\Participant;
@@ -27,6 +29,7 @@ class ParticipantTableType extends AbstractDataTableType
     ) {
     }
 
+    #[\Override]
     public function buildDataTable(DataTableBuilderInterface $builder, array $options): void
     {
         $builder
@@ -65,7 +68,7 @@ class ParticipantTableType extends AbstractDataTableType
             ])
             ->addFilter('fullName', StringFilterType::class, [
                 'label' => 'Full Name',
-                'query_path' =>'CONCAT(a.firstName, \' \', a.lastName)',
+                'query_path' =>"CONCAT(a.firstName, ' ', a.lastName)",
                 'lower' => true,
                 'default_operator' => Operator::Contains,
             ])
@@ -85,11 +88,8 @@ class ParticipantTableType extends AbstractDataTableType
             ->addFilter('subscribedPathway', EntityFilterType::class, [
                 'form_options' => [
                     'class' => Pathway::class,
-                    'query_builder' => function (EntityRepository $er): QueryBuilder {
-                        return $er->createQueryBuilder('a')
-                            ->orderBy('a.name', 'ASC')
-                         ;
-                    },
+                    'query_builder' => fn(EntityRepository $er): QueryBuilder => $er->createQueryBuilder('a')
+                        ->orderBy('a.name', 'ASC'),
                     'choice_label' => 'name',
                     //'multiple' => true,
                 ],

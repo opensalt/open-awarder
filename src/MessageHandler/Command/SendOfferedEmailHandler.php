@@ -52,6 +52,7 @@ final readonly class SendOfferedEmailHandler
         $pendingEmail->setRenderedEmail($emailContent);
         $pendingEmail->setAward($award);
         $pendingEmail->setSubject($award->getSubject());
+
         $this->emailRepository->save($pendingEmail);
 
         $this->bus->dispatch(

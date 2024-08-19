@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dto;
 
 use App\Entity\AchievementDefinition;
@@ -9,8 +11,11 @@ use App\Entity\Participant;
 
 class TemplatePreview
 {
-    public ?EmailTemplate $emailTemplate;
-    public ?Participant $participant;
-    public ?AchievementDefinition $achievement;
-    public ?Awarder $awarder;
+    public ?EmailTemplate $emailTemplate = null;
+
+    public ?Participant $participant = null;
+
+    public ?AchievementDefinition $achievement = null;
+
+    public ?Awarder $awarder = null;
 }

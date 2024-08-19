@@ -50,6 +50,7 @@ class AchievementDefinitionRepository extends ServiceEntityRepository implements
         return $this->definitions[$achievement];
     }
 
+    #[\Override]
     public function reset(): void
     {
         $this->definitions = [];
