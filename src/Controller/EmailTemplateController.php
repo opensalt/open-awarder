@@ -19,6 +19,7 @@ use App\Form\TemplatePreviewType;
 use App\Message\Command\SendEmail;
 use App\Repository\EmailTemplateRepository;
 use App\Repository\ParticipantRepository;
+use App\Service\TwigVariables;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,28 +53,33 @@ class EmailTemplateController extends AbstractController
     }
 
     #[Route('/new', name: 'app_email_template_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, TwigVariables $twigVariables): Response
     {
         $emailTemplate = new EmailTemplate();
         $form = $this->createForm(EmailTemplateType::class, $emailTemplate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($emailTemplate);
+            try {
+                $twigVariables->getVariables($emailTemplate->getTemplate());
+                $entityManager->persist($emailTemplate);
 
-            $emailAttachments = $form->get('attachments')->getData() ?? [];
-            foreach ($emailAttachments as $attachment) {
-                $evidenceFile = new EmailAttachment();
-                $evidenceFile->setFile($attachment);
-                $evidenceFile->setTemplate($emailTemplate);
-                $entityManager->persist($evidenceFile);
+                $emailAttachments = $form->get('attachments')->getData() ?? [];
+                foreach ($emailAttachments as $attachment) {
+                    $evidenceFile = new EmailAttachment();
+                    $evidenceFile->setFile($attachment);
+                    $evidenceFile->setTemplate($emailTemplate);
+                    $entityManager->persist($evidenceFile);
 
-                $emailTemplate->addAttachment($evidenceFile);
+                    $emailTemplate->addAttachment($evidenceFile);
+                }
+
+                $entityManager->flush();
+
+                return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Throwable $throwable) {
+                $form->addError(new FormError(message: $throwable->getMessage(), cause: $throwable));
             }
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('email_template/new.html.twig', [
@@ -116,8 +122,8 @@ class EmailTemplateController extends AbstractController
 
                 return $this->redirectToRoute('app_email_index');
             }
-        } catch (\Throwable $e) {
-            $form->addError(new FormError(message: $e->getMessage(), cause: $e));
+        } catch (\Throwable $throwable) {
+            $form->addError(new FormError(message: $throwable->getMessage(), cause: $throwable));
         }
 
         return $this->render('email_template/send.html.twig', [
@@ -126,44 +132,49 @@ class EmailTemplateController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_email_template_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, EmailTemplate $emailTemplate, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, EmailTemplate $emailTemplate, EntityManagerInterface $entityManager, TwigVariables $twigVariables): Response
     {
         $form = $this->createForm(EmailTemplateType::class, $emailTemplate);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $deleteAttachments = $form->get('deleteFiles')->getData() ?? [];
-            $attachments = $emailTemplate->getAttachments();
-            foreach ($deleteAttachments as $evidenceId) {
-                $evidenceFile = $entityManager->getRepository(EmailAttachment::class)->find($evidenceId);
-                if (null === $evidenceFile) {
-                    continue;
+            try {
+                $twigVariables->getVariables($emailTemplate->getTemplate());
+                $deleteAttachments = $form->get('deleteFiles')->getData() ?? [];
+                $attachments = $emailTemplate->getAttachments();
+                foreach ($deleteAttachments as $evidenceId) {
+                    $evidenceFile = $entityManager->getRepository(EmailAttachment::class)->find($evidenceId);
+                    if (null === $evidenceFile) {
+                        continue;
+                    }
+
+                    if ($attachments->contains($evidenceFile)) {
+                        $emailTemplate->removeAttachment($evidenceFile);
+                        $entityManager->remove($evidenceFile);
+                    }
                 }
 
-                if ($attachments->contains($evidenceFile)) {
-                    $emailTemplate->removeAttachment($evidenceFile);
-                    $entityManager->remove($evidenceFile);
+                $emailAttachments = $form->get('attachments')->getData() ?? [];
+                foreach ($emailAttachments as $attachment) {
+                    $evidenceFile = new EmailAttachment();
+                    $evidenceFile->setFile($attachment);
+                    $evidenceFile->setTemplate($emailTemplate);
+                    $entityManager->persist($evidenceFile);
+
+                    $emailTemplate->addAttachment($evidenceFile);
                 }
+
+                $entityManager->flush();
+
+                /* @phpstan-ignore method.notFound */
+                if ($form->get('saveAndContinue')->isClicked()) {
+                    return $this->redirectToRoute('app_email_template_edit', ['id' => $emailTemplate->getId()], Response::HTTP_SEE_OTHER);
+                }
+
+                return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Throwable $throwable) {
+                $form->addError(new FormError(message: $throwable->getMessage(), cause: $throwable));
             }
-
-            $emailAttachments = $form->get('attachments')->getData() ?? [];
-            foreach ($emailAttachments as $attachment) {
-                $evidenceFile = new EmailAttachment();
-                $evidenceFile->setFile($attachment);
-                $evidenceFile->setTemplate($emailTemplate);
-                $entityManager->persist($evidenceFile);
-
-                $emailTemplate->addAttachment($evidenceFile);
-            }
-
-            $entityManager->flush();
-
-            /* @phpstan-ignore method.notFound */
-            if ($form->get('saveAndContinue')->isClicked()) {
-                return $this->redirectToRoute('app_email_template_edit', ['id' => $emailTemplate->getId()], Response::HTTP_SEE_OTHER);
-            }
-
-            return $this->redirectToRoute('app_email_template_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('email_template/edit.html.twig', [
@@ -251,7 +262,7 @@ class EmailTemplateController extends AbstractController
 
             $response->setContent($content);
         } catch (\Throwable $throwable) {
-            $response = new Response($throwable->getMessage(), Response::HTTP_PAYMENT_REQUIRED);
+            $response = new Response($throwable->getMessage(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return $response;
