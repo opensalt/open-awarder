@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\DataTable\Type\EmailTemplateDataTableType;
 use App\Dto\SendFromTemplate;
 use App\Dto\TemplatePreview;
 use App\Entity\AchievementDefinition;
@@ -17,10 +18,10 @@ use App\Form\EmailTemplateType;
 use App\Form\SendFromTemplateType;
 use App\Form\TemplatePreviewType;
 use App\Message\Command\SendEmail;
-use App\Repository\EmailTemplateRepository;
 use App\Repository\ParticipantRepository;
 use App\Service\TwigVariables;
 use Doctrine\ORM\EntityManagerInterface;
+use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
 use League\Flysystem\FilesystemOperator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -38,6 +39,8 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 #[IsGranted('ROLE_ADMIN')]
 class EmailTemplateController extends AbstractController
 {
+    use DataTableFactoryAwareTrait;
+
     public function __construct(
         private readonly Environment $twig,
         private readonly EntityManagerInterface $entityManager
@@ -45,10 +48,13 @@ class EmailTemplateController extends AbstractController
     }
 
     #[Route('/', name: 'app_email_template_index', methods: ['GET'])]
-    public function index(EmailTemplateRepository $emailTemplateRepository): Response
+    public function index(Request $request): Response
     {
+        $dataTable = $this->createDataTable(EmailTemplateDataTableType::class);
+        $dataTable->handleRequest($request);
+
         return $this->render('email_template/index.html.twig', [
-            'email_templates' => $emailTemplateRepository->findBy([], ['id' => 'ASC']),
+            'table' => $dataTable->createView(),
         ]);
     }
 

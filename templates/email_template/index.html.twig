@@ -2,36 +2,22 @@
 
 {% block title %}EmailTemplate index{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        td:nth-child(2) {
+            white-space:nowrap;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <h1>Email Templates</h1>
 
-    <div class="table-responsive">
-        <table class="table table-hover align-middle">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for email_template in email_templates %}
-                <tr>
-                    <td>{{ email_template.name }}</td>
-                    <td class="text-nowrap">
-                        <a class="btn btn-primary" href="{{ path('app_email_template_show', {'id': email_template.id}) }}">Show</a>
-                        <a class="btn btn-secondary" href="{{ path('app_email_template_edit', {'id': email_template.id}) }}">Edit</a>
-                        {# <a class="btn btn-primary" href="{{ path('app_email_template_preview_setup', {'id': email_template.id}) }}">Preview</a> #}
-                        <a class="btn btn-outline-secondary" href="{{ path('app_email_template_send', {'id': email_template.id}) }}">Send</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="2">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div {{ turbo_stream_listen('App\\Entity\\EmailTemplate') }}>
+        {{ data_table(table) }}
     </div>
 
-    <a class="btn btn-secondary float-end" href="{{ path('app_email_template_new') }}">Add template</a>
+    <div class="mt-3">
+        <a class="btn btn-secondary float-end" href="{{ path('app_email_template_new') }}">Add template</a>
+    </div>
 {% endblock %}

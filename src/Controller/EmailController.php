@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\DataTable\Type\EmailDataTableType;
 use App\Entity\Email;
-use App\Repository\EmailRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
 use League\Flysystem\FilesystemOperator;
@@ -23,14 +22,13 @@ class EmailController extends AbstractController
     use DataTableFactoryAwareTrait;
 
     #[Route('/', name: 'app_email_index', methods: ['GET'])]
-    public function index(Request $request, EmailRepository $emailRepository): Response
+    public function index(Request $request): Response
     {
         $dataTable = $this->createDataTable(EmailDataTableType::class);
         $dataTable->handleRequest($request);
 
         return $this->render('email/index.html.twig', [
             'table' => $dataTable->createView(),
-            'emails' => $emailRepository->findAll(),
         ]);
     }
 
