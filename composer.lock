@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4305950b5e805967b69b263828f7210f",
+    "content-hash": "dec97c8af87393385380b8e8fdad07eb",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2267,16 +2267,16 @@
         },
         {
             "name": "kreyu/data-table-bundle",
-            "version": "v0.17.12",
+            "version": "v0.21.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kreyu/data-table-bundle.git",
-                "reference": "4869631bddc532d809cc68175a3d3e282fe9c3d1"
+                "reference": "06933bf4345b7c4377b725254f4806a7db3c8754"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kreyu/data-table-bundle/zipball/4869631bddc532d809cc68175a3d3e282fe9c3d1",
-                "reference": "4869631bddc532d809cc68175a3d3e282fe9c3d1",
+                "url": "https://api.github.com/repos/Kreyu/data-table-bundle/zipball/06933bf4345b7c4377b725254f4806a7db3c8754",
+                "reference": "06933bf4345b7c4377b725254f4806a7db3c8754",
                 "shasum": ""
             },
             "require": {
@@ -2301,6 +2301,7 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10.4",
                 "roave/security-advisories": "dev-latest",
+                "symfony/http-foundation": "^6.0|^7.0",
                 "symfony/maker-bundle": "^1.48",
                 "symfony/security-core": "^6.2|^7.0"
             },
@@ -2326,9 +2327,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Kreyu/data-table-bundle/issues",
-                "source": "https://github.com/Kreyu/data-table-bundle/tree/v0.17.12"
+                "source": "https://github.com/Kreyu/data-table-bundle/tree/v0.21.2"
             },
-            "time": "2024-04-26T10:25:25+00:00"
+            "time": "2024-08-05T20:02:03+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -12073,16 +12074,16 @@
         },
         {
             "name": "phpstan/phpstan-doctrine",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-doctrine.git",
-                "reference": "caa046bd6152818e781260fb3a7a96d6b0fadeed"
+                "reference": "a9bb990e0a1ab33078aa925114845769b4abbb96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/caa046bd6152818e781260fb3a7a96d6b0fadeed",
-                "reference": "caa046bd6152818e781260fb3a7a96d6b0fadeed",
+                "url": "https://api.github.com/repos/phpstan/phpstan-doctrine/zipball/a9bb990e0a1ab33078aa925114845769b4abbb96",
+                "reference": "a9bb990e0a1ab33078aa925114845769b4abbb96",
                 "shasum": ""
             },
             "require": {
@@ -12139,9 +12140,9 @@
             "description": "Doctrine extensions for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
-                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.5.0"
+                "source": "https://github.com/phpstan/phpstan-doctrine/tree/1.5.1"
             },
-            "time": "2024-08-05T13:47:07+00:00"
+            "time": "2024-08-20T16:55:00+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",

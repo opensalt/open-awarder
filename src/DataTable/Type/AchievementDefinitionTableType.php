@@ -33,12 +33,12 @@ class AchievementDefinitionTableType extends AbstractDataTableType
     {
         $builder
             ->addColumn('name', TextColumnType::class, [
-                'label' => 'name',
+                'label' => 'Name',
                 'property_path' => 'name',
                 'sort' => 'name',
             ])
             ->addColumn('uri', TextColumnType::class, [
-                'label' => 'uri',
+                'label' => 'URI',
                 'property_path' => 'uri',
                 'sort' => 'uri',
             ])
@@ -46,6 +46,7 @@ class AchievementDefinitionTableType extends AbstractDataTableType
                 'query_path' =>'name',
             ])
             ->addFilter('uri', StringFilterType::class, [
+                'label' => 'URI',
                 'query_path' =>'uri',
             ])
             ->addRowAction('show', ButtonActionType::class, [
