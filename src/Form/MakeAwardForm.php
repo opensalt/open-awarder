@@ -93,7 +93,8 @@ class MakeAwardForm extends AbstractType
                     'query_builder' => static fn($er) => $er->createQueryBuilder('a')
                         ->join('a.awarders', 'aw')
                         ->where('aw.id = :awarder')
-                        ->setParameter('awarder', $awarder),
+                        ->setParameter('awarder', $awarder)
+                        ->addOrderBy('a.name'),
                     'choice_label' => 'name',
                     'required' => false,
                     'translation_domain' => false,
@@ -110,7 +111,8 @@ class MakeAwardForm extends AbstractType
                     'query_builder' => static fn($er) => $er->createQueryBuilder('a')
                         ->join('a.awarders', 'aw')
                         ->where('aw.id = :awarder')
-                        ->setParameter('awarder', $awarder),
+                        ->setParameter('awarder', $awarder)
+                        ->addOrderBy('a.name'),
                     'choice_label' => 'name',
                     'required' => false,
                     'translation_domain' => false,
