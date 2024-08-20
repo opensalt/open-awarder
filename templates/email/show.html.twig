@@ -20,6 +20,10 @@
                 <td>{{ email.lastUpdated ? email.lastUpdated|date('Y-m-d H:i:s T') : '' }}</td>
             </tr>
             <tr>
+                <th>Sent to</th>
+                <td>{{ email.subject.fullName }} &lt;{{ email.subject.email }}&gt;</td>
+            </tr>
+            <tr>
                 <th>Email From</th>
                 <td>{{ email.emailFrom }}</td>
             </tr>
