@@ -37,6 +37,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Uid\Factory\UuidFactory;
 use Symfony\Component\Uid\Uuid;
 use Twig\Environment;
 use function Symfony\Component\String\u;
@@ -55,6 +56,7 @@ class AwardController extends AbstractController
         private readonly AwardTemplateRepository $awardTemplateRepository,
         private readonly EmailTemplateRepository $emailTemplateRepository,
         private readonly Environment $twig,
+        private readonly UuidFactory $uuidFactory,
     ) {
     }
 
@@ -500,6 +502,7 @@ class AwardController extends AbstractController
             'pathwayEmailTemplate' => $subject->getSubscribedPathway()->getEmailTemplate(),
             'pathwayFinalCredential' => $subject->getSubscribedPathway()->getFinalCredential()->getIdentifier(),
             'credentialIds' => $credentialIds,
+            'uuidFactory' => $this->uuidFactory,
         ];
 
         $awardTemplate = $award->awardTemplate->getTemplate();
