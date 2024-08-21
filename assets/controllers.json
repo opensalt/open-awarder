@@ -8,10 +8,6 @@
             "batch": {
                 "enabled": true,
                 "fetch": "eager"
-            },
-            "state": {
-                "enabled": true,
-                "fetch": "eager"
             }
         },
         "@symfony/ux-dropzone": {

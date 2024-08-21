@@ -49,4 +49,11 @@ return [
         'version' => '5.3.3',
         'type' => 'css',
     ],
+    '@opensalt/ob3-definer' => [
+        'version' => '1.0.2',
+    ],
+    '@opensalt/ob3-definer/dist/ob3-definer.min.css' => [
+        'version' => '1.0.2',
+        'type' => 'css',
+    ],
 ];

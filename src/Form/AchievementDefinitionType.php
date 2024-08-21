@@ -11,6 +11,7 @@ use App\Form\Type\JsonType;
 use App\Repository\AwarderRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -28,6 +29,17 @@ class AchievementDefinitionType extends AbstractType
                     'rows' => 10,
                     'spellcheck' => 'false',
                 ],
+            ])
+            ->add('ob3', ButtonType::class, [
+                'label' => 'Open Badge v3 editor',
+                'attr' => [
+                    'class' => 'btn btn-secondary float-end',
+                    'data-bs-toggle' => 'modal',
+                    'data-bs-target' => '#edit-ob3-modal',
+                ],
+                'row_attr' => [
+                    'class' => 'mb-3 clearfix',
+                ]
             ])
             ->add('awarders', EntityType::class, [
                 'placeholder' => 'Select awarders',
