@@ -16,7 +16,7 @@
         "dragonmantank/cron-expression": "^3.3",
         "ecotone/symfony-bundle": "^1.213",
         "endroid/qr-code": "^5.0",
-        "kreyu/data-table-bundle": "0.21.*",
+        "kreyu/data-table-bundle": "0.17.*",
         "league/commonmark": "^2.4",
         "league/csv": "^9.15",
         "league/flysystem-bundle": "^3.3",

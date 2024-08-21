@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dec97c8af87393385380b8e8fdad07eb",
+    "content-hash": "4305950b5e805967b69b263828f7210f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2267,16 +2267,16 @@
         },
         {
             "name": "kreyu/data-table-bundle",
-            "version": "v0.21.2",
+            "version": "v0.17.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Kreyu/data-table-bundle.git",
-                "reference": "06933bf4345b7c4377b725254f4806a7db3c8754"
+                "reference": "4869631bddc532d809cc68175a3d3e282fe9c3d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Kreyu/data-table-bundle/zipball/06933bf4345b7c4377b725254f4806a7db3c8754",
-                "reference": "06933bf4345b7c4377b725254f4806a7db3c8754",
+                "url": "https://api.github.com/repos/Kreyu/data-table-bundle/zipball/4869631bddc532d809cc68175a3d3e282fe9c3d1",
+                "reference": "4869631bddc532d809cc68175a3d3e282fe9c3d1",
                 "shasum": ""
             },
             "require": {
@@ -2301,7 +2301,6 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10.4",
                 "roave/security-advisories": "dev-latest",
-                "symfony/http-foundation": "^6.0|^7.0",
                 "symfony/maker-bundle": "^1.48",
                 "symfony/security-core": "^6.2|^7.0"
             },
@@ -2327,9 +2326,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Kreyu/data-table-bundle/issues",
-                "source": "https://github.com/Kreyu/data-table-bundle/tree/v0.21.2"
+                "source": "https://github.com/Kreyu/data-table-bundle/tree/v0.17.12"
             },
-            "time": "2024-08-05T20:02:03+00:00"
+            "time": "2024-04-26T10:25:25+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -4036,16 +4035,16 @@
         },
         {
             "name": "psr/log",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
+                "reference": "79dff0b268932c640297f5208d6298f71855c03e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/79dff0b268932c640297f5208d6298f71855c03e",
+                "reference": "79dff0b268932c640297f5208d6298f71855c03e",
                 "shasum": ""
             },
             "require": {
@@ -4080,9 +4079,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/3.0.0"
+                "source": "https://github.com/php-fig/log/tree/3.0.1"
             },
-            "time": "2021-07-14T16:46:02+00:00"
+            "time": "2024-08-21T13:31:24+00:00"
         },
         {
             "name": "ramsey/collection",
