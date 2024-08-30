@@ -8,6 +8,9 @@ $yellow:  #fed141 !default;
 $green:   #009a44 !default;
 $teal:    #20c997 !default;
 $cyan:    #62b5e5 !default;
+$body-color: #495057 !default;
+//$secondary: #777 !default;
+//$min-contrast-ratio:   2.65 !default;
 
 @import 'bootswatch/spacelab/_variables';
 @import '../../vendor/twbs/bootstrap/scss/bootstrap';
