@@ -50,10 +50,10 @@ return [
         'type' => 'css',
     ],
     '@opensalt/ob3-definer' => [
-        'version' => '1.0.2',
+        'version' => '1.1.0',
     ],
     '@opensalt/ob3-definer/dist/ob3-definer.min.css' => [
-        'version' => '1.0.2',
+        'version' => '1.1.0',
         'type' => 'css',
     ],
 ];
