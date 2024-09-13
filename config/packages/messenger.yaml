@@ -14,9 +14,10 @@ framework:
                     use_notify: true
                     check_delayed_interval: 30000
                 retry_strategy:
-                    max_retries: 3
+                    max_retries: 5
                     multiplier: 2
-                    delay: 2000
+                    delay: 5000
+                    jitter: 0.1
 
                 serializer: messenger.transport.symfony_serializer
             failed: 'doctrine://default?queue_name=failed'
