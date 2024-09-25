@@ -145,6 +145,7 @@
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "*",
-        "symfony/web-profiler-bundle": "*"
+        "symfony/web-profiler-bundle": "*",
+        "symplify/easy-coding-standard": "^12.3"
     }
 }
