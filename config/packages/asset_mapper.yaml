@@ -1,5 +1,8 @@
 framework:
     asset_mapper:
+        # disable the polyfill for importmap
+        importmap_polyfill: false
+
         # The paths to make available to the asset mapper.
         paths:
             - assets/

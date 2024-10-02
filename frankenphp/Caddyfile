@@ -19,6 +19,10 @@
 {$CADDY_EXTRA_CONFIG}
 
 {$SERVER_NAME:localhost} {
+	header /* {
+		-Server
+	}
+
 	log {
 		# Redact the authorization query parameter that can be set by Mercure
 		format filter {
