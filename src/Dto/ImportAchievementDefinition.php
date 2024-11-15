@@ -10,7 +10,7 @@ class ImportAchievementDefinition
 {
     public function __construct(
         #[Assert\NotBlank]
-        #[Assert\Url]
+        #[Assert\Url(requireTld: true)]
         public ?string $uri = null,
     ) {
     }

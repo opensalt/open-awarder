@@ -17,6 +17,7 @@ class AchievementImportType extends AbstractType
         $builder
             ->add('uri', UrlType::class, [
                 'label' => 'URI of Achievement',
+                'default_protocol' => 'https',
             ])
         ;
     }

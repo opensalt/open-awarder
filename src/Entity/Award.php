@@ -93,7 +93,7 @@ class Award
 
     public function __construct(?Uuid $id = null)
     {
-        $this->id = $id instanceof Uuid ? $id : Uuid::v7();
+        $this->id =  $id ?? Uuid::v7();
 
         $this->lastUpdated = new \DateTimeImmutable();
         $this->evidence = new ArrayCollection();
