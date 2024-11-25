@@ -10,7 +10,7 @@ ARG COMMIT=unknown
 
 #========================================================================
 # Versions
-FROM dunglas/frankenphp:1-php8.3 AS frankenphp_upstream
+FROM dunglas/frankenphp:1-php8.4 AS frankenphp_upstream
 
 
 # The different stages of this Dockerfile are meant to be built into separate images
@@ -74,7 +74,7 @@ RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 RUN set -eux; \
 	install-php-extensions \
-		xdebug \
+		xdebug-3.4.0beta1 \
 	;
 
 ARG VERSION
