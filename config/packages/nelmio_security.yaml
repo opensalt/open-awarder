@@ -34,14 +34,15 @@ nelmio_security:
             browser_adaptive:
                 enabled: false
             report-uri: '%router.request_context.base_url%/csp/report'
-            default-src: [ 'self' ]
+            default-src: 
+                - 'self'
+                - 'https://authn.io'
             script-src:
                 - 'self'
                 - 'unsafe-inline'
                 - 'data:'
                 - 'blob:'
                 - 'https://unpkg.com'
-                - 'https://authn.io'
             img-src:
                 - 'self'
                 - 'data:'
