@@ -454,5 +454,8 @@
         "files": [
             "config/packages/vich_uploader.yaml"
         ]
+    },
+    "web-token/jwt-framework": {
+        "version": "4.0.1"
     }
 }

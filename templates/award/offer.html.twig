@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <button id="acceptCredential">Accept Credential</button>
+
+
+<script src="https://unpkg.com/credential-handler-polyfill@3/dist/credential-handler-polyfill.min.js"></script>
+
+<script type="module">
+await credentialHandlerPolyfill.loadOnce();
+
+const testPresentation = {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1",
+      "https://www.w3.org/2018/credentials/examples/v1"
+    ],
+    "type": "VerifiablePresentation",
+    verifiableCredential: [
+        {{ vc|json_encode|raw }}
+    ],
+    //A proof is not required on the Verifiable Presentation (only on the VCs themselves)
+};
+const credentialType = 'VerifiablePresentation';
+const webCredentialWrapper = new WebCredential(
+    credentialType, testPresentation, {
+    recommendedHandlerOrigins: [
+        'https://wallet.example.chapi.io/'
+    ]
+});
+
+async function acceptNewCredential() {
+    const result = await navigator.credentials.store(webCredentialWrapper);
+}
+
+document.getElementById('acceptCredential').addEventListener('click', () => {
+    console.log('clicked');
+    acceptNewCredential();
+});
+</script>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

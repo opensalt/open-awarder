@@ -25,8 +25,13 @@ use App\Repository\AwardTemplateRepository;
 use App\Repository\EmailTemplateRepository;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Jose\Component\Core\AlgorithmManager;
+use Jose\Component\KeyManagement\JWKFactory;
+use Jose\Component\Signature\Algorithm\EdDSA;
+use Jose\Component\Signature\JWSBuilder;
 use Kreyu\Bundle\DataTableBundle\DataTableFactoryAwareTrait;
 use League\Csv\Reader;
+use Root23\JsonCanonicalizer\JsonCanonicalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormError;
@@ -40,6 +45,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Uid\Factory\UuidFactory;
 use Symfony\Component\Uid\Uuid;
 use Twig\Environment;
+use YOCLIB\Multiformats\Multibase\Multibase;
 use function Symfony\Component\String\u;
 
 #[Route('/award')]
@@ -175,12 +181,52 @@ class AwardController extends AbstractController
             return $this->redirectToRoute('app_award_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        if ($this->isCsrfTokenValid('delete'.$award->getId(), $request->getPayload()->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $award->getId(), $request->getPayload()->get('_token'))) {
             $entityManager->remove($award);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_award_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/offer', name: 'app_award_offer', methods: ['GET'])]
+    public function signed(Request $request, Award $award): Response
+    {
+        $key = JWKFactory::createOKPKey('Ed25519');
+        $algorithmManager = new AlgorithmManager([
+            new EdDSA(),
+        ]);
+        $pk = Multibase::decode($key->get('x'), Multibase::BASE64URL);
+        $pk2 = Multibase::encode(Multibase::BASE58BTC, chr(0xed).chr(0x01).$pk);
+
+        $data = $award->getAwardJson();
+        $data = $data['clr'];
+        $canonicalizer = new JsonCanonicalizer();
+        $data2 = $canonicalizer->canonicalize($data);
+
+        $jwsBuilder = new JWSBuilder($algorithmManager);
+        $jws = $jwsBuilder->create()
+            ->withPayload($data2, true)
+            ->addSignature($key, ['alg' => 'EdDSA'])
+            ->build();
+
+        //$jws2 = (new EdDSA())->sign($key, $data2);
+
+        $did = 'did:key:'.$pk2;
+
+        $data['issuer']['id'] = $did;
+        $data['proof'] = [
+            '@context' => ['https://w3id.org/security/suites/ed25519-2020/v1'],
+            'type' => 'Ed25519Signature2020',
+            'created' => (new \DateTimeImmutable())->format('c'),
+            'proofPurpose' => 'assertionMethod',
+            'verificationMethod' => $did.'#'.$pk2,
+            'proofValue' => Multibase::encode(Multibase::BASE58BTC, ($jws->getSignatures())[0]->getSignature()),
+        ];
+
+        return $this->render('award/offer.html.twig', [
+            'vc' => $data,
+        ]);
     }
 
     #[Route('/{id}/revoke', name: 'app_award_revoke', methods: ['POST'])]

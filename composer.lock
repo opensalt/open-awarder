@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9be73e11b2869d7a83fea0ca883b2c3",
+    "content-hash": "6262eceff1c912e7151cae6098c59002",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4429,6 +4429,42 @@
             "time": "2024-04-27T21:32:50+00:00"
         },
         {
+            "name": "root23/php-json-canonicalization",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/root23/php-json-canonicalization.git",
+                "reference": "be888e03a171c2b9667265d03924bd6bfc3fe85a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/root23/php-json-canonicalization/zipball/be888e03a171c2b9667265d03924bd6bfc3fe85a",
+                "reference": "be888e03a171c2b9667265d03924bd6bfc3fe85a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^v3.27.0",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Root23\\JsonCanonicalizer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Serialize data into canonical way, based on RFC-8785.",
+            "support": {
+                "issues": "https://github.com/root23/php-json-canonicalization/issues",
+                "source": "https://github.com/root23/php-json-canonicalization/tree/1.0.1"
+            },
+            "time": "2023-09-27T08:27:25+00:00"
+        },
+        {
             "name": "runtime/frankenphp-symfony",
             "version": "0.2.0",
             "source": {
@@ -4678,6 +4714,159 @@
                 }
             ],
             "time": "2024-06-12T11:22:32+00:00"
+        },
+        {
+            "name": "spomky-labs/pki-framework",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Spomky-Labs/pki-framework.git",
+                "reference": "0b10c8b53366729417d6226ae89a665f9e2d61b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Spomky-Labs/pki-framework/zipball/0b10c8b53366729417d6226ae89a665f9e2d61b6",
+                "reference": "0b10c8b53366729417d6226ae89a665f9e2d61b6",
+                "shasum": ""
+            },
+            "require": {
+                "brick/math": "^0.10|^0.11|^0.12",
+                "ext-mbstring": "*",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "ekino/phpstan-banned-code": "^1.0",
+                "ext-gmp": "*",
+                "ext-openssl": "*",
+                "infection/infection": "^0.28",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan": "^1.8",
+                "phpstan/phpstan-beberlei-assert": "^1.0",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.1",
+                "phpstan/phpstan-strict-rules": "^1.3",
+                "phpunit/phpunit": "^10.1|^11.0",
+                "rector/rector": "^1.0",
+                "roave/security-advisories": "dev-latest",
+                "symfony/phpunit-bridge": "^6.4|^7.0",
+                "symfony/string": "^6.4|^7.0",
+                "symfony/var-dumper": "^6.4|^7.0",
+                "symplify/easy-coding-standard": "^12.0"
+            },
+            "suggest": {
+                "ext-bcmath": "For better performance (or GMP)",
+                "ext-gmp": "For better performance (or BCMath)",
+                "ext-openssl": "For OpenSSL based cyphering"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SpomkyLabs\\Pki\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joni Eskelinen",
+                    "email": "jonieske@gmail.com",
+                    "role": "Original developer"
+                },
+                {
+                    "name": "Florent Morselli",
+                    "email": "florent.morselli@spomky-labs.com",
+                    "role": "Spomky-Labs PKI Framework developer"
+                }
+            ],
+            "description": "A PHP framework for managing Public Key Infrastructures. It comprises X.509 public key certificates, attribute certificates, certification requests and certification path validation.",
+            "homepage": "https://github.com/spomky-labs/pki-framework",
+            "keywords": [
+                "DER",
+                "Private Key",
+                "ac",
+                "algorithm identifier",
+                "asn.1",
+                "asn1",
+                "attribute certificate",
+                "certificate",
+                "certification request",
+                "cryptography",
+                "csr",
+                "decrypt",
+                "ec",
+                "encrypt",
+                "pem",
+                "pkcs",
+                "public key",
+                "rsa",
+                "sign",
+                "signature",
+                "verify",
+                "x.509",
+                "x.690",
+                "x509",
+                "x690"
+            ],
+            "support": {
+                "issues": "https://github.com/Spomky-Labs/pki-framework/issues",
+                "source": "https://github.com/Spomky-Labs/pki-framework/tree/1.2.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Spomky",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/FlorentMorselli",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2024-03-30T18:03:49+00:00"
+        },
+        {
+            "name": "stephenhill/base58",
+            "version": "v1.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stephen-hill/base58php.git",
+                "reference": "bd9fc19c788160a2f85ba0a19cd800eaf5ba5e99"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stephen-hill/base58php/zipball/bd9fc19c788160a2f85ba0a19cd800eaf5ba5e99",
+                "reference": "bd9fc19c788160a2f85ba0a19cd800eaf5ba5e99",
+                "shasum": ""
+            },
+            "require-dev": {
+                "athletic/athletic": "~0.1",
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "StephenHill\\": "src/",
+                    "StephenHill\\Benchmarks\\": "benchmarks/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Hill",
+                    "email": "stephen@gatekiller.co.uk"
+                }
+            ],
+            "description": "Base58 Encoding and Decoding Library for PHP",
+            "support": {
+                "issues": "https://github.com/stephen-hill/base58php/issues",
+                "source": "https://github.com/stephen-hill/base58php/tree/v1.1.5"
+            },
+            "time": "2019-08-22T16:51:59+00:00"
         },
         {
             "name": "symfony/asset",
@@ -11849,6 +12038,142 @@
             "time": "2024-11-18T06:29:52+00:00"
         },
         {
+            "name": "web-token/jwt-framework",
+            "version": "4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/web-token/jwt-framework.git",
+                "reference": "4af252f28996bfb8ce5eac78037a555dce222829"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/web-token/jwt-framework/zipball/4af252f28996bfb8ce5eac78037a555dce222829",
+                "reference": "4af252f28996bfb8ce5eac78037a555dce222829",
+                "shasum": ""
+            },
+            "require": {
+                "brick/math": "^0.12",
+                "ext-json": "*",
+                "ext-openssl": "*",
+                "php": ">=8.2",
+                "psr/clock": "^1.0",
+                "psr/event-dispatcher": "^1.0",
+                "spomky-labs/pki-framework": "^1.2.1",
+                "symfony/config": "^7.0",
+                "symfony/console": "^7.0",
+                "symfony/dependency-injection": "^7.0",
+                "symfony/event-dispatcher": "^7.0",
+                "symfony/http-client-contracts": "^3.4",
+                "symfony/http-kernel": "^7.0"
+            },
+            "conflict": {
+                "spomky-labs/jose": "*"
+            },
+            "replace": {
+                "web-token/jwt-bundle": "self.version",
+                "web-token/jwt-experimental": "self.version",
+                "web-token/jwt-library": "self.version"
+            },
+            "require-dev": {
+                "ekino/phpstan-banned-code": "^1.0",
+                "ergebnis/phpunit-slow-test-detector": "^2.14",
+                "ext-curl": "*",
+                "ext-gmp": "*",
+                "ext-sodium": "*",
+                "infection/infection": "^0.29",
+                "matthiasnoback/symfony-config-test": "5.1.x-dev",
+                "paragonie/sodium_compat": "^1.20|^2.0",
+                "php-parallel-lint/php-parallel-lint": "^1.3",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan": "^1.8",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-doctrine": "^1.3",
+                "phpstan/phpstan-phpunit": "^1.1",
+                "phpstan/phpstan-strict-rules": "^1.4",
+                "phpstan/phpstan-symfony": "^1.3",
+                "phpunit/phpunit": "^10.5.10|^11.0",
+                "qossmic/deptrac": "^2.0",
+                "rector/rector": "^1.0",
+                "roave/security-advisories": "dev-latest",
+                "spomky-labs/aes-key-wrap": "^7.0",
+                "staabm/phpstan-dba": "^0.2.79",
+                "staabm/phpstan-todo-by": "^0.1.25",
+                "struggle-for-php/sfp-phpstan-psr-log": "^0.20|^0.21",
+                "symfony/browser-kit": "^7.0",
+                "symfony/clock": "^7.0",
+                "symfony/finder": "^7.0",
+                "symfony/framework-bundle": "^7.0",
+                "symfony/http-client": "^7.0",
+                "symfony/serializer": "^7.0",
+                "symfony/var-dumper": "^7.0",
+                "symfony/yaml": "^7.0",
+                "symplify/easy-coding-standard": "^12.0"
+            },
+            "suggest": {
+                "spomky-labs/aes-key-wrap": "To enable AES Key Wrap algorithm.",
+                "symfony/serializer": "Use the Symfony serializer to serialize/unserialize JWS and JWE tokens.",
+                "symfony/var-dumper": "Used to show data on the debug toolbar."
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Jose\\Component\\": "src/Library/",
+                    "Jose\\Experimental\\": "src/Experimental/",
+                    "Jose\\Bundle\\JoseFramework\\": "src/Bundle/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Florent Morselli",
+                    "homepage": "https://github.com/Spomky"
+                },
+                {
+                    "name": "All contributors",
+                    "homepage": "https://github.com/web-token/jwt-bundle/contributors"
+                }
+            ],
+            "description": "JSON Object Signing and Encryption library for PHP and Symfony Bundle.",
+            "homepage": "https://github.com/web-token/jwt-framework",
+            "keywords": [
+                "JOSE",
+                "JWE",
+                "JWK",
+                "JWKSet",
+                "JWS",
+                "Jot",
+                "RFC7515",
+                "RFC7516",
+                "RFC7517",
+                "RFC7518",
+                "RFC7519",
+                "RFC7520",
+                "bundle",
+                "jwa",
+                "jwt",
+                "symfony"
+            ],
+            "support": {
+                "issues": "https://github.com/web-token/jwt-framework/issues",
+                "source": "https://github.com/web-token/jwt-framework/tree/4.0.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/Spomky",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/FlorentMorselli",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2024-07-09T16:28:26+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.11.0",
             "source": {
@@ -11962,6 +12287,52 @@
                 "source": "https://github.com/WebGardenGroup/flysystem-doctrine/tree/1.0.1"
             },
             "time": "2022-07-01T09:37:00+00:00"
+        },
+        {
+            "name": "yocto/yoclib-multibase",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yocto/yoclib-multibase-php.git",
+                "reference": "c7171897bf61dbc4a4cc6bb3f2fd5c3e62298e13"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yocto/yoclib-multibase-php/zipball/c7171897bf61dbc4a4cc6bb3f2fd5c3e62298e13",
+                "reference": "c7171897bf61dbc4a4cc6bb3f2fd5c3e62298e13",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": "^7.4||^8"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7||^8||^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "YOCLIB\\Multiformats\\Multibase\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "description": "This yocLibrary enables your project to encode and decode Multibases in PHP.",
+            "keywords": [
+                "composer",
+                "multibase",
+                "multiformats",
+                "php",
+                "yoclib",
+                "yocto"
+            ],
+            "support": {
+                "issues": "https://github.com/yocto/yoclib-multibase-php/issues",
+                "source": "https://github.com/yocto/yoclib-multibase-php/tree/v1.2.0"
+            },
+            "time": "2024-06-05T13:42:01+00:00"
         }
     ],
     "packages-dev": [

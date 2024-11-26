@@ -37,7 +37,9 @@ RUN set -eux; \
 	install-php-extensions \
 		@composer \
 		apcu \
+		bcmath \
 		gd \
+		gmp \
 		intl \
 		opcache \
 		zip \

@@ -25,8 +25,10 @@
         "nelmio/security-bundle": "^3.4",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.26",
+        "root23/php-json-canonicalization": "^1.0",
         "runtime/frankenphp-symfony": "^0.2.0",
         "scheb/2fa-totp": "^7.3",
+        "stephenhill/base58": "^1.1",
         "symfony/asset": "*",
         "symfony/asset-mapper": "*",
         "symfony/console": "*",
@@ -74,7 +76,9 @@
         "twig/markdown-extra": "^3.8",
         "twig/twig": "^2.12|^3.0",
         "vich/uploader-bundle": "^2.3",
-        "wgg/flysystem-doctrine": "^1.0"
+        "web-token/jwt-framework": "^4.0",
+        "wgg/flysystem-doctrine": "^1.0",
+        "yocto/yoclib-multibase": "^1.2"
     },
     "config": {
         "allow-plugins": {
