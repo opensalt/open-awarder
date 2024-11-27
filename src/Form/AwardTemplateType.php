@@ -24,6 +24,10 @@ class AwardTemplateType extends AbstractType
             ->add('template', JsonType::class, [
                 'attr' => [
                     'rows' => 10,
+                    'autocomplete' => 'off',
+                    'autocorrect' => 'off',
+                    'autocapitalize' => 'off',
+                    'spellcheck' => 'false',
                 ],
             ])
             ->add('awarders', EntityType::class, [

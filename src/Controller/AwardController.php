@@ -200,7 +200,13 @@ class AwardController extends AbstractController
         $pk2 = Multibase::encode(Multibase::BASE58BTC, chr(0xed).chr(0x01).$pk);
 
         $data = $award->getAwardJson();
-        $data = $data['clr'];
+        $data = $data['clr'] ?? $data;
+        if ($data['evidence'] === []) {
+            unset($data['evidence']);
+        }
+        if ($data['credentialSubject']['result'] === []) {
+            unset($data['credentialSubject']['result']);
+        }
         if (in_array('https://www.w3.org/2018/credentials/v1', $data['@context'])) {
             $data['issuanceDate'] = $data['issuanceDate'] ?? $data['awardedDate'] ?? ((new \DateTimeImmutable())->format('Y-m-d\TH:i:sp'));
         }
