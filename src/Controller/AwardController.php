@@ -190,7 +190,7 @@ class AwardController extends AbstractController
     }
 
     #[Route('/{id}/offer', name: 'app_award_offer', methods: ['GET'])]
-    public function signed(Request $request, Award $award): Response
+    public function signed(Award $award): Response
     {
         $key = JWKFactory::createOKPKey('Ed25519');
         $algorithmManager = new AlgorithmManager([
@@ -204,12 +204,15 @@ class AwardController extends AbstractController
         if ($data['evidence'] === []) {
             unset($data['evidence']);
         }
+
         if ($data['credentialSubject']['result'] === []) {
             unset($data['credentialSubject']['result']);
         }
+
         if (in_array('https://www.w3.org/2018/credentials/v1', $data['@context'])) {
-            $data['issuanceDate'] = $data['issuanceDate'] ?? $data['awardedDate'] ?? ((new \DateTimeImmutable())->format('Y-m-d\TH:i:sp'));
+            $data['issuanceDate'] ??= $data['awardedDate'] ?? ((new \DateTimeImmutable())->format('Y-m-d\TH:i:sp'));
         }
+
         $canonicalizer = new JsonCanonicalizer();
         $data2 = $canonicalizer->canonicalize($data);
 

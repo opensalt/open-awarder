@@ -17,6 +17,7 @@ class Award extends AbstractController
     use ComponentWithFormTrait;
     use DefaultActionTrait;
 
+    #[\Override]
     protected function instantiateForm(): FormInterface
     {
         return $this->createForm(MakeAwardForm::class);

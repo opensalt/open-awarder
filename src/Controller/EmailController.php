@@ -64,7 +64,7 @@ class EmailController extends AbstractController
         $response = new Response();
 
         $content = $email->getRenderedEmail();
-        $content = preg_replace('#\bcid:#', 'preview/', $content);
+        $content = preg_replace('#\bcid:#', 'preview/', (string) $content);
 
         $response->setContent($content);
 
